@@ -1,0 +1,15 @@
+---
+- name: "Instalar estación de trabajo Ubuntu 16.04"
+  hosts: all
+  remote_user: "{{ remote_user|default('vagrant') }}"
+  become: yes
+  pre_tasks:
+    - name: "Realizar un apt-get update"
+      apt: update_cache=yes
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - debug: msg="Hola!"
+  roles:
+    - ansible_requirements
+    - instalar_software

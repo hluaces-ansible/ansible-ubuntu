@@ -1,0 +1,33 @@
+---
+- name: "Manage extra APT-keys from keyservers"
+  apt_key:
+    validate_certs: "{{ item.value.validate_certs|default(true) }}"
+    id: "{{ item.value.id }}"
+    keyserver: "{{ item.value.keyserver }}"
+    state: "{{ item.value.state }}"
+  loop: "{{ apt_keys|dict2items }}"
+
+- name: "Manage extra APT-keys from URLs"
+  apt_key:
+    validate_certs: "{{ item.value.validate_certs|default(true) }}"
+    url: "{{ item.value.url }}"
+    state: "{{ item.value.state }}"
+  loop: "{{ apt_keys_url|dict2items }}"
+
+- name: "Manage extra APT-repositories"
+  apt_repository:
+    repo: "{{ item.value.repo }}"
+    state: "{{ item.value.state }}"
+    filename: "{{ item.value.name|default(item.key) }}"
+  loop: "{{ apt_repositories|dict2items }}"
+
+- name: "Refresh apt-cache"
+  apt: update-cache=yes
+
+- name: "Install packages"
+  apt:
+    name: "{{ item.value.name|default(item.key) }}"
+    state: "{{ item.value.state }}"
+    purge: "{{ item.value.purge|default('no') }}"
+  loop: "{{ software|dict2items }}"
+

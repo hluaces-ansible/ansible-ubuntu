@@ -1,6 +1,7 @@
 
 # Ignore some config files/dir
 config/var/*
+config/tmp/*
 config/ansible.log
 config/known_hosts
 
@@ -9,4 +10,4 @@ roles/vendors/*
 
 # Ignore generic files
 *.pyc
-
+*.retry

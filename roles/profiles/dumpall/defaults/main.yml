@@ -1,0 +1,4 @@
+---
+dumpall_flat_mode: yes
+dumpall_target_destination: "/tmp/ansible_dump_{{ inventory_hostname }}"
+dumpall_host_destination: "/tmp/ansible_dump_{{ inventory_hostname }}"
