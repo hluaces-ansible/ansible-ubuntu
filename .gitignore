@@ -11,3 +11,6 @@ roles/vendors/*
 # Ignore generic files
 *.pyc
 *.retry
+
+# Vagrant state
+vagrant/.vagrant
