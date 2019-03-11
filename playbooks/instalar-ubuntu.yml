@@ -7,9 +7,17 @@
     - name: "Realizar un apt-get update"
       apt: update_cache=yes
   vars:
+    # Required as Ubuntu ships with Python3 and not 2
     - ansible_python_interpreter: /usr/bin/python3
   tasks:
     - debug: msg="Hola!"
   roles:
-    - ansible_requirements
-    - instalar_software
+    - { role: ansible_requirements, tags: 'ansible_requirements' }
+    - { role: instalar_software , tags: 'instalar_software' }
+    - role: spotify
+      vars:
+        spotify_state: 'present'
+        spotify_config_username: ''
+        spotify_config_canonical_username: ''
+      tags: spotify
+

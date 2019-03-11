@@ -1,0 +1,24 @@
+---
+# Decides whether to install ('present') or to uninstall ('absent') Spotify
+spotify_name: 'spotify-client'
+spotify_state: 'present'
+
+# Name of the spotify package
+# The Spotify repository
+spotify_repo_name: 'spotify'
+spotify_repo_state: '{{ spotify_state }}'
+spotify_repo_repo: 'deb http://repository.spotify.com stable non-free'
+
+# Remote repository signing Key
+spotify_key_state: '{{ spotify_state }}'
+spotify_key_keyserver: 'hkp://keyserver.ubuntu.com:80'
+spotify_key_id: 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
+
+# Preferences
+spotify_config_root: '/home/{{ ansible_user }}/.config/spotify'
+spotify_config_path: '{{ spotify_config_root }}/prefs'
+spotify_config_username: '{{ ansible_user }}'
+spotify_config_canonical_username: '{{ ansible_user }}'
+spotify_config_autostart: 'true'
+spotify_config_cache: '/home/{{ ansible_user }}/.cache/spotify'
+spotify_config_storage: '{{ spotify_config_cache }}/Storage'
