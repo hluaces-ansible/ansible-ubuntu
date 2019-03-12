@@ -1,0 +1,17 @@
+---
+
+# The name and password of the user to create
+configure_user_name: 'dummy'
+configure_user_password: "{{ 'dummy' | password_hash('sha512') }}"
+
+# Extra groups for the user to be added to
+configure_user_groups: 'sudo'
+
+# Either to create or to delete said user
+configure_user_state: 'present'
+
+# Several user preferences
+configure_user_shell: '/bin/bash'
+
+# 'always' or 'on_create'
+configure_user_update_password: 'on_create'

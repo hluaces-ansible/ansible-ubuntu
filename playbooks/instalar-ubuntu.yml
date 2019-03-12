@@ -10,9 +10,14 @@
     # Required as Ubuntu ships with Python3 and not 2
     - ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - debug: msg="Hola!"
+    - debug: msg="Hola {{ ansible_user }}!"
   roles:
     - { role: ansible_requirements, tags: 'ansible_requirements' }
+    - role: configure_user
+      vars:
+        configure_user_name: 'paco'
+        configure_user_password: "{{ 'paco55' | password_hash('sha512') }}"
+      tags: 'configure_user'
     - { role: instalar_software , tags: 'instalar_software' }
     - role: spotify
       vars:
