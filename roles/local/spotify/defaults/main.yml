@@ -15,10 +15,10 @@ spotify_key_keyserver: 'hkp://keyserver.ubuntu.com:80'
 spotify_key_id: 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
 
 # Preferences
-spotify_config_root: '/home/{{ ansible_user }}/.config/spotify'
+spotify_config_root: '/home/{{ configure_user_name }}/.config/spotify'
 spotify_config_path: '{{ spotify_config_root }}/prefs'
-spotify_config_username: '{{ ansible_user }}'
-spotify_config_canonical_username: '{{ ansible_user }}'
+spotify_config_username: '{{ configure_user_name }}'
+spotify_config_canonical_username: '{{ configure_user_name }}'
 spotify_config_autostart: 'true'
-spotify_config_cache: '/home/{{ ansible_user }}/.cache/spotify'
+spotify_config_cache: '/home/{{ configure_user_name }}/.cache/spotify'
 spotify_config_storage: '{{ spotify_config_cache }}/Storage'

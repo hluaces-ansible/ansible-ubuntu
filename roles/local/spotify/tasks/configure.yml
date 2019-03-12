@@ -4,14 +4,14 @@
     path: '{{ spotify_config_root }}'
     recurse: yes
     state: 'directory'
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
+    owner: '{{ configure_user_name }}'
+    group: '{{ configure_user_name }}'
 
 - name: 'Copy template config file to Spotify root'
   template:
     src: 'prefs.j2'
     dest: '{{ spotify_config_path }}'
     follow: yes
-    group: '{{ ansible_user }}'
-    owner: '{{ ansible_user }}'
+    group: '{{ configure_user_name }}'
+    owner: '{{ configure_user_name }}'
     mode: 0664
