@@ -17,6 +17,13 @@ apt_repositories:
     state: 'present'
     repo: 'deb https://download.sublimetext.com/ apt/stable/'
 
+apt_lock_holders:
+  - "apt-daily-upgrade.service"
+  - "apt-daily-upgrade.timer"
+  - "apt-daily.timer"
+  - "apt-daily.service"
+  - "unattended-upgrades.service"
+
 software:
   # GUI
   thunderbird:
