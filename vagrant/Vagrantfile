@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "Ubuntu_GUI"
+  config.vm.box = "hluaces/ubuntu-disco-dingo-gnome"
   config.ssh.insert_key = false
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -33,10 +33,10 @@ Vagrant.configure("2") do |config|
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
 #  config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.network "private_network",
-    ip: "172.28.128.5",
-    auto_config: false,
-    mac: "F0B782B49C62"
+#  config.vm.network "private_network",
+#    ip: "172.28.128.5",
+#    auto_config: false,
+#    mac: "F0B782B49C62"
 
   vagrant_root = File.dirname(__FILE__)
   ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../roles/local"
