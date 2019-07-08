@@ -1,28 +1,32 @@
 ---
-- name: "Instalar estación de trabajo Ubuntu 16.04"
+- name: 'Intall Ubuntu Workstation'
   hosts: all
   remote_user: "{{ remote_user|default('vagrant') }}"
   become: yes
   pre_tasks:
-    - name: "Realizar un apt-get update"
+    - name: "Refreshing apt-cache (apt-get update)"
       apt: update_cache=yes
   vars:
     # Required as Ubuntu ships with Python3 and not 2
     - ansible_python_interpreter: /usr/bin/python3
-  tasks:
-    - debug: msg="Hola {{ ansible_user }}!"
   roles:
-    - { role: ansible_requirements, tags: 'ansible_requirements' }
-    - role: configure_user
-      vars:
-        configure_user_name: 'paco'
-        configure_user_password: "{{ 'paco55' | password_hash('sha512') }}"
-      tags: 'configure_user'
-    - { role: instalar_software , tags: 'instalar_software' }
-    - role: spotify
-      vars:
-        spotify_state: 'present'
-        spotify_config_username: ''
-        spotify_config_canonical_username: ''
-      tags: spotify
+    - role: configure_system
+      tags: ['role-configure_system']
+    - role: extra_packages
+      tags: ['role-extra_packages']
+
+
+  # - { role: ansible_requirements, tags: 'ansible_requirements' }
+  # - role: configure_user
+  #   vars:
+  #     configure_user_name: 'paco'
+  #     configure_user_password: "{{ 'paco55' | password_hash('sha512') }}"
+  #   tags: 'configure_user'
+  # - { role: instalar_software , tags: 'instalar_software' }
+  # - role: spotify
+  #   vars:
+  #     spotify_state: 'present'
+  #     spotify_config_username: ''
+  #     spotify_config_canonical_username: ''
+  #   tags: spotify
 

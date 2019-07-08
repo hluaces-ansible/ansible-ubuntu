@@ -1,8 +1,0 @@
----
-
-- name: 'Delete Spotify configuration directory'
-  file: path='{{ spotify_config_root }}' state='absent'
-
-- name: 'Delete Spotify cache directory'
-  file: path='{{ spotify_config_cache }}' state='absent'
-

@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  user: root
+  become: true
+  roles:
+    - role: _role_template

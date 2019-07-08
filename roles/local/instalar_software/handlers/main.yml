@@ -1,4 +1,0 @@
----
-- name: 'unlock apt'
-  systemd:  name='{{ item }}' state='started' enabled='yes'
-  loop: "{{ apt_lock_holders }}"

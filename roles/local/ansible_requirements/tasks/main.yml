@@ -1,8 +1,0 @@
----
-#- name: "Instalar requisitos de ansible"
-#  apt:
-#    name: "{{ item.name }}"
-#    state: "{{ item.state }}"
-#  loop:
-#    - name: python
-#      state: present
