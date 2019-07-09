@@ -39,10 +39,12 @@ Vagrant.configure("2") do |config|
 #    mac: "F0B782B49C62"
 
   vagrant_root = File.dirname(__FILE__)
-  ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../roles/local"
+  ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../roles/local:#{vagrant_root}/../roles/vendors"
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "../playbooks/instalar-ubuntu.yml"
+    ansible.inventory_path = "../inventory/default.ini"
+    ansible.limit = "vagrant,localhost"
   end
 
   # Create a public network, which generally matched to bridged network.
