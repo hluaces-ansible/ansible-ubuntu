@@ -13,23 +13,3 @@
     groups: '{{ configure_user_groups }}'
     update_password: '{{ configure_user_update_password }}'
 
-- name: 'Install base packages'
-  apt:
-    name: "{{ item }}"
-    state: 'present'
-  loop:
-    - ubuntu-restricted-extras
-    - gnome-tweak-tool
-    - apt-transport-https
-
-- name: 'Disable apt-daily services to unlock dpkg'
-  systemd: name='{{ item }}' state='stopped' enabled='no'
-  loop: "{{ apt_lock_holders }}"
-  notify: ['enable apt_lock_holders']
-
-- name: 'Stop apt-daily-upgrade.timer'
-  systemd: name='apt-daily-upgrade.timer' state='stopped' enabled='no'
-
-- name: 'Update Ubuntu Drivers'
-  command: 'ubuntu-drivers autoinstall'
-  when: ansible_virtualization_role != 'guest'

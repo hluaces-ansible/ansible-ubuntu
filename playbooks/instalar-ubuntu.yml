@@ -3,12 +3,7 @@
   hosts: all
   remote_user: "{{ remote_user|default('vagrant') }}"
   become: yes
-  pre_tasks:
-    - name: "Refreshing apt-cache (apt-get update)"
-      apt: update_cache=yes
-  vars:
-    # Required as Ubuntu ships with Python3 and not 2
-    - ansible_python_interpreter: /usr/bin/python3
+  vars_files: ['../config/config.default.yml']
   roles:
     - role: configure_system
       tags: ['role-configure_system']
