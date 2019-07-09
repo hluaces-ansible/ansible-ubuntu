@@ -25,3 +25,10 @@ extra_packages_list: []
 # - name:
 #   state: 'present'
 #   purge: false
+
+# Snap packages to configure
+extra_packages_snaps: []
+# - name:
+#   state: 'present'
+#   channel: 'stable'
+#   classic: false

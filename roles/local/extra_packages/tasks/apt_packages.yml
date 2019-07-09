@@ -32,4 +32,4 @@
     state: "{{ item.state|default('present') }}"
     purge: "{{ item.purge|default(false) }}"
   loop: "{{ extra_packages_list }}"
-  notify: 'unlock apt'
+  notify: 'enable apt_lock_holders'

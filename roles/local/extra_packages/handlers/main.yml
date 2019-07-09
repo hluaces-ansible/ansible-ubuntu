@@ -1,2 +1,5 @@
 ---
 # handlers file for role_template
+- name: 'enable apt_lock_holders'
+  systemd: name='{{ item }}' state='started' enabled='yes'
+  loop: "{{ apt_lock_holders }}"

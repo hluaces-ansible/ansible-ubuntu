@@ -1,35 +1,10 @@
 ---
 
-- name: 'Manage extra APT-keys from keyservers'
-  apt_key:
-    id: "{{ item.id }}"
-    keyserver: "{{ item.keyserver }}"
-    validate_certs: "{{ item.validate_certs|default(true) }}"
-    state: "{{ item.state|default('present') }}"
-  loop: "{{ extra_packages_keys }}"
+- name: 'Include role requirements'
+  include_tasks: 'requirements.yml'
 
-- name: 'Manage extra APT-keys from URLs'
-  apt_key:
-    validate_certs: "{{ item.validate_certs|default(true) }}"
-    url: "{{ item.url }}"
-    state: "{{ item.state|default('present') }}"
-  loop: "{{ extra_packages_keys_url }}"
+- name: 'Include custom APT package configuration'
+  include_tasks: 'apt_packages.yml'
 
-- name: 'Manage extra APT-repositories'
-  apt_repository:
-    filename: "{{ item.name }}"
-    repo: "{{ item.repo }}"
-    state: "{{ item.state|default('present') }}"
-  loop: "{{ extra_packages_repositories }}"
-
-- name: 'Refresh apt-cache'
-  apt: update-cache=yes
-  changed_when: false
-
-- name: 'Install packages'
-  apt:
-    name: "{{ item.name }}"
-    state: "{{ item.state|default('present') }}"
-    purge: "{{ item.purge|default(false) }}"
-  loop: "{{ extra_packages_list }}"
-  notify: 'unlock apt'
+- name: 'Include custom SPAN package configuration'
+  include_tasks: 'snap_packages.yml'
