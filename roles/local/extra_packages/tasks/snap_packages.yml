@@ -1,6 +1,6 @@
 ---
 
-- name: 'Configure snap packages'
+- name: 'Configure SNAP packages'
   snap:
     name: "{{ item.name }}"
     channel: "{{ item.channel|default('stable') }}"

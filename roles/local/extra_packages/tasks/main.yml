@@ -6,5 +6,5 @@
 - name: 'Include custom APT package configuration'
   include_tasks: 'apt_packages.yml'
 
-- name: 'Include custom SPAN package configuration'
+- name: 'Include custom SNAP package configuration'
   include_tasks: 'snap_packages.yml'
