@@ -36,6 +36,10 @@ extra_packages_list:
   - {name: 'firefox'}
   - {name: 'google-chrome-stable'}
   - {name: 'keepassxc' }
+  - {name: 'spotify'}
+
+  # Gaming
+  - {name: 'steam'}
 
   # Programming
   - {name: 'sublime-text'}
@@ -69,3 +73,7 @@ extra_packages_list:
 
    # System utils
   - {name: 'p7zip'}
+
+# Snap packages to install
+extra_packages_snaps:
+  - name: 'discord'
