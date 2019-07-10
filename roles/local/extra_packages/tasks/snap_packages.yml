@@ -5,5 +5,5 @@
     name: "{{ item.name }}"
     channel: "{{ item.channel|default('stable') }}"
     classic: "{{ item.classic|default(false) }}"
-    state: "{{ item.classic|default('present') }}"
+    state: "{{ item.state|default('present') }}"
   loop: "{{ extra_packages_snaps }}"
