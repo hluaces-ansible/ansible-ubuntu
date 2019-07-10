@@ -82,6 +82,8 @@ extra_packages_list:
 # Snap packages to install
 extra_packages_snaps:
   - name: 'discord'
+  - name: 'phpstorm'
+    classic: true
 
 # As of now there's no stable docker for 19.04
 docker_apt_release_channel: 'test'
