@@ -6,7 +6,9 @@
   hosts: ubuntu,vagrant
   remote_user: "{{ remote_user|default('vagrant') }}"
   become: yes
-  vars_files: ['../config/config.default.yml']
+  vars_files:
+      - '../config/vault_secrets.yml'
+      - '../config/config.default.yml'
   roles:
     - role: configure_system
       tags: ['role-configure_system']
