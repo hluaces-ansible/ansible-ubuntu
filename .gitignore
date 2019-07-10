@@ -4,6 +4,7 @@ config/var/*
 config/tmp/*
 config/ansible.log
 config/known_hosts
+config/vault_password
 
 # Ignore uptream code directory
 roles/vendors/*
