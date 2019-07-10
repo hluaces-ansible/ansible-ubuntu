@@ -1,6 +1,9 @@
 ---
+- name: 'Build vendor packages'
+  import_playbook: 0_local_requirements.yaml
+
 - name: 'Intall Ubuntu Workstation'
-  hosts: all
+  hosts: ubuntu,vagrant
   remote_user: "{{ remote_user|default('vagrant') }}"
   become: yes
   vars_files: ['../config/config.default.yml']
@@ -9,19 +12,5 @@
       tags: ['role-configure_system']
     - role: extra_packages
       tags: ['role-extra_packages']
-
-
-  # - { role: ansible_requirements, tags: 'ansible_requirements' }
-  # - role: configure_user
-  #   vars:
-  #     configure_user_name: 'paco'
-  #     configure_user_password: "{{ 'paco55' | password_hash('sha512') }}"
-  #   tags: 'configure_user'
-  # - { role: instalar_software , tags: 'instalar_software' }
-  # - role: spotify
-  #   vars:
-  #     spotify_state: 'present'
-  #     spotify_config_username: ''
-  #     spotify_config_canonical_username: ''
-  #   tags: spotify
-
+    - role: geerlingguy.docker
+      tags: ['role-geerlingguy.docker']
