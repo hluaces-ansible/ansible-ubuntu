@@ -1,0 +1,18 @@
+---
+# defaults file for role_template
+
+# A dict with the following format:
+# git_category:
+#   git_config_option : git_config_value
+#   git_config_option2 : git_config_value2
+# git_category2:
+#   git_config_option : git_config_value
+#   git_config_option2 : git_config_value2
+git_config: {}
+
+#git_config:
+#  user:
+#    name: ''
+#    email: ''
+#  core:
+#    editor: 'vi'

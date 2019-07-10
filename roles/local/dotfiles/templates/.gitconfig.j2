@@ -1,0 +1,7 @@
+{% for git_category, git_category_data in git_config.items() %}
+[{{ git_category }}]
+{% for git_key, git_value in git_category_data.items() %}
+{{ git_key }} = {{ git_value }}
+{% endfor %}
+
+{% endfor %}

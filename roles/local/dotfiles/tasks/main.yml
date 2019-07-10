@@ -1,0 +1,11 @@
+---
+# tasks file for role_template
+
+- name: "Configure dotfiles"
+  template:
+    src: "{{ item }}.j2"
+    dest: "~/{{ item }}"
+    lstrip_blocks: true
+  loop:
+    - '.gitconfig'
+    - '.gitignore'

@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: dotfiles
+      vars:
+        git_config:
+          core:
+            chu: 1
+            cha: 2
+          otros:
+            chu: 3
+            cha: 4

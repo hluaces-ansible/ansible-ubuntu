@@ -90,3 +90,21 @@ docker_apt_release_channel: 'test'
 
 # Docker users
 docker_users: ["{{ configure_user_name }}"]
+
+# Git configuration for the .gitconfig file
+git_config:
+  user:
+    name: 'Héctor Luaces'
+    email: "{{ vault_email }}"
+  core:
+    editor: 'vi'
+    excludesfile: '~/.gitignore'
+  web:
+    browser: 'google-chrome'
+  color:
+    diff: 'auto'
+    status: 'auto'
+    branch: 'auto'
+    interactive: 'auto'
+    ui: 'true'
+    pager: 'true'
