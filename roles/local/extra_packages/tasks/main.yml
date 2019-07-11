@@ -8,3 +8,6 @@
 
 - name: 'Include custom SNAP package configuration'
   include_tasks: 'snap_packages.yml'
+
+- name: 'Include custom PIP package configuration'
+  include_tasks: 'pip_packages.yml'
