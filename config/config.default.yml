@@ -51,15 +51,17 @@ extra_packages_list:
   - {name: 'git'}
   - {name: 'vagrant'}
   - {name: 'virtualbox'}
-  - {name: 'ansible'}
   - {name: 'nodejs'}
   - {name: 'python'}
+  - {name: 'python3'}
   - {name: 'python-pip'}
+  - {name: 'python3-pip'}
   - {name: 'clang-format'}
   - {name: 'composer'}
   - {name: 'cppcheck'}
   - {name: 'php'}
   - {name: 'sqlite3'}
+  - {name: 'fonts-firacode'}
 
   # CLI
   - {name: 'terminator'}
@@ -84,6 +86,14 @@ extra_packages_snaps:
   - name: 'discord'
   - name: 'phpstorm'
     classic: true
+
+# Pip packages to install
+extra_packages_pip:
+  - name: 'ansible'
+  - name: 'ansible-lint'
+  - name: 'molecule'
+  - name: 'flake8'
+  - name: 'yamllint'
 
 # As of now there's no stable docker for 19.04
 docker_apt_release_channel: 'test'
