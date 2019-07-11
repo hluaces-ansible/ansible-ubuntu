@@ -31,3 +31,7 @@
   roles:
     - role: dotfiles
       tags: ['role-dotfiles']
+    - role: configuration_files
+      tags: ['role-configuration_files']
+      vars:
+        configuration_files: "{{ configuration_files_user }}"

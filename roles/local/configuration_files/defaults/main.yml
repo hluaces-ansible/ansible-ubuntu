@@ -1,0 +1,16 @@
+---
+# defaults file for role_template
+
+configuration_files: []
+#  # Files to be cloned to somewhere (destination dir will be created)
+#  - src:
+#    dest:
+#  # Repos to be cloned somewhere (destination dir will be created)
+#  - git:
+#      accept_hostkey:
+#      force:
+#      key_file:
+#      repo:
+#      ssh_opts:
+#      version:
+#    dest:

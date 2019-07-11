@@ -1,0 +1,17 @@
+---
+
+- name: 'Create destination dir'
+  file:
+    path: "{{ item.dest }}"
+    state: 'directory'
+    owner: "{{ item.dest_owner|default(omit) }}"
+    group: "{{ item.dest_group|default(omit) }}"
+    mode: "{{ item.dest_mode|default(omit) }}"
+
+- name: 'Copy configuration template'
+  template:
+    src: "{{ item.src }}.j2"
+    dest: "{{ item.dest }}/{{ item.src|basename }}"
+    owner: "{{ item.owner|default(omit) }}"
+    group: "{{ item.group|default(omit) }}"
+    mode: "{{ item.mode|default(omit) }}"

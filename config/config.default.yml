@@ -118,3 +118,12 @@ git_config:
     interactive: 'auto'
     ui: 'true'
     pager: 'true'
+
+# Configuration files for the newly created user
+configuration_files_user:
+  - type: 'file'
+    dest: '~/.thunderbird/'
+    src: 'thunderbird/profiles.ini'
+  - type: 'file'
+    dest: "~/.thunderbird/{{ configure_user_name }}.default"
+    src: 'thunderbird/prefs.js'
