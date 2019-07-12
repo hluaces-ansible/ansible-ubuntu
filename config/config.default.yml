@@ -121,9 +121,38 @@ git_config:
 
 # Configuration files for the newly created user
 configuration_files_user:
+  # Thunderbird configuration. It is not fuly portable but it makes things
+  # waaaaay easier.
   - type: 'file'
     dest: '~/.thunderbird/'
     src: 'thunderbird/profiles.ini'
   - type: 'file'
     dest: "~/.thunderbird/{{ configure_user_name }}.default"
     src: 'thunderbird/prefs.js'
+
+  # Private keys
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/config'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/red-queen'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/red-queen.pub'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/chesire'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/chesire.pub'
