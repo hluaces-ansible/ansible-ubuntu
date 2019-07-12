@@ -3,14 +3,30 @@
 
 configuration_files: []
 #  # Files to be cloned to somewhere (destination dir will be created)
-#  - src:
+#  # These files are expected to be templates. The name should not contain
+#  # the '.j2' extension.
+#  - type: 'file'
+#    src:
 #    dest:
+#    dest_owner:
+#    dest_group:
+#    dest_mode:
+#    owner:
+#    group:
+#    mode:
+#
 #  # Repos to be cloned somewhere (destination dir will be created)
-#  - git:
-#      accept_hostkey:
-#      force:
-#      key_file:
-#      repo:
-#      ssh_opts:
-#      version:
+#  - type: 'repo'
+#    accept_hostkey:
+#    force:
+#    key_file:
+#    repo:
+#    ssh_opts:
+#    version:
 #    dest:
+#    dest_owner:
+#    dest_group:
+#    dest_mode:
+#    owner:
+#    group:
+#    mode:
