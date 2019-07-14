@@ -52,16 +52,23 @@ extra_packages_list:
   - {name: 'vagrant'}
   - {name: 'virtualbox'}
   - {name: 'nodejs'}
+  - {name: 'npm' }
   - {name: 'python'}
   - {name: 'python3'}
   - {name: 'python-pip'}
   - {name: 'python3-pip'}
+  - {name: 'pylint' }
   - {name: 'clang-format'}
   - {name: 'composer'}
   - {name: 'cppcheck'}
   - {name: 'php'}
   - {name: 'sqlite3'}
   - {name: 'fonts-firacode'}
+  - {name: 'php'}
+  - {name: 'php-mbstring' }
+  - {name: 'php-xml' }
+  - {name: 'php-cli' }
+  - {name: 'phpunit' }
 
   # CLI
   - {name: 'terminator'}
