@@ -130,6 +130,10 @@ configuration_files_user:
     dest: "~/.thunderbird/{{ configure_user_name }}.default"
     src: 'thunderbird/prefs.js'
 
+  # Terminator
+  - type: 'file'
+    dest: '~/.config/terminator/'
+    src: 'terminator/config'
   # Private keys
   - type: 'file'
     dest: '~/.ssh/'
@@ -156,3 +160,17 @@ configuration_files_user:
     dest_mode: '700'
     mode: '600'
     src: 'ssh/chesire.pub'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/git'
+
+  # Sublime text configuration. Too much stuff in here to not do this...
+  - type: 'repo'
+    accept_hostkey: true
+    repo: "{{ vault_sublime_text_repo }}"
+    version: 'master'
+    key_file: "~/.ssh/git"
+    dest: "~/.config/sublime-text-3"
+    force: true
