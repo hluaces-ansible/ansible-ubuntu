@@ -5,7 +5,7 @@
 - name: 'Install Ubuntu Workstation (root configuration)'
   hosts: ubuntu
   remote_user: "{{ remote_user|default('vagrant') }}"
-  become: yes
+  become: true
   vars_files:
     - '../config/vault_secrets.yml'
     - '../config/config.default.yml'
@@ -19,11 +19,15 @@
     # Root dotfiles
     - role: dotfiles
       tags: ['role-dotfiles']
+  post_tasks:
+    - name: 'Include extra tasks for root user'
+      include_tasks: "{{ item }}"
+      with_fileglob: "{{ playbook_dir }}/tasks/root/*"
 
 - name: 'Install Ubuntu Workstation (non root configuration)'
   hosts: ubuntu
   remote_user: "{{ remote_user|default('vagrant') }}"
-  become: yes
+  become: true
   become_user: "{{ configure_user_name }}"
   vars_files:
     - '../config/vault_secrets.yml'
@@ -35,3 +39,11 @@
       tags: ['role-configuration_files']
       vars:
         configuration_files: "{{ configuration_files_user }}"
+    - role: gsettings
+      vars:
+        gsettings: "{{ gnome_settings }}"
+      tags: ['role-gsettings']
+  post_tasks:
+    - name: 'Include extra tasks for non-privileged users'
+      include_tasks: "{{ item }}"
+      with_fileglob: "{{ playbook_dir }}/tasks/user/*"

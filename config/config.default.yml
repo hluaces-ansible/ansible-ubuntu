@@ -38,6 +38,7 @@ extra_packages_repositories:
 extra_packages_list:
   # Everyday apps
   - {name: 'thunderbird'}
+  - {name: 'gnome-calendar'}
   - {name: 'firefox'}
   - {name: 'google-chrome-stable'}
   - {name: 'keepassxc'}
@@ -188,3 +189,56 @@ configuration_files_user:
     key_file: "~/.ssh/git"
     dest: "~/.config/sublime-text-3"
     force: true
+
+# Various Gnome settings to be configured using the gsettings tool
+gnome_settings:
+  # Night light
+  - schema: 'org.gnome.settings-daemon.plugins.color'
+    key: 'night-light-schedule-automatic'
+    value: 'true'
+  # Screenshots
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'area-screenshot-clip'
+    value: '<Primary><Shift><Alt>dollar'
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'window-screenshot'
+    value: '<Alt>Print'
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'area-screenshot'
+    value: '<Shift><Alt>dollar'
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'screenshot-clip'
+    value: '<Alt>3'
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'window-screenshot-clip'
+    value: '<Shift><Alt>periodcentered'
+
+  # Calendar configuration
+  - schema: 'org.gnome.desktop.default-applications.office.calendar'
+    key: 'exec'
+    value: "gogle-chrome 'https://www.google.com/calendar'"
+  - schema: 'org.gnome.desktop.calendar'
+    key: 'show-weekdate'
+    value: 'true'
+
+  # Privacy
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'send-software-usage-stats'
+    value: 'false'
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'report-technical-problems'
+    value: 'false'
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'remember-app-usage'
+    value: 'false'
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'remove-old-temp-files'
+    value: 'true'
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'remember-recent-files'
+    value: 'false'
+
+  # Preferences
+  - schema: 'org.gnome.desktop.interface'
+    key: 'clock-show-date'
+    value: 'true'

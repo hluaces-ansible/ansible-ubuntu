@@ -1,0 +1,27 @@
+---
+
+# This guy fucks:
+# https://askubuntu.com/questions/742870/background-not-changing-using-gsettings-from-cron/743024#743024
+- name: 'Obtain the DBUS address'
+  shell:
+    "grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(pgrep gnome-session)/environ
+    | cut -d= -f2-"
+  register: _dbus_session_bus_address
+  changed_when: false
+  check_mode: false
+  tags: ['skip_ansible_lint']
+
+- name: 'Remove trailing nulls from the previous output'
+  set_fact:
+    _dbus_session_bus_address: "{{
+      _dbus_session_bus_address.stdout.rstrip(' \t\r\n\0')
+  }}"
+
+- name: debug
+  debug: msg="{{_dbus_session_bus_address}}"
+
+- name: 'Manage gsettings preferences'
+  command: "gsettings set {{ item.schema }} {{ item.key }} '{{ item.value }}'"
+  loop: "{{ gsettings }}"
+  environment:
+    DBUS_SESSION_BUS_ADDRESS: "{{ _dbus_session_bus_address }}"
