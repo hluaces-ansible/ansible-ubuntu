@@ -32,3 +32,10 @@ extra_packages_snaps: []
 #   state: 'present'
 #   channel: 'stable'
 #   classic: false
+
+extra_packages_npm: []
+# - name:
+#   path:
+#   version: ''
+#   global: 'false'
+#   ignore_scripts: 'false'

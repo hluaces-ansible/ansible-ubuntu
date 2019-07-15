@@ -11,3 +11,6 @@
 
 - name: 'Include custom PIP package configuration'
   include_tasks: 'pip_packages.yml'
+
+- name: 'Include custom NPM package configuration'
+  include_tasks: 'npm_packages.yml'
