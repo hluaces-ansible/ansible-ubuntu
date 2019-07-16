@@ -9,3 +9,4 @@
   loop:
     - '.gitconfig'
     - '.gitignore'
+    - '.vimrc'
