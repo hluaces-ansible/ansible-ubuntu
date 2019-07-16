@@ -21,8 +21,12 @@
       tags: ['role-dotfiles']
   post_tasks:
     - name: 'Include extra tasks for root user'
-      include_tasks: "{{ item }}"
+      include_tasks:
+        file: "{{ item }}"
+        apply:
+          tags: ['privileged-extra-tasks']
       with_fileglob: "{{ playbook_dir }}/tasks/root/*"
+      tags: ['privileged-extra-tasks']
 
 - name: 'Install Ubuntu Workstation (non root configuration)'
   hosts: ubuntu
@@ -45,5 +49,9 @@
       tags: ['role-gsettings']
   post_tasks:
     - name: 'Include extra tasks for non-privileged users'
-      include_tasks: "{{ item }}"
+      include_tasks:
+        file: "{{ item }}"
+        apply:
+          tags: ['unprivileged-extra-tasks']
       with_fileglob: "{{ playbook_dir }}/tasks/user/*"
+      tags: ['unprivileged-extra-tasks']
