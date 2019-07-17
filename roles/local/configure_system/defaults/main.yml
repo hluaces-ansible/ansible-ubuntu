@@ -18,4 +18,4 @@ configure_user_state: 'present'
 configure_user_shell: '/bin/bash'
 
 # 'always' or 'on_create'
-configure_user_update_password: 'always'
+configure_user_update_password: 'on_create'
