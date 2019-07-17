@@ -8,7 +8,7 @@ configure_timezone: 'Europe/Madrid'
 
 # Additional user to create
 configure_user_name: 'dummy'
-configure_user_password: "{{ 'dummy' | password_hash('sha512')}}"
+configure_user_password: 'dummy'
 
 # List of apt-keys to load from disk
 # See "extra_packages" role.
