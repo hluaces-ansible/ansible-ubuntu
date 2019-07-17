@@ -91,6 +91,7 @@ extra_packages_list:
 extra_packages_snaps:
   - name: 'discord'
   - name: 'spotify'
+  - name: 'bitwarden'
   - name: 'phpstorm'
     classic: true
 
