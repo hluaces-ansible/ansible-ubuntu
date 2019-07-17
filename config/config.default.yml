@@ -7,15 +7,12 @@ ansible_python_interpreter: /usr/bin/python3
 configure_timezone: 'Europe/Madrid'
 
 # Additional user to create
-configure_user_name: 'dummy'
-configure_user_password: 'dummy'
+configure_user_name: 'hector'
+configure_user_password: 'hector'
 
 # List of apt-keys to load from disk
 # See "extra_packages" role.
-extra_packages_keys:
-  # Spotify
-  - id: '931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90'
-    keyserver: 'keyserver.ubuntu.com'
+extra_packages_keys: []
 
 # List of apt-keys to load from URLs.
 # See "extra_packages" role
@@ -30,8 +27,6 @@ extra_packages_repositories:
     repo: 'deb http://dl.google.com/linux/chrome/deb/ stable main'
   - name: 'sublime_text'
     repo: 'deb https://download.sublimetext.com/ apt/stable/'
-  - name: 'spotify'
-    repo: 'deb http://repository.spotify.com stable non-free'
 
 # Extra APT packages to install
 # See "extra_packages" role
@@ -42,7 +37,6 @@ extra_packages_list:
   - {name: 'firefox'}
   - {name: 'google-chrome-stable'}
   - {name: 'keepassxc'}
-  - {name: 'spotify-client'}
 
   # Gaming
   - {name: 'steam'}
@@ -96,6 +90,7 @@ extra_packages_list:
 # Snap packages to install
 extra_packages_snaps:
   - name: 'discord'
+  - name: 'spotify'
   - name: 'phpstorm'
     classic: true
 
