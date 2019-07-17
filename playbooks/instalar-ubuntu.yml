@@ -4,7 +4,8 @@
 
 - name: 'Install Ubuntu Workstation (root configuration)'
   hosts: ubuntu
-  remote_user: "{{ remote_user|default('vagrant') }}"
+  remote_user: "{{ remote_user | default(omit) }}"
+  become_user: root
   become: true
   vars_files:
     - '../config/vault_secrets.yml'
@@ -30,7 +31,7 @@
 
 - name: 'Install Ubuntu Workstation (non root configuration)'
   hosts: ubuntu
-  remote_user: "{{ remote_user|default('vagrant') }}"
+  remote_user: "{{ remote_user | default(omit) }}"
   become: true
   become_user: "{{ configure_user_name }}"
   vars_files:
