@@ -33,3 +33,6 @@
     purge: "{{ item.purge|default(false) }}"
   loop: "{{ extra_packages_list }}"
   notify: 'enable apt_lock_holders'
+
+- name: 'Update all packages'
+  apt: upgrade=safe
