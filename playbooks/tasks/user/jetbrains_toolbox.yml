@@ -32,14 +32,14 @@
     dest: "/tmp/jetbrains-toolbox.tar.gz"
 
 - name: 'JetBrains Toolbox | Create destination dir'
-  file: path="~/.local/share/JetBrains/Toolbox" state='directory'
+  file: path="~/bin" state='directory'
 
 - name: 'JetBrains Toolbox | Extract package to destination dir'
   unarchive:
     extra_opts: ['--strip-components=1']
     remote_src: true
     src: "/tmp/jetbrains-toolbox.tar.gz"
-    dest: "~/.local/share/JetBrains/Toolbox"
+    dest: "~/bin"
 
 - name: 'JetBrains Toolbox | Remove temp file'
   file: path="/tmp/jetbrains-toolbox.tar.gz" state='absent'
