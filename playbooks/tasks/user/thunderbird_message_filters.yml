@@ -1,0 +1,18 @@
+---
+
+- name: 'thunderbird_message_filters | Create filter directories'
+  file:
+    path: "~/.thunderbird/{{ configure_user_name }}.default/{{ _dir.dest|dirname }}"
+    state: 'directory'
+  loop: "{{ vault_thunderbird_message_filters }}"
+  loop_control:
+    loop_var: _dir
+
+- name: 'thunderbird_message_filters | Copy thunderbird message filters'
+  copy:
+    src: "{{ _filter.src }}"
+    dest: "~/.thunderbird/{{ configure_user_name }}.default/{{ _filter.dest }}"
+    force: true
+  loop: "{{ vault_thunderbird_message_filters }}"
+  loop_control:
+    loop_var: _filter

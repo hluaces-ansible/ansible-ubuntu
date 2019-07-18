@@ -140,7 +140,7 @@ configuration_files_user:
     dest: '~/.thunderbird/'
     src: 'thunderbird/profiles.ini'
   - type: 'file'
-    dest: "~/.thunderbird/{{ configure_user_name}}.default"
+    dest: "~/.thunderbird/{{ configure_user_name }}.default"
     src: 'thunderbird/prefs.js'
 
   # Terminator
