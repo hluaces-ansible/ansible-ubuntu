@@ -112,7 +112,7 @@ vagrant destroy
 You'll need to run this as a sudoer.
 
 ```
-ansible-playbook -k -v -i inventory/prod.ini playbooks/ubuntu-install.yml
+ansible-playbook -kK -v -i inventory/prod.ini playbooks/ubuntu-install.yml
 ```
 
 ## License
