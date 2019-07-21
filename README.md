@@ -1,75 +1,61 @@
-# ansible-skel
-This is my Ansible skeleton. It provide a nice structure to work comfortably with Ansible. You don't need to follow all principes of this structure to use Ansible.
+# Ubuntu-dev desktop
 
+This is my Ubuntu 18/19 workstation playbook.
 
-## Goal and features
+Its purposes are:
 
-The goal of this template is to provide a quick way to start with Ansible. It is a mix of best practices gathered around the web and the result of my own experience. You will find here an extremely modular structure, which should not let the user doubt where to put the correct files. Some advanced topics are covered into [the docs folder](docs/)
+- Document everything that I use on my workstation.
+- Keep track of my preferences on a git repository.
+- Ease the deployment of a new workstation or the upgrade of the current one.
 
-Basically, this structure provides:
+## What does it do?
 
-- A nice default ```ansible.cfg``` file
-- A way to organise hosts and groups
-- An efficient way to organise variables, depending hosts, groups or environments
-- It helps to avoid the recommended messy structure
-- Most of files are grouped under directories to avoid confusion
-- Provide a nice subset of plugins
-- Provide default playbooks to really start quickly your development
-- Most of file are shortly documented, with a description of most common patterns
+Basically it does this:
 
-So, just clone this repo, and start to dev :-)
-
-
-## Quick Start
-
-To help you to start quickly, there are few entrey point to have your first playbook working. First, you need to add the targets you want to manage:
-
-```
-vim inventory/default.ini
-```
-Then add your target hosts under the ```[targets]``` section. If you feel lost, checkout the examples inside the file. Once you have done that, you can run the first playbook, which will ensure you have all required roles. If you don't have them, it will download them from [Ansible Galaxy](https://galaxy.ansible.com/) or from a git repo depending the source. It will install them into ```roles/vendors```.
-
-```
-ansible-playbook playbooks/0_local_requirements.yaml
-```
-Once you get there, you are sure you have all requirements to play with Ansible. Then, we will ensure your inventory is correct by trying to connect on all hosts. Obviously, this playbook will not modify at this stage your targets, it's just to be sure your inventory is ok.
-```
-ansible-playbook playbooks/1_target_test.yml
-```
-If it run without errors, you can start to develop you own playbooks and roles. Enjoy!
-
+- Self-installs the `ansible-galaxy` requirements.
+- Creates a new user which will be flagged as a sudoer.
+- Installs a bunch of software from several package managers:
+    - apt
+    - pip
+    - npm
+- Deploys my Thunderbird configuration.
+- Deploys my `.dotfiles` to both root and the newly created user.
+- Installs a bunch of software.
+- Configures Gnome preferences and privacy settings to my liking.
+- Installs a few extra things.
 
 ## File structure
-The files structure is organised this way:
+
 ```
 .
 ├── LICENSE
-├── README.md                             # Documentation entry point
-├── ansible.cfg -> config/ansible.cfg     # Symlink to vagrant config
-├── config                              # Configuration directory
+├── README.md                             # This file
+├── ansible.cfg -> config/ansible.cfg     # Ansible.cfg file being used
+├── config                                # Configuration directory
 │   ├── ansible.cfg                       # Ansible configuration
+│   ├── config.default.yml                # Playbook's default configuration
+│   ├── config.yml                        # Playbook's custom configuration
+│   ├── known_hosts                       # Custom known_hosts file
 │   ├── ssh_config                        # SSH configuration
 │   ├── tmp                               # Temporary files
-│   └── vault_password                    # Default vault file
-├── docs                                # Advanced documentation topics
-│   ├── skel-start.md
-│   └── skel-tips.md
+│   └── vault_secrets.yml                 # Vaulted variables crypted file
 ├── group_vars                          # Group vars directory
 │   ├── all.yml                           # Common variables to all hosts
 │   ├── dev.yml                           # Dev env variables
-│   ├── preprod.yml                       # Preprod env variables
 │   └── prod.yml                          # Production env variables
 ├── host_vars                           # Host vars directory
 ├── inventory                           # Inventory directory
 │   ├── default.ini -> dev.ini            # Default inventory to use
-│   ├── dev.ini                           # Dev inventory
-│   ├── preprod.ini                       # Preprod inventary
-│   └── prod.ini                          # Production inventory
+│   ├── dev.ini                           # Dev inventory (vagrant)
+│   └── prod.ini                          # Production inventory (localhost)
 ├── playbooks                           # Playbook directory
-│   ├── 0_local_requirements.yaml         # Configure local system
-│   ├── 1_target_test.yml                 # Test targets
-│   ├── 2_target_requirements.yml         # Basic configuration of targets
-│   └── 3_target_sysadmin.yml             # Advanced confivuration of targets
+│   ├── files                             # Files used by the playbook
+│   ├── tasks                             # Extra tasks ran by the playbook
+│   │   ├── user                            # Unprivileged extra tasks
+│   │   └── root                            # Privileged extra tasks
+│   ├── templates                         # Templates used by the playbook
+│   ├── 0_local_requirements.yaml         # Internal playbook.
+│   └── ubuntu-install.yml                # The main playbook to use
 ├── plugins                             # Plugin directory
 │   ├── action                            # Action plugins
 │   ├── callback                          # Callback plugins
@@ -85,29 +71,58 @@ The files structure is organised this way:
     └── vendors                           # Vendor roles
 ```
 
-## Compatibility
+## Quick Start
 
-This skeleton will mainly work with Ansible 2.2. It could run on lower versions, but it has not been tested. Definitely not compatible with 1.x branch. Please checkout the correct branch of this repo to get the matching version.
+You'll need `git` and `ansible` installed for this to work. Also, this is used to provision an Ubuntu machine (18.04 or 19.04 both do fine). You are supposed to install it first if you want to provision a live environment.
 
-As this skeleton comes with some python plugins, you may need to install extra Python dependencies if you want to use them:
+After this:
 
-* string_utils: slugify
-* ipaddr: netaddr
+- Clone this repo.
+- Delete the `./config/vault_secrets.yml` file and create yours.
+- Tweak the `./config/config.default.yml` to your liking.
+- If you want to run extra tasks save them either inside the `playbooks/tasks/root` directory or inside `playbooks/tasks/user`. They will be loaded automatically.
 
-Usually, a simple ```pip install slugify netaddr``` should let use those plugins. At this stage, documentation for the plugins is pretty poor, and you may need to read the source code if you want to understand how to use them.
+## Run the playbook against a self-provisioning testing environment
 
-## Releases
+This assumes that you have both Virtualbox and Vagrant installed on your machine.
 
-* 0.5 - 26/01/2017
-  * Compatibility  for Ansible-2.2 
-  * Make some clean, stabilise the code
-  * Update the documentation documentation
+To create and provision a new environment:
+
+```
+cd vagrant
+vagrant up
+```
+
+To reprovision an already created environment:
+
+```
+cd vagrant
+vagrant provision
+```
+
+If you want to destroy the newly created testing environment:
+
+```
+cd vagrant
+vagrant destroy
+```
+
+## Run the playbook against your local machine (production)
+
+You'll need to run this as a sudoer.
+
+```
+ansible-playbook -k -v -i inventory/prod.ini playbooks/ubuntu-install.yml
+```
 
 ## License
 
 Please read [GNU AFFERO GENERAL PUBLIC LICENSE](LICENSE).
 
 ## Credits
-There are a lot of goood ideas taken from the [enginyoyen ansible best practice repository](https://github.com/enginyoyen/ansible-best-practises/). The rest comes from some colleagues (Hi [Simon](https://github.com/spiette) !) and my customer experience.
 
+This playbook's structure is based on the superb [ansible-skel by mrjk](https://github.com/mrjk/ansible-skel).
 
+I'm also using [geerlingguy's amazing Docker role](https://github.com/geerlingguy/ansible-role-docker) from Ansible Galaxy.
+
+The rest of it comes from my own experience, which is influenced by Ansible's community, my colleagues and Sigmar allmighty.
