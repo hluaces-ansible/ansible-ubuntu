@@ -37,6 +37,7 @@ extra_packages_list:
   - {name: 'firefox'}
   - {name: 'google-chrome-stable'}
   - {name: 'keepassxc'}
+  - {name: 'libreoffice'}
 
   # Gaming
   - {name: 'steam'}
