@@ -212,6 +212,11 @@ gnome_settings:
     key: 'window-screenshot-clip'
     value: '<Shift><Alt>periodcentered'
 
+  # Emoji selector (conflicts with a keybinding for terminator)
+  - schema: 'org.freedesktop.ibus.panel.emoji'
+    key: 'hotkey'
+    value: '["<Control><Shift>space"]'
+
   # Calendar configuration
   - schema: 'org.gnome.desktop.default-applications.office.calendar'
     key: 'exec'
