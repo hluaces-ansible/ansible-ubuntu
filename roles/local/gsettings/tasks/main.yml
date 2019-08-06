@@ -4,7 +4,8 @@
 # https://askubuntu.com/questions/742870/background-not-changing-using-gsettings-from-cron/743024#743024
 - name: 'Obtain the DBUS address'
   shell:
-    "grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(pgrep gnome-session)/environ
+    "grep -z DBUS_SESSION_BUS_ADDRESS
+    /proc/$(pgrep -u {{ ansible_user_id }} gnome-session)/environ
     | cut -d= -f2-"
   register: _dbus_session_bus_address
   changed_when: false
