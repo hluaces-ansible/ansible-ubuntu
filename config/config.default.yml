@@ -100,10 +100,19 @@ extra_packages_snaps:
 # Pip packages to install
 extra_packages_pip:
   - name: 'ansible'
+    executable: pip2
   - name: 'ansible-lint'
+    executable: pip2
   - name: 'molecule'
+    executable: pip2
   - name: 'flake8'
+    executable: pip2
   - name: 'yamllint'
+    executable: pip2
+  - name: 'docker'
+    executable: pip2
+  - name: 'docker'
+    executable: pip3
 
 # NPM utils
 extra_packages_npm:
