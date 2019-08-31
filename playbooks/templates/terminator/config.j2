@@ -1,16 +1,37 @@
 [global_config]
   scroll_tabbar = True
-  title_font = Fira Code Light 9
   title_use_system_font = False
+  title_font = Fira Code Light 9
 [keybindings]
-  close_term = <Primary>w
-  close_window = <Primary>q
-  copy = <Primary>c
-  full_screen = <Alt>Return
   new_tab = <Primary>t
-  new_window = <Primary>n
+  split_horiz = <Primary><Shift>o
+  split_vert = <Primary><Shift>e
+  close_term = <Primary>w
+  copy = <Primary>c
   paste = <Primary>v
   search = <Primary>f
+  close_window = <Primary>q
+  switch_to_tab_1 = <Alt>1
+  switch_to_tab_2 = <Alt>2
+  switch_to_tab_3 = <Alt>3
+  switch_to_tab_4 = <Alt>4
+  switch_to_tab_5 = <Alt>5
+  switch_to_tab_6 = <Alt>6
+  switch_to_tab_7 = <Alt>7
+  switch_to_tab_8 = <Alt>8
+  switch_to_tab_9 = <Alt>9
+  switch_to_tab_10 = <Alt>0
+  full_screen = <Alt>Return
+  new_window = <Primary>n
+[profiles]
+  [[default]]
+    background_color = "#300a24"
+    background_darkness = 0.76
+    cursor_color = "#aaaaaa"
+    font = Fira Code Light 10
+    foreground_color = "#ffffff"
+    scrollback_infinite = True
+    use_system_font = False
 [layouts]
   [[default]]
     [[[child1]]]
@@ -21,12 +42,3 @@
       parent = ""
       type = Window
 [plugins]
-[profiles]
-  [[default]]
-    background_color = "#300a24"
-    background_darkness = 0.76
-    cursor_color = "#aaaaaa"
-    font = Fira Code Light 10
-    foreground_color = "#ffffff"
-    scrollback_infinite = True
-    use_system_font = False
