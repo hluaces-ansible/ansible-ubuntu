@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
   ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../roles/local:#{vagrant_root}/../roles/vendors"
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "../playbooks/instalar-ubuntu.yml"
+    ansible.playbook = "../playbooks/ubuntu-install.yml"
     ansible.inventory_path = "../inventory/default.ini"
     ansible.limit = "ubuntu,localhost"
   end

@@ -1,5 +1,0 @@
----
-
-- name: "Import Ubuntu-install playbook..."
-  hosts: all
-  import_playbook: '../playbooks/instalar-ubuntu.yml'
