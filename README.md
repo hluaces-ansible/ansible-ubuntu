@@ -86,6 +86,14 @@ After this:
 
 This assumes that you have both Virtualbox and Vagrant installed on your machine.
 
+Before doing this you might need to run the `playbooks/0_local_requirements.yml` playbook in order to install local Ansible-galaxy dependencies.
+
+As it only targets `localhost`  you can simply execute it with the following command:
+
+```
+ansible-playbook -vv playbooks/0_local_requirements.yml
+```
+
 To create and provision a new environment:
 
 ```
