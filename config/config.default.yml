@@ -123,6 +123,10 @@ extra_packages_npm:
 # As of now there's no stable docker for 19.04
 docker_apt_release_channel: 'test'
 
+# For ubuntu 19.10 there's no repo yet so we have to use the disco dingo one
+docker_apt_repository: |
+  deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/ubuntu disco {{ docker_apt_release_channel }}
+
 # Docker users
 docker_users: ["{{ configure_user_name}}"]
 
@@ -206,7 +210,8 @@ gnome_settings:
   - schema: 'org.gnome.settings-daemon.plugins.color'
     key: 'night-light-schedule-automatic'
     value: 'true'
-  # Screenshots
+  # Screenshots (do NOT add brackets for media key values as it depends
+  # on the version of the installed gsettings binary)
   - schema: 'org.gnome.settings-daemon.plugins.media-keys'
     key: 'area-screenshot-clip'
     value: '<Primary><Shift><Alt>dollar'
