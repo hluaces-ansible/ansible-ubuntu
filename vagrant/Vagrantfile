@@ -12,7 +12,8 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "hluaces/ubuntu-disco-dingo-gnome"
+  config.vm.box = "hluaces/ubuntu-gnome"
+  config.vm.box_version = "19.10"
   config.ssh.insert_key = false
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -42,7 +43,8 @@ Vagrant.configure("2") do |config|
   ENV['ANSIBLE_ROLES_PATH'] = "#{vagrant_root}/../roles/local:#{vagrant_root}/../roles/vendors"
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "../playbooks/instalar-ubuntu.yml"
+    ansible.playbook = "../playbooks/ubuntu-install.yml"
+    ansible.verbose = true
     ansible.inventory_path = "../inventory/default.ini"
     ansible.limit = "ubuntu,localhost"
   end

@@ -1,0 +1,12 @@
+---
+
+# This guy fucks (II)
+# https://unix.stackexchange.com/questions/330353/how-to-change-gsettings-without-x11-running
+- name: 'Launch a new dbus service'
+  command: 'dbus-launch --sh-syntax'
+  register: _dbus
+
+- name: 'Register the newly started dbus address'
+  set_fact:
+    _dbus_session_bus_address: >
+      {{ _dbus.stdout_lines[0].split("'")[1] }}

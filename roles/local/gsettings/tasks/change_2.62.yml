@@ -1,0 +1,19 @@
+---
+
+# Gsettings >= 2.62 seem to have changed how the specification for keybindings
+# work and they need to be enclosed in brackets. This only seems to be necessary
+# with "org.gnome.settings-daemon.plugins.media-keys" schema values
+- name: 'Manage gsettings preferences for media keys (>= 2.62)'
+  command:
+    "gsettings set {{ item.schema }} {{ item.key }} \"['{{ item.value }}']\""
+  loop: "{{ gsettings }}"
+  environment:
+    DBUS_SESSION_BUS_ADDRESS: "{{ _dbus_session_bus_address }}"
+  when: item.schema == 'org.gnome.settings-daemon.plugins.media-keys'
+
+- name: 'Manage gsettings preferences for non media keys (>= 2.62)'
+  command: "gsettings set {{ item.schema }} {{ item.key }} '{{ item.value }}'"
+  loop: "{{ gsettings }}"
+  environment:
+    DBUS_SESSION_BUS_ADDRESS: "{{ _dbus_session_bus_address }}"
+  when: item.schema != 'org.gnome.settings-daemon.plugins.media-keys'
