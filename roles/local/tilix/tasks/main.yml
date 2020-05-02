@@ -1,0 +1,23 @@
+---
+
+- name: 'Install Tilix'
+  apt: name='tilix' state='present'
+  become_user: root
+  become: true
+
+- name: 'Copy Tilix configuration to remote'
+  copy: src='tilix.dconf' dest="{{ tilix_tmp_file }}"
+
+- name: 'Import Tilix configuration'
+  shell: "dbus-launch dconf load {{ tilix_dconf_key }} < {{ tilix_tmp_file }}"
+  tags: ['skip_ansible_lint']
+
+- name: 'Set Tilix as default terminal emulator'
+  command:
+    'update-alternatives --set x-terminal-emulator /usr/bin/tilix.wrapper'
+  tags: ['skip_ansible_lint']
+  become_user: root
+  become: true
+
+- name: 'Delete Tilix temp configuration dump'
+  file: path="{{ tilix_tmp_file }}" state='absent'

@@ -21,4 +21,3 @@
         {{ ( force_purge | bool ) | ternary('--force','') }}
         --role-file {{ installation_prefix }}roles/requirements.yml
         --roles-path {{ installation_prefix }}{{ installation_dir }}
-

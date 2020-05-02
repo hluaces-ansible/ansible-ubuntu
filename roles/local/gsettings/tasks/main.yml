@@ -19,14 +19,14 @@
   }}"
 
 # Required for vagrant provisioning as the session is not automatically started
-- name: 'Start a new dbus if it does not exists'
+- name: 'Start a new dbus if it does not exist'
   include_tasks: 'start_dbus.yml'
   when: _dbus_session_bus_address == ''
 
 - name: 'Show the dbus address in use'
   debug: msg="{{ _dbus_session_bus_address }}"
 
-- name: 'Obtain the version of Gsettings installed'
+- name: 'Obtain the version of the installed gsettings binary'
   command: 'gsettings --version'
   changed_when: false
   check_mode: false
@@ -43,3 +43,4 @@
 - name: 'Stop the dbus service if it was created'
   command: "kill {{ _dbus.stdout_lines[-1].split('=')[1].strip(';') }}"
   when: _dbus is defined
+

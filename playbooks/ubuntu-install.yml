@@ -48,6 +48,8 @@
       vars:
         gsettings: "{{ gnome_settings }}"
       tags: ['role-gsettings']
+    - role: tilix
+      tags: ['role-tilix']
   post_tasks:
     - name: 'Include extra tasks for non-privileged users'
       include_tasks:

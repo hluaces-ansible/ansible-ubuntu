@@ -1,0 +1,264 @@
+---
+
+# Required as Ubuntu ships with Python3 and not 2
+ansible_python_interpreter: /usr/bin/python3
+
+# System's timezone
+configure_timezone: 'Europe/Madrid'
+
+# Additional user to create
+configure_user_name: 'hector'
+configure_user_password: 'hector'
+
+# List of apt-keys to load from disk
+# See "extra_packages" role.
+extra_packages_keys: []
+
+# List of apt-keys to load from URLs.
+# See "extra_packages" role
+extra_packages_keys_url:
+  - url: 'https://dl.google.com/linux/linux_signing_key.pub'
+  - url: 'https://download.sublimetext.com/sublimehq-pub.gpg'
+
+# Extra apt repositories to add
+# See "extra_packages" role
+extra_packages_repositories:
+  - name: 'google_chrome'
+    repo: 'deb http://dl.google.com/linux/chrome/deb/ stable main'
+  - name: 'sublime_text'
+    repo: 'deb https://download.sublimetext.com/ apt/stable/'
+
+# Extra APT packages to install
+# See "extra_packages" role
+extra_packages_list:
+  # Everyday apps
+  - {name: 'thunderbird'}
+  - {name: 'gnome-calendar'}
+  - {name: 'firefox'}
+  - {name: 'google-chrome-stable'}
+  - {name: 'keepassxc'}
+  - {name: 'libreoffice'}
+
+  # Gaming
+  - {name: 'steam'}
+
+  # Programming
+  - {name: 'sublime-text'}
+  - {name: 'clang-format'}
+  - {name: 'composer'}
+  - {name: 'cppcheck'}
+  - {name: 'fonts-firacode'}
+  - {name: 'git'}
+  - {name: 'lua-check'}
+  - {name: 'luarocks'}
+  - {name: 'nodejs'}
+  - {name: 'npm'}
+  - {name: 'php'}
+  - {name: 'php-cli'}
+  - {name: 'php-mbstring'}
+  - {name: 'php-xml'}
+  - {name: 'phpunit'}
+  - {name: 'python'}
+  - {name: 'python3'}
+  - {name: 'pylint'}
+  - {name: 'python-pip'}
+  - {name: 'python3-pip'}
+  - {name: 'shellcheck'}
+  - {name: 'sqlite3'}
+  - {name: 'vagrant'}
+  - {name: 'virtualbox'}
+
+  # CLI
+  - {name: 'terminator'}
+  - {name: 'iotop'}
+  - {name: 'mysql-client'}
+  - {name: 'strace'}
+  - {name: 'telnet'}
+  - {name: 'unrar'}
+  - {name: 'unzip'}
+  - {name: 'vim'}
+  - {name: 'nmap'}
+
+  # Media
+  - {name: 'vlc'}
+  - {name: 'gimp'}
+
+  # System utils
+  - {name: 'p7zip'}
+  - {name: 'p7zip-full'}
+  - {name: 'default-jdk'}
+  - {name: 'gparted'}
+  - {name: 'gnome-shell-extension-dashtodock'}
+
+# Snap packages to install
+extra_packages_snaps:
+  - name: 'discord'
+  - name: 'spotify'
+  - name: 'bitwarden'
+  - name: 'phpstorm'
+    classic: true
+
+# Pip packages to install
+extra_packages_pip:
+  - name: 'ansible'
+    executable: pip2
+  - name: 'ansible-lint'
+    executable: pip2
+  - name: 'molecule'
+    executable: pip2
+  - name: 'flake8'
+    executable: pip2
+  - name: 'yamllint'
+    executable: pip2
+  - name: 'docker'
+    executable: pip2
+  - name: 'docker'
+    executable: pip3
+
+# NPM utils
+extra_packages_npm:
+  - name: 'jshint'
+    global: true
+
+# As of now there's no stable docker for 19.04
+docker_apt_release_channel: 'test'
+
+# For ubuntu 19.10 there's no repo yet so we have to use the disco dingo one
+docker_apt_repository: |
+  deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/ubuntu disco {{ docker_apt_release_channel }}
+
+# Docker users
+docker_users: ["{{ configure_user_name}}"]
+
+# Git configuration for the .gitconfig file
+git_config:
+  user:
+    name: 'Héctor Luaces'
+    email: "{{ vault_email}}"
+  core:
+    editor: 'vi'
+    excludesfile: '~/.gitignore'
+  web:
+    browser: 'google-chrome'
+  color:
+    diff: 'auto'
+    status: 'auto'
+    branch: 'auto'
+    interactive: 'auto'
+    ui: 'true'
+    pager: 'true'
+
+# Configuration files for the newly created user
+configuration_files_user:
+  # Thunderbird configuration. It is not fuly portable but it makes things
+  # waaaaay easier.
+  - type: 'file'
+    dest: '~/.thunderbird/'
+    src: 'thunderbird/profiles.ini'
+  - type: 'file'
+    dest: "~/.thunderbird/{{ configure_user_name }}.default"
+    src: 'thunderbird/prefs.js'
+
+  # Terminator
+  - type: 'file'
+    dest: '~/.config/terminator/'
+    src: 'terminator/config'
+  # Private keys
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/config'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/red-queen'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/red-queen.pub'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/chesire'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/chesire.pub'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/git'
+
+  # Sublime text configuration. Too much stuff in here to not do this...
+  - type: 'repo'
+    accept_hostkey: true
+    repo: "{{ vault_sublime_text_repo}}"
+    version: 'master'
+    key_file: "~/.ssh/git"
+    dest: "~/.config/sublime-text-3"
+    force: true
+
+# Various Gnome settings to be configured using the gsettings tool
+gnome_settings:
+  # Night light
+  - schema: 'org.gnome.settings-daemon.plugins.color'
+    key: 'night-light-schedule-automatic'
+    value: 'true'
+  # Screenshots (do NOT add brackets for media key values as it depends
+  # on the version of the installed gsettings binary)
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'area-screenshot-clip'
+    value: '<Primary><Shift><Alt>dollar'
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'window-screenshot'
+    value: '<Alt>Print'
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'area-screenshot'
+    value: '<Shift><Alt>dollar'
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'screenshot-clip'
+    value: '<Alt>3'
+  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
+    key: 'window-screenshot-clip'
+    value: '<Shift><Alt>periodcentered'
+
+  # Emoji selector (conflicts with a keybinding for terminator)
+  - schema: 'org.freedesktop.ibus.panel.emoji'
+    key: 'hotkey'
+    value: '["<Control><Shift>space"]'
+
+  # Calendar configuration
+  - schema: 'org.gnome.desktop.default-applications.office.calendar'
+    key: 'exec'
+    value: "gogle-chrome 'https://www.google.com/calendar'"
+  - schema: 'org.gnome.desktop.calendar'
+    key: 'show-weekdate'
+    value: 'true'
+
+  # Privacy
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'send-software-usage-stats'
+    value: 'false'
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'report-technical-problems'
+    value: 'false'
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'remember-app-usage'
+    value: 'false'
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'remove-old-temp-files'
+    value: 'true'
+  - schema: 'org.gnome.desktop.privacy'
+    key: 'remember-recent-files'
+    value: 'false'
+
+  # Preferences
+  - schema: 'org.gnome.desktop.interface'
+    key: 'clock-show-date'
+    value: 'true'
