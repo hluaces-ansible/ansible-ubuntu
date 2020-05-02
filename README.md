@@ -1,6 +1,6 @@
 # Ubuntu-dev desktop
 
-This is my Ubuntu 18/19 workstation playbook.
+This is my Ubuntu 18/19/20 workstation playbook.
 
 Its purposes are:
 
@@ -23,6 +23,14 @@ Basically it does this:
 - Installs a bunch of software.
 - Configures Gnome preferences and privacy settings to my liking.
 - Installs a few extra things.
+
+## How does it do it?
+
+A single configuration file in `config/config.yml` keeps track of all the packages and configurations that will be done.
+
+As you can see, every role on this repository is pretty minimalistic as the main idea behind this aproach is to have my settings saved on a single `.yml` file that could be fed to the roles without changing its programming at all. If I were to need a change on my setup a simple modification on the configuration file would do the trick.
+
+That's the reason as to why some of these roles seem pretty basic: they indeed are, but are coded in a way that allow me to declare on a yaml file my requirements.
 
 ## File structure
 
