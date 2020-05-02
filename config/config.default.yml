@@ -23,7 +23,7 @@ extra_packages_keys_url:
 # Extra apt repositories to add
 # See "extra_packages" role
 extra_packages_repositories:
-  - name: 'google_chrome'
+  - name: 'google-chrome'
     repo: 'deb http://dl.google.com/linux/chrome/deb/ stable main'
   - name: 'sublime_text'
     repo: 'deb https://download.sublimetext.com/ apt/stable/'
@@ -58,10 +58,8 @@ extra_packages_list:
   - {name: 'php-mbstring'}
   - {name: 'php-xml'}
   - {name: 'phpunit'}
-  - {name: 'python'}
   - {name: 'python3'}
   - {name: 'pylint'}
-  - {name: 'python-pip'}
   - {name: 'python3-pip'}
   - {name: 'shellcheck'}
   - {name: 'sqlite3'}
@@ -88,7 +86,7 @@ extra_packages_list:
   - {name: 'p7zip-full'}
   - {name: 'default-jdk'}
   - {name: 'gparted'}
-  - {name: 'gnome-shell-extension-dashtodock'}
+  #- {name: 'gnome-shell-extension-dashtodock'}
 
 # Snap packages to install
 extra_packages_snaps:
@@ -101,17 +99,13 @@ extra_packages_snaps:
 # Pip packages to install
 extra_packages_pip:
   - name: 'ansible'
-    executable: pip2
+    executable: pip3
   - name: 'ansible-lint'
-    executable: pip2
+    executable: pip3
   - name: 'molecule'
-    executable: pip2
-  - name: 'flake8'
-    executable: pip2
+    executable: pip3
   - name: 'yamllint'
-    executable: pip2
-  - name: 'docker'
-    executable: pip2
+    executable: pip3
   - name: 'docker'
     executable: pip3
 
@@ -120,12 +114,11 @@ extra_packages_npm:
   - name: 'jshint'
     global: true
 
-# As of now there's no stable docker for 19.04
-docker_apt_release_channel: 'test'
+docker_apt_release_channel: 'stable'
 
-# For ubuntu 19.10 there's no repo yet so we have to use the disco dingo one
+# Ubuntu 20 doesn't have a docker stable repo yet
 docker_apt_repository: |
-  deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/ubuntu disco {{ docker_apt_release_channel }}
+  deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/ubuntu bionic {{ docker_apt_release_channel }}
 
 # Docker users
 docker_users: ["{{ configure_user_name}}"]
