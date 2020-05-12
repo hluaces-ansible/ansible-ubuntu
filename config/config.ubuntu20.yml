@@ -87,6 +87,7 @@ extra_packages_list:
   - {name: 'default-jdk'}
   - {name: 'gparted'}
   #- {name: 'gnome-shell-extension-dashtodock'}
+  - {name: 'sshpass'}
 
 # Snap packages to install
 extra_packages_snaps:
@@ -107,6 +108,10 @@ extra_packages_pip:
   - name: 'yamllint'
     executable: pip3
   - name: 'docker'
+    executable: pip3
+  - name: 'molecule-vagrant'
+    executable: pip3
+  - name: 'python-vagrant'
     executable: pip3
 
 # NPM utils
