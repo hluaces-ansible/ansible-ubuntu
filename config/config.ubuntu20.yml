@@ -38,6 +38,8 @@ extra_packages_list:
   - {name: 'google-chrome-stable'}
   - {name: 'keepassxc'}
   - {name: 'libreoffice'}
+  - {name: 'mythes-gl'}
+  - {name: 'hyphen-gl'}
 
   # Gaming
   - {name: 'steam'}
