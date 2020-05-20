@@ -204,7 +204,17 @@ configuration_files_user:
 
 # Various Gnome settings to be configured using the gsettings tool
 gnome_settings:
+  # Dark theme
+  - schema: 'org.gnome.desktop.interface'
+    key: 'gtk-theme'
+    value: 'Yaru-dark'
   # Night light
+  - schema: 'org.gnome.settings-daemon.plugins.color'
+    key: 'night-light-enabled'
+    value: 'true'
+  - schema: 'org.gnome.settings-daemon.plugins.color'
+    key: 'night-light-temperature'
+    value: 'uint32 3140'
   - schema: 'org.gnome.settings-daemon.plugins.color'
     key: 'night-light-schedule-automatic'
     value: 'true'
