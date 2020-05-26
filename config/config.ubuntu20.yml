@@ -40,6 +40,7 @@ extra_packages_list:
   - {name: 'libreoffice'}
   - {name: 'mythes-gl'}
   - {name: 'hyphen-gl'}
+  - {name: 'calibre'}
 
   # Gaming
   - {name: 'steam'}
