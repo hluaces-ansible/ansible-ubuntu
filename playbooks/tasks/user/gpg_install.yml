@@ -1,0 +1,18 @@
+---
+
+- name: 'Create directory to store the gpg keys'
+  file:
+    path: '~/.gpg'
+    mode: '0700'
+    state: 'directory'
+
+- name: 'Copy GPG keys'
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0600'
+  loop:
+    - src: 'gpg/gpg.pub'
+      dest: '~/.gpg/gpg.pub'
+    - src: 'gpg/gpg.priv'
+      dest: '~/.gpg/gpg.priv'
