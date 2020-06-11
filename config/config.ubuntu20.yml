@@ -85,11 +85,12 @@ extra_packages_list:
   - {name: 'gimp'}
 
   # System utils
+  - {name: 'gpg'}
+  - {name: 'gparted'}
   - {name: 'p7zip'}
   - {name: 'p7zip-full'}
   - {name: 'default-jdk'}
-  - {name: 'gparted'}
-  #- {name: 'gnome-shell-extension-dashtodock'}
+  # - {name: 'gnome-shell-extension-dashtodock'}
 
 # Snap packages to install
 extra_packages_snaps:
