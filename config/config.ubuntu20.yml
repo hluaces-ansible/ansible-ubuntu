@@ -130,10 +130,12 @@ docker_users: ["{{ configure_user_name}}"]
 git_config:
   user:
     name: 'Héctor Luaces'
-    email: "{{ vault_email}}"
+    email: "{{ vault_email }}"
+    signingkey: 'F634A48B203E73CA'
   core:
     editor: 'vi'
     excludesfile: '~/.gitignore'
+    fileMode: 'false'
   web:
     browser: 'google-chrome'
   color:
@@ -143,6 +145,8 @@ git_config:
     interactive: 'auto'
     ui: 'true'
     pager: 'true'
+  commit:
+    gpgsign: 'true'
 
 # Configuration files for the newly created user
 configuration_files_user:
@@ -193,7 +197,6 @@ configuration_files_user:
     dest_mode: '700'
     mode: '600'
     src: 'ssh/git'
-
   # Sublime text configuration. Too much stuff in here to not do this...
   - type: 'repo'
     accept_hostkey: true
