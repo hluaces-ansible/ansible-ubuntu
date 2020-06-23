@@ -40,7 +40,16 @@
   include_tasks: change_2.62.yml
   when: _gsettings.stdout is version('2.61', '>=')
 
-- name: 'Stop the dbus service if it was created'
-  command: "kill {{ _dbus.stdout_lines[-1].split('=')[1].strip(';') }}"
-  when: _dbus is defined
+- name: 'Store the dbus service PID'
+  set_fact:
+    _dbus_pid: "{{ _dbus_item.split('=')[1].strip(';') }}"
+  when:
+    - _dbus is defined
+    - _dbus_item is regex('.*DBUS_SESSION_BUS_PID.*')
+  loop: "{{ (_dbus | default({})).stdout_lines | default([]) }}"
+  loop_control:
+    loop_var: _dbus_item
 
+- name: 'Stop the dbus service if it was created'
+  command: "kill {{ _dbus_pid }}"
+  when: _dbus_pid is defined
