@@ -8,11 +8,13 @@
 
 - name: 'Copy GPG keys'
   copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "{{ _gpg.src }}"
+    dest: "{{ _gpg.dest }}"
     mode: '0600'
   loop:
     - src: 'gpg/gpg.pub'
       dest: '~/.gpg/gpg.pub'
     - src: 'gpg/gpg.priv'
       dest: '~/.gpg/gpg.priv'
+  loop_control:
+    loop_var: _gpg
