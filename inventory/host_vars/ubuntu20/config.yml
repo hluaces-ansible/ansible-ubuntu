@@ -119,10 +119,6 @@ extra_packages_npm:
 
 docker_apt_release_channel: 'stable'
 
-# Ubuntu 20 doesn't have a docker stable repo yet
-#docker_apt_repository: |
-#  deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/ubuntu bionic {{ docker_apt_release_channel }}
-
 # Docker users
 docker_users: ["{{ configure_user_name}}"]
 
