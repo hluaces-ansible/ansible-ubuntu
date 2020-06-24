@@ -32,63 +32,63 @@ extra_packages_repositories:
 # See "extra_packages" role
 extra_packages_list:
   # Everyday apps
-  - {name: 'thunderbird'}
-  - {name: 'gnome-calendar'}
-  - {name: 'firefox'}
-  - {name: 'google-chrome-stable'}
-  - {name: 'keepassxc'}
-  - {name: 'libreoffice'}
+  - 'thunderbird'
+  - 'gnome-calendar'
+  - 'firefox'
+  - 'google-chrome-stable'
+  - 'keepassxc'
+  - 'libreoffice'
 
   # Gaming
-  - {name: 'steam'}
+  - 'steam'
 
   # Programming
-  - {name: 'sublime-text'}
-  - {name: 'clang-format'}
-  - {name: 'composer'}
-  - {name: 'cppcheck'}
-  - {name: 'fonts-firacode'}
-  - {name: 'git'}
-  - {name: 'lua-check'}
-  - {name: 'luarocks'}
-  - {name: 'nodejs'}
-  - {name: 'npm'}
-  - {name: 'php'}
-  - {name: 'php-cli'}
-  - {name: 'php-mbstring'}
-  - {name: 'php-xml'}
-  - {name: 'phpunit'}
-  - {name: 'python'}
-  - {name: 'python3'}
-  - {name: 'pylint'}
-  - {name: 'python-pip'}
-  - {name: 'python3-pip'}
-  - {name: 'shellcheck'}
-  - {name: 'sqlite3'}
-  - {name: 'vagrant'}
-  - {name: 'virtualbox'}
+  - 'sublime-text'
+  - 'clang-format'
+  - 'composer'
+  - 'cppcheck'
+  - 'fonts-firacode'
+  - 'git'
+  - 'lua-check'
+  - 'luarocks'
+  - 'nodejs'
+  - 'npm'
+  - 'php'
+  - 'php-cli'
+  - 'php-mbstring'
+  - 'php-xml'
+  - 'phpunit'
+  - 'python'
+  - 'python3'
+  - 'pylint'
+  - 'python-pip'
+  - 'python3-pip'
+  - 'shellcheck'
+  - 'sqlite3'
+  - 'vagrant'
+  - 'virtualbox'
 
   # CLI
-  - {name: 'terminator'}
-  - {name: 'iotop'}
-  - {name: 'mysql-client'}
-  - {name: 'strace'}
-  - {name: 'telnet'}
-  - {name: 'unrar'}
-  - {name: 'unzip'}
-  - {name: 'vim'}
-  - {name: 'nmap'}
+  - 'terminator'
+  - 'iotop'
+  - 'mysql-client'
+  - 'strace'
+  - 'telnet'
+  - 'unrar'
+  - 'unzip'
+  - 'vim'
+  - 'nmap'
 
   # Media
-  - {name: 'vlc'}
-  - {name: 'gimp'}
+  - 'vlc'
+  - 'gimp'
 
   # System utils
-  - {name: 'p7zip'}
-  - {name: 'p7zip-full'}
-  - {name: 'default-jdk'}
-  - {name: 'gparted'}
-  - {name: 'gnome-shell-extension-dashtodock'}
+  - 'p7zip'
+  - 'p7zip-full'
+  - 'default-jdk'
+  - 'gparted'
+  - 'gnome-shell-extension-dashtodock'
 
 # Snap packages to install
 extra_packages_snaps:

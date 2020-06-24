@@ -32,65 +32,65 @@ extra_packages_repositories:
 # See "extra_packages" role
 extra_packages_list:
   # Everyday apps
-  - {name: 'thunderbird'}
-  - {name: 'gnome-calendar'}
-  - {name: 'firefox'}
-  - {name: 'google-chrome-stable'}
-  - {name: 'keepassxc'}
-  - {name: 'libreoffice'}
-  - {name: 'mythes-gl'}
-  - {name: 'hyphen-gl'}
-  - {name: 'calibre'}
+  - 'thunderbird'
+  - 'gnome-calendar'
+  - 'firefox'
+  - 'google-chrome-stable'
+  - 'keepassxc'
+  - 'libreoffice'
+  - 'mythes-gl'
+  - 'hyphen-gl'
+  - 'calibre'
 
   # Gaming
-  - {name: 'steam'}
+  - 'steam'
 
   # Programming
-  - {name: 'sublime-text'}
-  - {name: 'clang-format'}
-  - {name: 'composer'}
-  - {name: 'cppcheck'}
-  - {name: 'fonts-firacode'}
-  - {name: 'git'}
-  - {name: 'lua-check'}
-  - {name: 'luarocks'}
-  - {name: 'nodejs'}
-  - {name: 'npm'}
-  - {name: 'php'}
-  - {name: 'php-cli'}
-  - {name: 'php-mbstring'}
-  - {name: 'php-xml'}
-  - {name: 'phpunit'}
-  - {name: 'python3'}
-  - {name: 'pylint'}
-  - {name: 'python3-pip'}
-  - {name: 'shellcheck'}
-  - {name: 'sqlite3'}
-  - {name: 'vagrant'}
-  - {name: 'virtualbox'}
+  - 'sublime-text'
+  - 'clang-format'
+  - 'composer'
+  - 'cppcheck'
+  - 'fonts-firacode'
+  - 'git'
+  - 'lua-check'
+  - 'luarocks'
+  - 'nodejs'
+  - 'npm'
+  - 'php'
+  - 'php-cli'
+  - 'php-mbstring'
+  - 'php-xml'
+  - 'phpunit'
+  - 'python3'
+  - 'pylint'
+  - 'python3-pip'
+  - 'shellcheck'
+  - 'sqlite3'
+  - 'vagrant'
+  - 'virtualbox'
 
   # CLI
-  - {name: 'terminator'}
-  - {name: 'iotop'}
-  - {name: 'mysql-client'}
-  - {name: 'strace'}
-  - {name: 'telnet'}
-  - {name: 'unrar'}
-  - {name: 'unzip'}
-  - {name: 'vim'}
-  - {name: 'nmap'}
+  - 'terminator'
+  - 'iotop'
+  - 'mysql-client'
+  - 'strace'
+  - 'telnet'
+  - 'unrar'
+  - 'unzip'
+  - 'vim'
+  - 'nmap'
 
   # Media
-  - {name: 'vlc'}
-  - {name: 'gimp'}
+  - 'vlc'
+  - 'gimp'
 
   # System utils
-  - {name: 'gpg'}
-  - {name: 'gparted'}
-  - {name: 'p7zip'}
-  - {name: 'p7zip-full'}
-  - {name: 'default-jdk'}
-  # - {name: 'gnome-shell-extension-dashtodock'}
+  - 'gpg'
+  - 'gparted'
+  - 'p7zip'
+  - 'p7zip-full'
+  - 'default-jdk'
+  # - 'gnome-shell-extension-dashtodock'
 
 # Snap packages to install
 extra_packages_snaps:
@@ -121,8 +121,8 @@ extra_packages_npm:
 docker_apt_release_channel: 'stable'
 
 # Ubuntu 20 doesn't have a docker stable repo yet
-docker_apt_repository: |
-  deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/ubuntu bionic {{ docker_apt_release_channel }}
+#docker_apt_repository: |
+#  deb [arch={{ docker_apt_arch }}] https://download.docker.com/linux/ubuntu bionic {{ docker_apt_release_channel }}
 
 # Docker users
 docker_users: ["{{ configure_user_name}}"]
@@ -167,6 +167,7 @@ configuration_files_user:
   - type: 'file'
     dest: '~/.config/terminator/'
     src: 'terminator/config'
+
   # Private keys
   - type: 'file'
     dest: '~/.ssh/'
@@ -201,7 +202,7 @@ configuration_files_user:
   # Sublime text configuration. Too much stuff in here to not do this...
   - type: 'repo'
     accept_hostkey: true
-    repo: "{{ vault_sublime_text_repo}}"
+    repo: "{{ vault_sublime_text_repo }}"
     version: 'master'
     key_file: "~/.ssh/git"
     dest: "~/.config/sublime-text-3"

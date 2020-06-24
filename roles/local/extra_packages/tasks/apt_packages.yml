@@ -26,13 +26,10 @@
   apt: update-cache=yes
   changed_when: false
 
-- name: 'Install packages'
-  apt:
-    name: "{{ item.name }}"
-    state: "{{ item.state|default('present') }}"
-    purge: "{{ item.purge|default(false) }}"
-  loop: "{{ extra_packages_list }}"
-  notify: 'enable apt_lock_holders'
-
 - name: 'Update all packages'
   apt: upgrade=safe
+
+- name: 'Install packages'
+  apt:
+    name: "{{ extra_packages_list }}"
+  notify: 'enable apt_lock_holders'
