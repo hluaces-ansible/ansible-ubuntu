@@ -210,68 +210,59 @@ configuration_files_user:
 # Various Gnome settings to be configured using the gsettings tool
 gnome_settings:
   # Dark theme
-  - schema: 'org.gnome.desktop.interface'
-    key: 'gtk-theme'
-    value: 'Yaru-dark'
+  - key: '/org/gnome/desktop/interface/gtk-theme'
+    value: "'Yaru-dark'"
+
   # Night light
-  - schema: 'org.gnome.settings-daemon.plugins.color'
-    key: 'night-light-enabled'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-enabled'
     value: 'true'
-  - schema: 'org.gnome.settings-daemon.plugins.color'
-    key: 'night-light-temperature'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-temperature'
     value: 'uint32 3140'
-  - schema: 'org.gnome.settings-daemon.plugins.color'
-    key: 'night-light-schedule-automatic'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic'
     value: 'true'
-  # Screenshots (do NOT add brackets for media key values as it depends
-  # on the version of the installed gsettings binary)
-  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
-    key: 'area-screenshot-clip'
-    value: '<Primary><Shift><Alt>dollar'
-  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
-    key: 'window-screenshot'
-    value: '<Alt>Print'
-  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
-    key: 'area-screenshot'
-    value: '<Shift><Alt>dollar'
-  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
-    key: 'screenshot-clip'
-    value: '<Alt>3'
-  - schema: 'org.gnome.settings-daemon.plugins.media-keys'
-    key: 'window-screenshot-clip'
-    value: '<Shift><Alt>periodcentered'
+
+  # Screenshots
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/area-screenshot-clip'
+    value: '["<Primary><Shift><Alt>dollar"]'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/window-screenshot'
+    value: '["<Alt>Print"]'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/area-screenshot'
+    value: '["<Shift><Alt>dollar"]'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/screenshot-clip'
+    value: '["<Alt>3"]'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/window-screenshot-clip'
+    value: '["<Shift><Alt>periodcentered"]'
+
+  # Custom keybindings
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings'
+    value: '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"]'
+
+  # Custom keybinding #0: tilix quake dropdown
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding'
+    value: "'masculine'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command'
+    value: "'tilix --quake'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name'
+    value: "'tilix --quake'"
 
   # Emoji selector (conflicts with a keybinding for terminator)
-  - schema: 'org.freedesktop.ibus.panel.emoji'
-    key: 'hotkey'
+  - key: '/org/freedesktop/ibus/panel/emoji/hotkey'
     value: '["<Control><Shift>space"]'
 
   # Calendar configuration
-  - schema: 'org.gnome.desktop.default-applications.office.calendar'
-    key: 'exec'
-    value: "gogle-chrome 'https://www.google.com/calendar'"
-  - schema: 'org.gnome.desktop.calendar'
-    key: 'show-weekdate'
+  - key: '/org/gnome/desktop/calendar/show-weekdate'
+    value: 'true'
+  - key: '/org/gnome/desktop/interface/clock-show-date'
     value: 'true'
 
   # Privacy
-  - schema: 'org.gnome.desktop.privacy'
-    key: 'send-software-usage-stats'
+  - key: '/org/gnome/desktop/privacy/send-software-usage-stats'
     value: 'false'
-  - schema: 'org.gnome.desktop.privacy'
-    key: 'report-technical-problems'
+  - key: '/org/gnome/desktop/privacy/report-technical-problems'
     value: 'false'
-  - schema: 'org.gnome.desktop.privacy'
-    key: 'remember-app-usage'
+  - key: '/org/gnome/desktop/privacy/remember-app-usage'
     value: 'false'
-  - schema: 'org.gnome.desktop.privacy'
-    key: 'remove-old-temp-files'
+  - key: '/org/gnome/desktop/privacy/remove-old-temp-files'
     value: 'true'
-  - schema: 'org.gnome.desktop.privacy'
-    key: 'remember-recent-files'
+  - key: '/org/gnome/desktop/privacy/remember-recent-files'
     value: 'false'
-
-  # Preferences
-  - schema: 'org.gnome.desktop.interface'
-    key: 'clock-show-date'
-    value: 'true'
