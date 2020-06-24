@@ -56,7 +56,6 @@ extra_packages_list:
   - 'luarocks'
   - 'nodejs'
   - 'npm'
-  - 'php'
   - 'php-cli'
   - 'php-mbstring'
   - 'php-xml'
