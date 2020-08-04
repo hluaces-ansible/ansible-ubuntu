@@ -11,6 +11,7 @@
 - name: 'Update Ubuntu Drivers'
   command: 'ubuntu-drivers autoinstall'
   when: ansible_virtualization_role != 'guest'
+  ignore_errors: true
 
 - name: 'Install base packages'
   apt:
