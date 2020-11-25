@@ -27,6 +27,8 @@ extra_packages_repositories:
     repo: 'deb http://dl.google.com/linux/chrome/deb/ stable main'
   - name: 'sublime_text'
     repo: 'deb https://download.sublimetext.com/ apt/stable/'
+  - name: 'ulauncher'
+    repo: 'ppa:agornostal/ulauncher'
 
 # Extra APT packages to install
 # See "extra_packages" role
@@ -89,6 +91,7 @@ extra_packages_list:
   - 'p7zip'
   - 'p7zip-full'
   - 'default-jdk'
+  - 'ulauncher'
   # - 'gnome-shell-extension-dashtodock'
 
 # Snap packages to install
@@ -96,6 +99,7 @@ extra_packages_snaps:
   - name: 'discord'
   - name: 'spotify'
   - name: 'bitwarden'
+  - name: 'telegram-desktop'
   - name: 'phpstorm'
     classic: true
 
