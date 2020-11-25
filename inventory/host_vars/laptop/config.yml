@@ -111,6 +111,10 @@ extra_packages_pip:
     executable: pip3
   - name: 'molecule'
     executable: pip3
+  - name: 'molecule[docker]'
+    executable: pip3
+  - name: 'molecule[vagrant]'
+    executable: pip3
   - name: 'yamllint'
     executable: pip3
   - name: 'docker'
