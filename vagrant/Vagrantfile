@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "../playbooks/ubuntu-install.yml"
     ansible.verbose = "vv"
     ansible.inventory_path = "../inventory/default.ini"
-    ansible.limit = "laptop,localhost"
+    ansible.limit = "ubuntu20,localhost"
   end
 
   # Create a public network, which generally matched to bridged network.
