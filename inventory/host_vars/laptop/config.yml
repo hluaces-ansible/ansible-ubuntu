@@ -97,6 +97,7 @@ extra_packages_list:
   # System
   - 'libinput-tools'
   - 'etckeeper'
+  - 'powerline'
 
 # Snap packages to install
 extra_packages_snaps:
