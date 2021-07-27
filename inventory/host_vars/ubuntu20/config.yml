@@ -94,6 +94,10 @@ extra_packages_list:
   - 'ulauncher'
   # - 'gnome-shell-extension-dashtodock'
 
+  # System
+  - 'libinput-tools'
+  - 'etckeeper'
+
 # Snap packages to install
 extra_packages_snaps:
   - name: 'discord'

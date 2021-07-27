@@ -96,6 +96,7 @@ extra_packages_list:
 
   # System
   - 'libinput-tools'
+  - 'etckeeper'
 
 # Snap packages to install
 extra_packages_snaps:
