@@ -93,6 +93,8 @@ extra_packages_list:
   - 'default-jdk'
   - 'ulauncher'
   # - 'gnome-shell-extension-dashtodock'
+  - 'network-manager-l2tp'
+  - 'network-manager-l2tp-gnom'
 
   # System
   - 'libinput-tools'
