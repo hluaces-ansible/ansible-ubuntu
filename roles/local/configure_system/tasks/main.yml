@@ -2,12 +2,13 @@
 # tasks file for role_template
 
 - name: 'Configure timezone'
-  timezone: name="{{ configure_timezone }}"
+  timezone:
+    name: "{{ configure_timezone }}"
 
 - name: 'Configure linux user'
   user:
     name: '{{ configure_user_name }}'
-    password: "{{ configure_user_password | password_hash('sha512') }}" 
+    password: "{{ configure_user_password | password_hash('sha512') }}"
     state: '{{ configure_user_state }}'
     shell: '{{ configure_user_shell }}'
     groups: '{{ configure_user_groups }}'
