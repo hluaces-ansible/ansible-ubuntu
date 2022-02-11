@@ -1,5 +1,11 @@
 ---
 
+- name: 'Install and upgrade APT utilities for Ansible'
+  apt:
+    name: ['ca-certificates', 'apt-transport-https']
+    update_cache: true
+    state: 'latest'
+
 - name: 'Manage extra APT-keys from keyservers'
   apt_key:
     id: "{{ item.id }}"
@@ -26,11 +32,6 @@
   apt:
     update-cache: true
   changed_when: false
-
-- name: 'Install and upgrade APT utilities for Ansible'
-  apt:
-    name: ['ca-certificates', 'apt-transport-https']
-    state: 'latest'
 
 - name: 'Install packages'
   apt:
