@@ -27,6 +27,11 @@
     update-cache: true
   changed_when: false
 
+- name: 'Install and upgrade APT utilities for Ansible'
+  apt:
+    name: ['ca-certificates', 'apt-transport-https']
+    state: 'latest'
+
 - name: 'Install packages'
   apt:
     name: "{{ extra_packages_list }}"
