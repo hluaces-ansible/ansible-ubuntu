@@ -23,7 +23,8 @@
   loop: "{{ extra_packages_repositories }}"
 
 - name: 'Refresh apt-cache'
-  apt: update-cache=yes
+  apt:
+    update-cache: true
   changed_when: false
 
 - name: 'Install packages'
@@ -35,4 +36,5 @@
   notify: 'enable apt_lock_holders'
 
 - name: 'Update all packages'
-  apt: upgrade=safe
+  apt:
+    upgrade: 'safe'
