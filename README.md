@@ -45,10 +45,10 @@ That's the reason as to why some of these roles seem pretty basic: they indeed a
 │   ├── ssh_config                        # SSH configuration
 │   ├── tmp                               # Temporary files
 │   └── vault_secrets.yml                 # Vaulted variables crypted file
-├── group_vars                          # Group vars directory
-│   ├── all.yml                           # Common variables to all hosts
-│   ├── dev.yml                           # Dev env variables
-│   └── prod.yml                          # Production env variables
+├── group_vars                            # Group vars directory
+│   └── all/
+|       └── vault_vars.yml                # Common secrets used by all hosts
+│   └── all.yml                           # Common variables to all hosts
 ├── host_vars                           # Host vars directory
 ├── inventory                           # Inventory directory
 │   ├── default.ini -> dev.ini            # Default inventory to use
