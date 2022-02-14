@@ -158,7 +158,7 @@ git_config:
   user:
     name: 'Héctor Luaces'
     email: "{{ vault_email }}"
-    signingkey: 'F634A48B203E73CA'
+    signingkey: '11A11DEBC6EC8723'
   core:
     editor: 'vi'
     excludesfile: '~/.gitignore'
