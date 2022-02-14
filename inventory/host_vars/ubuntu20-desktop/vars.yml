@@ -196,6 +196,17 @@ configuration_files_user:
     dest: "~/.thunderbird/{{ configure_user_name }}.default"
     src: 'thunderbird/prefs.js'
 
+  # Ulauncher configuration
+  - type: 'file'
+    src: 'ulauncher/extensions.json'
+    dest: '~/.config/ulauncher'
+  - type: 'file'
+    src: 'ulauncher/settings.json'
+    dest: '~/.config/ulauncher'
+  - type: 'file'
+    src: 'ulauncher/shortcuts.json'
+    dest: '~/.config/ulauncher'
+
   # Terminator
   - type: 'file'
     dest: '~/.config/terminator/'
