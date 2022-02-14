@@ -148,7 +148,7 @@ git_config:
     editor: 'vi'
     excludesfile: '~/.gitignore'
   web:
-    browser: 'google-chrome'
+    browser: 'firefox'
   color:
     diff: 'auto'
     status: 'auto'
