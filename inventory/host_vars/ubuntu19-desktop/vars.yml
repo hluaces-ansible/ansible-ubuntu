@@ -183,16 +183,6 @@ configuration_files_user:
     dest: '~/.ssh/'
     dest_mode: '700'
     mode: '600'
-    src: 'ssh/chesire'
-  - type: 'file'
-    dest: '~/.ssh/'
-    dest_mode: '700'
-    mode: '600'
-    src: 'ssh/chesire.pub'
-  - type: 'file'
-    dest: '~/.ssh/'
-    dest_mode: '700'
-    mode: '600'
     src: 'ssh/git'
 
   # Sublime text configuration. Too much stuff in here to not do this...

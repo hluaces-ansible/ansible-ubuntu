@@ -148,6 +148,7 @@ git_config:
   core:
     editor: 'vi'
     excludesfile: '~/.gitignore'
+    fileMode: 'false'
   web:
     browser: 'firefox'
   color:
@@ -195,16 +196,6 @@ configuration_files_user:
     dest_mode: '700'
     mode: '600'
     src: 'ssh/red-queen.pub'
-  - type: 'file'
-    dest: '~/.ssh/'
-    dest_mode: '700'
-    mode: '600'
-    src: 'ssh/chesire'
-  - type: 'file'
-    dest: '~/.ssh/'
-    dest_mode: '700'
-    mode: '600'
-    src: 'ssh/chesire.pub'
   - type: 'file'
     dest: '~/.ssh/'
     dest_mode: '700'
