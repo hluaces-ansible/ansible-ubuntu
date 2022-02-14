@@ -41,8 +41,6 @@ That's the reason as to why some of these roles seem pretty basic: they indeed a
 ├── ansible.cfg -> config/ansible.cfg     # Ansible.cfg file being used
 ├── config                                # Configuration directory
 │   ├── ansible.cfg                       # Ansible configuration
-│   ├── config.default.yml                # Playbook's default configuration
-│   ├── config.yml                        # Playbook's custom configuration
 │   ├── known_hosts                       # Custom known_hosts file
 │   ├── ssh_config                        # SSH configuration
 │   ├── tmp                               # Temporary files
@@ -81,13 +79,14 @@ That's the reason as to why some of these roles seem pretty basic: they indeed a
 
 ## Quick Start
 
-You'll need `git` and `ansible` installed for this to work. Also, this is used to provision an Ubuntu machine (18.04 or 19.04 both do fine). You are supposed to install it first if you want to provision a live environment.
+You'll need `git` and `ansible` installed for this to work. Also, this is used to provision an Ubuntu machine from the ones defined in the inventory files. You are supposed to install it first if you want to provision a live environment.
 
 After this:
 
 - Clone this repo.
-- Delete the `./config/vault_secrets.yml` file and create yours.
-- Tweak the `./config/config.default.yml` to your liking.
+- Delete the `./inventory/group_vars/all/vault_secrets.yml` file and create yours.
+- Add or tweak and inventory entry in `./inventory/prod.ini` or `./inventory/dev.ini`.
+- Add or tweak the `./inventory/host_vars` of the host you want to provision.
 - If you want to run extra tasks save them either inside the `playbooks/tasks/root` directory or inside `playbooks/tasks/user`. They will be loaded automatically.
 
 ## Run the playbook against a self-provisioning testing environment
@@ -128,7 +127,7 @@ vagrant destroy
 You'll need to run this as a sudoer.
 
 ```
-ansible-playbook -kK -v -i inventory/prod.ini playbooks/ubuntu-install.yml
+ansible-playbook -kK -v -i inventory/prod.ini playbooks/ubuntu-install.yml -l laptop
 ```
 
 ## License

@@ -19,20 +19,14 @@ extra_packages_keys: []
 extra_packages_keys_url:
   - url: 'https://dl.google.com/linux/linux_signing_key.pub'
   - url: 'https://download.sublimetext.com/sublimehq-pub.gpg'
-  - url: 'https://packages.microsoft.com/keys/microsoft.asc'
-  - url: 'https://apt.releases.hashicorp.com/gpg'
 
 # Extra apt repositories to add
 # See "extra_packages" role
 extra_packages_repositories:
   - name: 'google-chrome'
-    repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+    repo: 'deb http://dl.google.com/linux/chrome/deb/ stable main'
   - name: 'sublime_text'
     repo: 'deb https://download.sublimetext.com/ apt/stable/'
-  - name: 'vscode'
-    repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
-  - name: 'hashicorp'
-    repo: 'deb [arch=amd64] https://apt.releases.hashicorp.com focal main'
   - name: 'ulauncher'
     repo: 'ppa:agornostal/ulauncher'
 
@@ -55,8 +49,8 @@ extra_packages_list:
 
   # Programming
   - 'sublime-text'
-  - 'code'
   - 'clang-format'
+  - 'composer'
   - 'cppcheck'
   - 'fonts-firacode'
   - 'git'
@@ -64,22 +58,22 @@ extra_packages_list:
   - 'luarocks'
   - 'nodejs'
   - 'npm'
+  - 'php-cli'
+  - 'php-mbstring'
+  - 'php-xml'
+  - 'phpunit'
   - 'python3'
   - 'pylint'
   - 'python3-pip'
   - 'shellcheck'
   - 'sqlite3'
-
-  # Infra stuff
   - 'vagrant'
   - 'virtualbox'
-  - 'terraform'
 
-  # CLI tools
+  # CLI
   - 'terminator'
   - 'iotop'
   - 'mysql-client'
-  - 'postgresql-client-12'
   - 'strace'
   - 'telnet'
   - 'unrar'
@@ -98,9 +92,9 @@ extra_packages_list:
   - 'p7zip-full'
   - 'default-jdk'
   - 'ulauncher'
+  # - 'gnome-shell-extension-dashtodock'
   - 'network-manager-l2tp'
   - 'network-manager-l2tp-gnom'
-  - 'sshpass'
 
   # System
   - 'libinput-tools'
@@ -115,12 +109,6 @@ extra_packages_snaps:
   - name: 'telegram-desktop'
   - name: 'phpstorm'
     classic: true
-  - name: 'dbeaver-ce'
-  - name: 'postman'
-  - name: 'telegram-desktop'
-    channel: 'latest/beta'
-  - name: 'authy'
-    channel: 'latest/beta'
 
 # Pip packages to install
 extra_packages_pip:
@@ -137,10 +125,6 @@ extra_packages_pip:
   - name: 'yamllint'
     executable: pip3
   - name: 'docker'
-    executable: pip3
-  - name: 'molecule-vagrant'
-    executable: pip3
-  - name: 'python-vagrant'
     executable: pip3
 
 # NPM utils
@@ -164,7 +148,7 @@ git_config:
     excludesfile: '~/.gitignore'
     fileMode: 'false'
   web:
-    browser: 'firefox'
+    browser: 'google-chrome'
   color:
     diff: 'auto'
     status: 'auto'
@@ -172,9 +156,6 @@ git_config:
     interactive: 'auto'
     ui: 'true'
     pager: 'true'
-  # This helps Go access private repos
-  'url "git@github.com:"':
-    insteadOf: 'https://github.com/'
   commit:
     gpgsign: 'true'
 
@@ -213,6 +194,16 @@ configuration_files_user:
     dest_mode: '700'
     mode: '600'
     src: 'ssh/red-queen.pub'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/chesire'
+  - type: 'file'
+    dest: '~/.ssh/'
+    dest_mode: '700'
+    mode: '600'
+    src: 'ssh/chesire.pub'
   - type: 'file'
     dest: '~/.ssh/'
     dest_mode: '700'

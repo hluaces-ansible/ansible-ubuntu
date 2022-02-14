@@ -44,6 +44,8 @@
       tags: ['role-gsettings']
     - role: tilix
       tags: ['role-tilix']
+    - role: joplin
+      tags: ['role-joplin']
   post_tasks:
     - name: 'Include extra tasks for non-privileged users'
       include_tasks:

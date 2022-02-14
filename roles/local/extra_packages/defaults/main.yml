@@ -20,11 +20,11 @@ extra_packages_repositories: []
 #   repo:
 #   state: 'present'
 
-# Extra pacakages to configure (default state: 'present')
+# Extra pacakages to configure
 extra_packages_list: []
-# - name:
-#   state: 'present'
-#   purge: false
+# - name
+# - name2
+# - name3
 
 # Snap packages to configure
 extra_packages_snaps: []

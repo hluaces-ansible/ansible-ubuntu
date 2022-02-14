@@ -2,6 +2,6 @@
 
 # Gsettings value
 gsettings: {}
-# - schema:
-#   key:
+# - key:
 #   value:
+#   state:

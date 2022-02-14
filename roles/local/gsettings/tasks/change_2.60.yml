@@ -1,7 +1,0 @@
----
-
-- name: 'Manage gsettings preferences (<= 2.60)'
-  command: "gsettings set {{ item.schema }} {{ item.key }} '{{ item.value }}'"
-  loop: "{{ gsettings }}"
-  environment:
-    DBUS_SESSION_BUS_ADDRESS: "{{ _dbus_session_bus_address }}"

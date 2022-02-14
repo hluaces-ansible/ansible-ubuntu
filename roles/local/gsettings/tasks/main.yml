@@ -1,46 +1,8 @@
 ---
 
-# This guy fucks:
-# https://askubuntu.com/questions/742870/background-not-changing-using-gsettings-from-cron/743024#743024
-- name: 'Obtain the DBUS address'
-  shell:
-    "grep -z DBUS_SESSION_BUS_ADDRESS
-    /proc/$(pgrep -u {{ ansible_user_id }} gnome-session|head -n 1)/environ
-    | cut -d= -f2-"
-  register: _dbus_session_bus_address
-  changed_when: false
-  check_mode: false
-  tags: ['skip_ansible_lint']
-
-- name: 'Remove trailing nulls from the previous output'
-  set_fact:
-    _dbus_session_bus_address: "{{
-      _dbus_session_bus_address.stdout.rstrip(' \t\r\n\0')
-  }}"
-
-# Required for vagrant provisioning as the session is not automatically started
-- name: 'Start a new dbus if it does not exist'
-  include_tasks: 'start_dbus.yml'
-  when: _dbus_session_bus_address == ''
-
-- name: 'Show the dbus address in use'
-  debug: msg="{{ _dbus_session_bus_address }}"
-
-- name: 'Obtain the version of the installed gsettings binary'
-  command: 'gsettings --version'
-  changed_when: false
-  check_mode: false
-  register: _gsettings
-
-- name: 'Include gsettings <=2.60 configuration'
-  include_tasks: change_2.60.yml
-  when: _gsettings.stdout is version('2.61', '<')
-
-- name: 'Include gsettings >2.60 configuration'
-  include_tasks: change_2.62.yml
-  when: _gsettings.stdout is version('2.61', '>=')
-
-- name: 'Stop the dbus service if it was created'
-  command: "kill {{ _dbus.stdout_lines[-1].split('=')[1].strip(';') }}"
-  when: _dbus is defined
-
+- name: 'Manage gsettings/dconf preferences'
+  dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value | string }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ gsettings }}"
