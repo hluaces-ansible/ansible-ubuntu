@@ -29,15 +29,12 @@ extra_packages_repositories:
     repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
   - name: 'sublime_text'
     repo: 'deb https://download.sublimetext.com/ apt/stable/'
-<<<<<<< HEAD:inventory/host_vars/ubuntu20-desktop/vars.yml
   - name: 'vscode'
     repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
   - name: 'hashicorp'
     repo: 'deb [arch=amd64] https://apt.releases.hashicorp.com focal main'
-=======
   - name: 'ulauncher'
     repo: 'ppa:agornostal/ulauncher'
->>>>>>> origin/devel:inventory/host_vars/laptop/config.yml
 
 # Extra APT packages to install
 # See "extra_packages" role
@@ -49,25 +46,17 @@ extra_packages_list:
   - 'google-chrome-stable'
   - 'keepassxc'
   - 'libreoffice'
-<<<<<<< HEAD:inventory/host_vars/ubuntu20-desktop/vars.yml
-=======
   - 'mythes-gl'
   - 'hyphen-gl'
   - 'calibre'
->>>>>>> origin/devel:inventory/host_vars/laptop/config.yml
 
   # Gaming
   - 'steam'
 
   # Programming
   - 'sublime-text'
-<<<<<<< HEAD:inventory/host_vars/ubuntu20-desktop/vars.yml
   - 'code'
   - 'clang-format'
-=======
-  - 'clang-format'
-  - 'composer'
->>>>>>> origin/devel:inventory/host_vars/laptop/config.yml
   - 'cppcheck'
   - 'fonts-firacode'
   - 'git'
@@ -75,19 +64,11 @@ extra_packages_list:
   - 'luarocks'
   - 'nodejs'
   - 'npm'
-<<<<<<< HEAD:inventory/host_vars/ubuntu20-desktop/vars.yml
-=======
-  - 'php-cli'
-  - 'php-mbstring'
-  - 'php-xml'
-  - 'phpunit'
->>>>>>> origin/devel:inventory/host_vars/laptop/config.yml
   - 'python3'
   - 'pylint'
   - 'python3-pip'
   - 'shellcheck'
   - 'sqlite3'
-<<<<<<< HEAD:inventory/host_vars/ubuntu20-desktop/vars.yml
 
   # Infra stuff
   - 'vagrant'
@@ -99,15 +80,6 @@ extra_packages_list:
   - 'iotop'
   - 'mysql-client'
   - 'postgresql-client-12'
-=======
-  - 'vagrant'
-  - 'virtualbox'
-
-  # CLI
-  - 'terminator'
-  - 'iotop'
-  - 'mysql-client'
->>>>>>> origin/devel:inventory/host_vars/laptop/config.yml
   - 'strace'
   - 'telnet'
   - 'unrar'
@@ -120,28 +92,24 @@ extra_packages_list:
   - 'gimp'
 
   # System utils
-<<<<<<< HEAD:inventory/host_vars/ubuntu20-desktop/vars.yml
-  - 'p7zip'
-  - 'p7zip-full'
-  - 'default-jdk'
-  - 'gparted'
-  - 'etckeeper'
-  #-''gnome-shell-extension-dashtodock'
-  - 'sshpass'
-=======
   - 'gpg'
   - 'gparted'
   - 'p7zip'
   - 'p7zip-full'
   - 'default-jdk'
   - 'ulauncher'
-  # - 'gnome-shell-extension-dashtodock'
+  - 'network-manager-l2tp'
+  - 'network-manager-l2tp-gnome'
+  - 'network-manager-openvpn'
+  - 'network-manager-openvpn-gnome'
+  - 'network-manager-pptp'
+  - 'network-manager-pptp-gnome'
+  - 'sshpass'
 
   # System
   - 'libinput-tools'
   - 'etckeeper'
   - 'powerline'
->>>>>>> origin/devel:inventory/host_vars/laptop/config.yml
 
 # Snap packages to install
 extra_packages_snaps:
@@ -194,10 +162,7 @@ git_config:
   user:
     name: 'Héctor Luaces'
     email: "{{ vault_email }}"
-<<<<<<< HEAD:inventory/host_vars/ubuntu20-desktop/vars.yml
-=======
-    signingkey: 'F634A48B203E73CA'
->>>>>>> origin/devel:inventory/host_vars/laptop/config.yml
+    signingkey: '11A11DEBC6EC8723'
   core:
     editor: 'vi'
     excludesfile: '~/.gitignore'
@@ -211,14 +176,11 @@ git_config:
     interactive: 'auto'
     ui: 'true'
     pager: 'true'
-<<<<<<< HEAD:inventory/host_vars/ubuntu20-desktop/vars.yml
   # This helps Go access private repos
   'url "git@github.com:"':
     insteadOf: 'https://github.com/'
-=======
   commit:
     gpgsign: 'true'
->>>>>>> origin/devel:inventory/host_vars/laptop/config.yml
 
 # Configuration files for the newly created user
 configuration_files_user:
