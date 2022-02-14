@@ -91,6 +91,7 @@ extra_packages_list:
   - 'p7zip-full'
   - 'default-jdk'
   - 'gparted'
+  - 'etckeeper'
   #-''gnome-shell-extension-dashtodock'
   - 'sshpass'
 
