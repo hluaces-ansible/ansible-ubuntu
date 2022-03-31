@@ -17,6 +17,8 @@
     # Root dotfiles
     - role: dotfiles
       tags: ['role-dotfiles']
+    - role: 'awscli'
+      tags: ['role-awscli']
   post_tasks:
     - name: 'Include extra tasks for root user'
       include_tasks:
