@@ -1,0 +1,15 @@
+---
+
+- name: 'Verify aws-cli install'
+  hosts: 'all'
+  remote_user: 'root'
+  gather_facts: false
+  tasks:
+    - name: 'Verify aws-cli is installed'
+      command: 'aws --version'
+
+    - name: 'Verify aws-vault is installed'
+      command: 'aws-vault --version'
+
+    - name: 'Verify ykman is installed'
+      shell: 'command -v ykman'

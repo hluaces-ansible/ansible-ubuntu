@@ -1,0 +1,26 @@
+---
+
+- name: 'Install awscli and dependencies'
+  apt:
+    name: ['awscli', 'gnupg']
+    state: 'present'
+    update_cache: 'true'
+
+- name: 'Download aws-vault'
+  ansible.builtin.get_url:
+    url: "{{ aws_vault_artifact_url }}"
+    dest: "{{ aws_vault_install_dir }}"
+    mode: '0755'
+    force: true
+
+- name: 'Add yubico/stable repository'
+  apt_repository:
+    repo: 'ppa:yubico/stable'
+    state: 'present'
+    filename: 'yubico'
+
+- name: 'Install yubikey-manager'
+  apt:
+    name: 'yubikey-manager'
+    state: 'present'
+    update_cache: true

@@ -1,0 +1,5 @@
+---
+
+aws_vault_version: '6.6.0'
+
+aws_vault_install_dir: '/usr/local/bin/aws-vault'

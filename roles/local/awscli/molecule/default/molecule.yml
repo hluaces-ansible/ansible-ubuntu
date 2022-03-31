@@ -1,0 +1,35 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+    requirements-file: collections.yml
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+platforms:
+  - name: ubuntu_20
+    image: ubuntu:focal
+  - name: ubuntu_18
+    image: ubuntu:bionic
+provisioner:
+  name: ansible
+  log: true
+  options:
+    vv: true
+    forks: '20'
+  playbooks:
+    converge: ../../tests/test_default.yml
+    verify: ../../tests/verify.yml
+  inventory:
+    links:
+      group_vars: ../../tests/group_vars
+      host_vars: ../../tests/host_vars
+  config_options:
+    defaults:
+      strategy: ${MOLECULE_STRATEGY-linear}
+      strategy_plugins: ${MOLECULE_STRATEGY_PLUGINS}
+      force_color: true

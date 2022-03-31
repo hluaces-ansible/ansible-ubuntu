@@ -1,0 +1,7 @@
+---
+
+- name: 'Include awscli installation'
+  include_tasks: 'install/main.yml'
+
+- name: 'Include awscli configuration'
+  include_tasks: 'configure/main.yml'
