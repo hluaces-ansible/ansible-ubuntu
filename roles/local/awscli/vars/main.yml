@@ -2,3 +2,7 @@
 
 aws_vault_artifact_url:
     "https://github.com/99designs/aws-vault/releases/download/v{{ aws_vault_version }}/aws-vault-linux-amd64"
+
+awscli_config_directory: '~/.aws'
+
+awscli_config_file: "{{ awscli_config_directory }}/config"

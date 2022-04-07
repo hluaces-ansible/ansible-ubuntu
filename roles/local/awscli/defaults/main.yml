@@ -1,5 +1,30 @@
 ---
 
+################################################################################
+# Actions
+################################################################################
+awscli_default_action: true
+
+awscli_do_install: "{{ awscli_default_action }}"
+
+awscli_do_configure: "{{ awscli_default_action }}"
+
+################################################################################
+# Variables
+################################################################################
+
+# Version of aws-vault to install
 aws_vault_version: '6.6.0'
 
+# Installation directory for the binary file of aws-vault
 aws_vault_install_dir: '/usr/local/bin/aws-vault'
+
+# String with the configuration that will be established on '~/aws/config'
+# awscli_configuration: |
+#   [profile default]
+#   region=eu-west-1
+#   mfa_serial=...
+#
+#   [profile work]
+#   ...
+awscli_configuration: ''

@@ -2,4 +2,12 @@
 - hosts: all
   remote_user: root
   roles:
-    - aws-cli
+    - role: 'awscli'
+      vars:
+        awscli_configuration: |
+          [profile default]
+          region=eu-west-1
+          mfa_serial=...
+
+          [profile work]
+          ...

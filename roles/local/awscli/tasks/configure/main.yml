@@ -1,1 +1,16 @@
 ---
+
+- name: "Create directory '{{ awscli_config_directory }}'"
+  file:
+    path: "{{ awscli_config_directory }}"
+    state: 'directory'
+    mode: '0700'
+
+- name: "Generate '{{ awscli_config_file }}'"
+  copy:
+    dest: "{{ awscli_config_file }}"
+    content: "{{ awscli_configuration }}"
+    mode: '0700'
+    backup: true
+    force: true
+  when: awscli_configuration | default('', true) | length > 0

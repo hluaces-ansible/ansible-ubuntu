@@ -2,6 +2,8 @@
 
 - name: 'Include awscli installation'
   include_tasks: 'install/main.yml'
+  when: awscli_do_install | bool
 
 - name: 'Include awscli configuration'
   include_tasks: 'configure/main.yml'
+  when: awscli_do_configure | bool
