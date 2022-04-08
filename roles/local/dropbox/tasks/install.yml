@@ -1,0 +1,22 @@
+---
+
+- name: 'Install Dropbox dependencies'
+  ansible.builtin.apt:
+    update_cache: true
+    state: 'present'
+    name:
+      - 'procps'
+      - 'python3-gi'
+      - 'libatk1.0-0'
+      - 'gpg'
+
+- name: 'Add Dropbox GPG key'
+  ansible.builtin.apt_key:
+    keyserver: 'pgp.mit.edu'
+    id: '1C61A2656FB57B7E4DE0F4C1FC918B335044912E'
+
+- name: 'Install the Dropbox .deb package'
+  ansible.builtin.apt:
+    deb: "{{ dropbox_deb_package_url }}"
+    state: 'present'
+  when: ansible_facts['distribution_file_variety'] == 'Debian'

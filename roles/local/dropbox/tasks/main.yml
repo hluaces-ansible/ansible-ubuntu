@@ -1,0 +1,4 @@
+---
+
+- name: 'Include Dropbox installation'
+  include_tasks: 'install.yml'

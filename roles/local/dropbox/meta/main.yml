@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: Héctor Luaces
+  role_name: dropbox
+  namespace: hluaces_ansible
+  description: A role that install the Dropbox desktop app.
+  company: hluaces-ansible
+  license: MIT
+  min_ansible_version: 2.8
+
+  platforms:
+    - name: 'Ubuntu'
+      versions: ['20.04']
+    - name: 'Debian'
+      versions: ['11']
+
+  galaxy_tags: []
+  dependencies: []
