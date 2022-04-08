@@ -301,3 +301,6 @@ gnome_settings:
     value: 'true'
   - key: '/org/gnome/desktop/privacy/remember-recent-files'
     value: 'false'
+
+# aws-cli configuration
+awscli_configuration: "{{ vault_awscli_configuration }}"

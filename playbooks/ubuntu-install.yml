@@ -1,4 +1,5 @@
 ---
+
 - name: 'Build vendor packages'
   import_playbook: 0_local_requirements.yaml
 
@@ -17,7 +18,11 @@
     # Root dotfiles
     - role: dotfiles
       tags: ['role-dotfiles']
+    # Root only installs this, configuration is per-user
     - role: 'awscli'
+      vars:
+        awscli_default_action: false
+        awscli_do_install: true
       tags: ['role-awscli']
   post_tasks:
     - name: 'Include extra tasks for root user'
@@ -48,6 +53,12 @@
       tags: ['role-tilix']
     - role: joplin
       tags: ['role-joplin']
+    # The user only configures this
+    - role: 'awscli'
+      vars:
+        awscli_default_action: false
+        awscli_do_configure: true
+      tags: ['role-awscli']
   post_tasks:
     - name: 'Include extra tasks for non-privileged users'
       include_tasks:
