@@ -219,6 +219,11 @@ configuration_files_user:
     dest: '~/.ssh/red-queen.pub'
     dest_mode: '700'
     mode: '600'
+  - type: 'file'
+    src: 'ssh/git'
+    dest: '~/.ssh/git'
+    dest_mode: '700'
+    mode: '600'
 
   # Sublime text configuration. Too much stuff in here to not do this...
   - type: 'repo'
