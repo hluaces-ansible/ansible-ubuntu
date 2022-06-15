@@ -111,6 +111,27 @@ extra_packages_list:
   - 'etckeeper'
   - 'powerline'
 
+  # Jumpcloud
+  - apt-rdepends
+  - apt-show-versions
+  - coreutils
+  - apt-curl
+  - dpkg
+  - grep
+  - hostname
+  - libc-bin
+  - libnss3
+  - libnss3-tools
+  - lsb-release
+  - lsof
+  - mawk
+  - openssl
+  - passwd
+  - procps
+  - sysvinit-utils
+  - sudo
+  - tar
+
 # Snap packages to install
 extra_packages_snaps:
   - name: 'discord'
