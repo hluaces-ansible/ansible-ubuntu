@@ -1,0 +1,148 @@
+---
+
+# Required as Ubuntu ships with Python3 and not 2
+ansible_python_interpreter: /usr/bin/python3
+
+# System's timezone
+configure_timezone: 'Europe/Madrid'
+
+# Additional user to create
+configure_user_name: 'work'
+configure_user_password: 'work'
+configure_user_groups: ['sudo', 'input']
+
+extra_packages_list:
+  # Jumpcloud agent
+  - apt-rdepends
+  - apt-show-versions
+  - coreutils
+  - grep
+  - hostname
+  - libc-bin
+  - libnss3
+  - libnss3-tools
+  - lsb-release
+  - lsof
+  - mawk
+  - openssl
+  - passwd
+  - procps
+  - sysvinit-utils
+  - sudo
+  - tar
+
+extra_packages_pip: []
+
+# Docker users
+docker_users: ["{{ configure_user_name}}"]
+
+git_config:
+  user:
+    name: 'Héctor Luaces'
+    email: "{{ vault_email }}"
+    signingkey: '33835F136C261136'
+  core:
+    editor: 'vi'
+    excludesfile: '~/.gitignore'
+    fileMode: 'false'
+  web:
+    browser: 'firefox'
+  color:
+    diff: 'auto'
+    status: 'auto'
+    branch: 'auto'
+    interactive: 'auto'
+    ui: 'true'
+    pager: 'true'
+  # This helps Go access private repos
+  'url "git@github.com:"':
+    insteadOf: 'https://github.com/'
+  commit:
+    gpgsign: 'true'
+
+# Configuration files for the newly created user
+configuration_files_user:
+  # Terminator
+  - type: 'file'
+    src: 'terminator/config'
+    dest: '~/.config/terminator/config'
+
+  # Private keys
+  - type: 'file'
+    src: 'ssh/config_work_user'
+    dest: '~/.ssh/config'
+    dest_mode: '700'
+    mode: '600'
+  - type: 'file'
+    src: 'ssh/work'
+    dest: '~/.ssh/work'
+    dest_mode: '700'
+    mode: '600'
+  - type: 'file'
+    src: 'ssh/work.pub'
+    dest: '~/.ssh/work.pub'
+    dest_mode: '700'
+    mode: '600'
+
+# Various Gnome settings to be configured using the gsettings tool
+gnome_settings:
+  # Dark theme
+  - key: '/org/gnome/desktop/interface/gtk-theme'
+    value: "'Yaru-dark'"
+
+  # Night light
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-enabled'
+    value: 'true'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-temperature'
+    value: 'uint32 3140'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic'
+    value: 'true'
+
+  # Screenshots
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/area-screenshot-clip'
+    value: '["<Primary><Shift><Alt>dollar"]'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/window-screenshot'
+    value: '["<Alt>Print"]'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/area-screenshot'
+    value: '["<Shift><Alt>dollar"]'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/screenshot-clip'
+    value: '["<Alt>3"]'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/window-screenshot-clip'
+    value: '["<Shift><Alt>periodcentered"]'
+
+  # Custom keybindings
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings'
+    value: '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"]'
+
+  # Custom keybinding #0: tilix quake dropdown
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding'
+    value: "'masculine'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command'
+    value: "'tilix --quake'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name'
+    value: "'tilix --quake'"
+
+  # Emoji selector (conflicts with a keybinding for terminator)
+  - key: '/org/freedesktop/ibus/panel/emoji/hotkey'
+    value: '["<Control><Shift>space"]'
+
+  # Calendar configuration
+  - key: '/org/gnome/desktop/calendar/show-weekdate'
+    value: 'true'
+  - key: '/org/gnome/desktop/interface/clock-show-date'
+    value: 'true'
+
+  # Privacy
+  - key: '/org/gnome/desktop/privacy/send-software-usage-stats'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/report-technical-problems'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/remember-app-usage'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/remove-old-temp-files'
+    value: 'true'
+  - key: '/org/gnome/desktop/privacy/remember-recent-files'
+    value: 'false'
+
+# aws-cli configuration
+awscli_configuration: "{{ vault_awscli_configuration }}"

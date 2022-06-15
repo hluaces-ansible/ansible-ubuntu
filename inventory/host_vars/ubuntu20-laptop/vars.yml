@@ -9,6 +9,11 @@ configure_timezone: 'Europe/Madrid'
 # Additional user to create
 configure_user_name: 'hector'
 configure_user_password: 'hector'
+configure_user_groups: ['sudo', 'input']
+
+# User created for work stuff. Will be ignored if undefined
+configure_work_user_name: ''
+configure_work_user_password: ''
 
 # List of apt-keys to load from disk
 # See "extra_packages" role.
@@ -33,8 +38,6 @@ extra_packages_repositories:
     repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
   - name: 'hashicorp'
     repo: 'deb [arch=amd64] https://apt.releases.hashicorp.com focal main'
-  - name: 'ulauncher'
-    repo: 'ppa:agornostal/ulauncher'
 
 # Extra APT packages to install
 # See "extra_packages" role
@@ -97,7 +100,6 @@ extra_packages_list:
   - 'p7zip'
   - 'p7zip-full'
   - 'default-jdk'
-  - 'ulauncher'
   - 'network-manager-l2tp'
   - 'network-manager-l2tp-gnome'
   - 'network-manager-openvpn'
@@ -110,27 +112,6 @@ extra_packages_list:
   - 'libinput-tools'
   - 'etckeeper'
   - 'powerline'
-
-  # Jumpcloud
-  - apt-rdepends
-  - apt-show-versions
-  - coreutils
-  - apt-curl
-  - dpkg
-  - grep
-  - hostname
-  - libc-bin
-  - libnss3
-  - libnss3-tools
-  - lsb-release
-  - lsof
-  - mawk
-  - openssl
-  - passwd
-  - procps
-  - sysvinit-utils
-  - sudo
-  - tar
 
 # Snap packages to install
 extra_packages_snaps:
@@ -208,52 +189,37 @@ configuration_files_user:
   # Thunderbird configuration. It is not fuly portable but it makes things
   # waaaaay easier.
   - type: 'file'
-    dest: '~/.thunderbird/'
     src: 'thunderbird/profiles.ini'
+    dest: '~/.thunderbird/profiles.ini'
   - type: 'file'
-    dest: '~/.thunderbird/'
     src: 'thunderbird/installs.ini'
+    dest: '~/.thunderbird/installs.ini'
   - type: 'file'
-    dest: "~/.thunderbird/{{ configure_user_name }}.default"
     src: 'thunderbird/prefs.js'
-
-  # Ulauncher configuration
-  - type: 'file'
-    src: 'ulauncher/extensions.json'
-    dest: '~/.config/ulauncher'
-  - type: 'file'
-    src: 'ulauncher/settings.json'
-    dest: '~/.config/ulauncher'
-  - type: 'file'
-    src: 'ulauncher/shortcuts.json'
-    dest: '~/.config/ulauncher'
+    dest: "~/.thunderbird/{{ configure_user_name }}.default/prefs.js"
 
   # Terminator
   - type: 'file'
-    dest: '~/.config/terminator/'
     src: 'terminator/config'
+    dest: '~/.config/terminator/config'
 
   # Private keys
   - type: 'file'
-    dest: '~/.ssh/'
-    dest_mode: '700'
-    mode: '600'
     src: 'ssh/config'
-  - type: 'file'
-    dest: '~/.ssh/'
+    dest: '~/.ssh/config'
     dest_mode: '700'
     mode: '600'
+  - type: 'file'
     src: 'ssh/red-queen'
-  - type: 'file'
-    dest: '~/.ssh/'
+    dest: '~/.ssh/red-queen'
     dest_mode: '700'
     mode: '600'
+  - type: 'file'
     src: 'ssh/red-queen.pub'
-  - type: 'file'
-    dest: '~/.ssh/'
+    dest: '~/.ssh/red-queen.pub'
     dest_mode: '700'
     mode: '600'
-    src: 'ssh/git'
+
   # Sublime text configuration. Too much stuff in here to not do this...
   - type: 'repo'
     accept_hostkey: true
