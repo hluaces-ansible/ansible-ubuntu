@@ -49,20 +49,23 @@ That's the reason as to why some of these roles seem pretty basic: they indeed a
 │   └── all/
 |       └── vault_vars.yml                # Common secrets used by all hosts
 │   └── all.yml                           # Common variables to all hosts
-├── host_vars                           # Host vars directory
-├── inventory                           # Inventory directory
+├── host_vars                             # Host vars directory
+├── inventory                             # Inventory directory
 │   ├── default.ini -> dev.ini            # Default inventory to use
 │   ├── dev.ini                           # Dev inventory (vagrant)
 │   └── prod.ini                          # Production inventory (localhost)
-├── playbooks                           # Playbook directory
+├── playbooks                             # Playbook directory
 │   ├── files                             # Files used by the playbook
 │   ├── tasks                             # Extra tasks ran by the playbook
-│   │   ├── user                            # Unprivileged extra tasks
-│   │   └── root                            # Privileged extra tasks
+│   │   ├── <host1>                       # Extra tasks for Host1
+│   │   │   ├── user                      # Unprivileged tasks for host1
+│   │   │   └── root                      # Privileged taks for host1
+│   │   ├── <...>                         # Extra tasks for other hosts
+│   │   └── <hostN>                       # Extra tasks for other hosts
 │   ├── templates                         # Templates used by the playbook
 │   ├── 0_local_requirements.yaml         # Internal playbook.
 │   └── ubuntu-install.yml                # The main playbook to use
-├── plugins                             # Plugin directory
+├── plugins                               # Plugin directory
 │   ├── action                            # Action plugins
 │   ├── callback                          # Callback plugins
 │   ├── connection                        # Connection plugins
@@ -70,7 +73,7 @@ That's the reason as to why some of these roles seem pretty basic: they indeed a
 │   ├── lookup                            # Lookup plugins
 │   ├── modules                           # Modules plugins
 │   └── vars                              # Vars plugins
-└── roles                               # Roles directory
+└── roles                                 # Roles directory
     ├── local                             # Locale roles
     ├── profiles                          # Profile roles
     ├── requirements.yml                  # Vendor roles list
@@ -125,6 +128,12 @@ vagrant destroy
 ## Run the playbook against your local machine (production)
 
 You'll need to run this as a sudoer.
+
+```
+ansible-playbook -kK -v -i inventory/prod.ini playbooks/ubuntu-install.yml -l laptop
+```
+
+In case you also want to run the `work-device` environment, run this after the previous command:
 
 ```
 ansible-playbook -kK -v -i inventory/prod.ini playbooks/ubuntu-install.yml -l laptop
