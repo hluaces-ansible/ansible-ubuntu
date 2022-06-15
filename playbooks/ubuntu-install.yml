@@ -6,33 +6,47 @@
 - name: 'Install Ubuntu Workstation (root configuration)'
   hosts: 'ubuntu_group'
   remote_user: "{{ remote_user | default(omit) }}"
-  become_user: root
+  become_user: 'root'
   become: true
   roles:
-    - role: configure_system
+    - role: 'configure_system'
       tags: ['role-configure_system']
-    - role: extra_packages
+    - role: 'sysctl'
+      tags: ['role-sysctl']
+    - role: 'extra_packages'
       tags: ['role-extra_packages']
-    - role: geerlingguy.docker
+    - role: 'geerlingguy.docker'
       tags: ['role-geerlingguy.docker']
-    - role: dropbox
+    - role: 'dropbox'
       tags: ['role-dropbox']
+    - role: 'hadolint'
+      tags: ['role-hadolint']
+
     # Root dotfiles
-    - role: dotfiles
+    - role: 'dotfiles'
       tags: ['role-dotfiles']
+
     # Root only installs this, configuration is per-user
     - role: 'awscli'
       vars:
         awscli_default_action: false
         awscli_do_install: true
       tags: ['role-awscli']
+
+    # Only installation
+    - role: 'ulauncher'
+      vars:
+        ulauncher_default_action: false
+        ulauncher_do_install: true
+      tags: ['role-ulauncher']
+
   post_tasks:
     - name: 'Include extra tasks for root user'
       include_tasks:
         file: "{{ item }}"
         apply:
           tags: ['privileged-extra-tasks']
-      with_fileglob: "{{ playbook_dir }}/tasks/root/*"
+      with_fileglob: "{{ playbook_dir }}/tasks/{{ inventory_hostname }}/root/*"
       tags: ['privileged-extra-tasks']
 
 - name: 'Install Ubuntu Workstation (non root configuration)'
@@ -41,19 +55,19 @@
   become: true
   become_user: "{{ configure_user_name }}"
   roles:
-    - role: dotfiles
+    - role: 'dotfiles'
       tags: ['role-dotfiles']
-    - role: configuration_files
+    - role: 'configuration_files'
       tags: ['role-configuration_files']
       vars:
         configuration_files: "{{ configuration_files_user }}"
-    - role: gsettings
+    - role: 'gsettings'
       vars:
         gsettings: "{{ gnome_settings }}"
       tags: ['role-gsettings']
-    - role: tilix
+    - role: 'tilix'
       tags: ['role-tilix']
-    - role: joplin
+    - role: 'joplin'
       tags: ['role-joplin']
     # The user only configures this
     - role: 'awscli'
@@ -61,11 +75,17 @@
         awscli_default_action: false
         awscli_do_configure: true
       tags: ['role-awscli']
+    # The user only configures this
+    - role: 'ulauncher'
+      vars:
+        ulauncher_default_action: false
+        ulauncher_do_configure: true
+      tags: ['role-ulauncher']
   post_tasks:
     - name: 'Include extra tasks for non-privileged users'
       include_tasks:
         file: "{{ item }}"
         apply:
           tags: ['unprivileged-extra-tasks']
-      with_fileglob: "{{ playbook_dir }}/tasks/user/*"
+      with_fileglob: "{{ playbook_dir }}/tasks/{{ inventory_hostname }}/user/*"
       tags: ['unprivileged-extra-tasks']
