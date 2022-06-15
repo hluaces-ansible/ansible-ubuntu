@@ -10,9 +10,9 @@
 #   git_config_option2 : git_config_value2
 git_config: {}
 
-#git_config:
-#  user:
-#    name: ''
-#    email: ''
-#  core:
-#    editor: 'vi'
+# git_config:
+#   user:
+#     name: ''
+#     email: ''
+#   core:
+#     editor: 'vi'
