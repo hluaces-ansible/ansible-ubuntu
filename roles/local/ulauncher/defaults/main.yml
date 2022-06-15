@@ -1,0 +1,18 @@
+---
+
+ulauncher_default_action: true
+
+# Install or not Ulauncher and its repo
+ulauncher_do_install: "{{ ulauncher_default_action }}"
+
+# Copy the configuration files for ULauncher
+ulauncher_do_configure: "{{ ulauncher_default_action }}"
+
+# Configuration templates that will be applied
+ulauncher_templates:
+  extensions:
+    src: 'extensions.json.j2'
+  settings:
+    src: 'settings.json.j2'
+  shortcuts:
+    src: 'shortcuts.json.j2'

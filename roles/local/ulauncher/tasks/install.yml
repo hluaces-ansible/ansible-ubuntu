@@ -1,0 +1,11 @@
+---
+
+- name: 'Add Ulauncher APT repository'
+  ansible.builtin.apt_repository:
+    filename: 'ulauncher'
+    repo: 'ppa:agornostal/ulauncher'
+
+- name: 'Install Ulauncher'
+  apt:
+    name: ['ulauncher']
+    update_cache: true

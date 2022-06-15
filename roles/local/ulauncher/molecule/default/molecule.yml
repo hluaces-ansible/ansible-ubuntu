@@ -1,0 +1,33 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+    requirements-file: collections.yml
+driver:
+  name: vagrant
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+platforms:
+  - name: ulauncher-vagrant-ubuntu20
+    box: hluaces/ubuntu-gnome
+    box_version: 20.04.04
+provisioner:
+  name: ansible
+  log: true
+  options:
+    vv: true
+    forks: '20'
+  playbooks:
+    converge: ../../tests/test_default.yml
+  inventory:
+    links:
+      group_vars: ../../tests/group_vars
+      host_vars: ../../tests/host_vars
+  config_options:
+    defaults:
+      strategy: ${MOLECULE_STRATEGY-linear}
+      strategy_plugins: ${MOLECULE_STRATEGY_PLUGINS}
+      force_color: true

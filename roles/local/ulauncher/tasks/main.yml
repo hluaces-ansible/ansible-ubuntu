@@ -1,0 +1,9 @@
+---
+
+- name: 'Include Ulauncher installation'
+  include_tasks: 'install.yml'
+  when: ulauncher_do_install | bool
+
+- name: 'Include Ulauncher configuration'
+  include_tasks: 'configure.yml'
+  when: ulauncher_do_configure | bool

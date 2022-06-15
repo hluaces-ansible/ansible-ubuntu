@@ -1,0 +1,24 @@
+---
+
+- name: 'Create configuration directory for Ulauncher'
+  ansible.builtin.file:
+    path: "{{ ulauncher_configuration_directory }}"
+    state: 'directory'
+
+- name: 'Copy extensions configuration for Ulauncher'
+  ansible.builtin.template:
+    src: "{{ ulauncher_templates['extensions']['src'] }}"
+    dest: "{{ ulauncher_configuration_directory }}/extensions.json"
+    force: true
+
+- name: 'Copy settings configuration for Ulauncher'
+  ansible.builtin.template:
+    src: "{{ ulauncher_templates['settings']['src'] }}"
+    dest: "{{ ulauncher_configuration_directory }}/settings.json"
+    force: true
+
+- name: 'Copy shortcuts configuration for Ulauncher'
+  ansible.builtin.template:
+    src: "{{ ulauncher_templates['shortcuts']['src'] }}"
+    dest: "{{ ulauncher_configuration_directory }}/shortcuts.json"
+    force: true
