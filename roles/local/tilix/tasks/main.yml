@@ -1,12 +1,16 @@
 ---
 
 - name: 'Install Tilix'
-  apt: name='tilix' state='present'
+  apt:
+    name: 'tilix'
+    state: 'present'
   become_user: root
   become: true
 
 - name: 'Copy Tilix configuration to remote'
-  copy: src='tilix.dconf' dest="{{ tilix_tmp_file }}"
+  copy:
+    src: 'tilix.dconf'
+    dest: "{{ tilix_tmp_file }}"
 
 - name: 'Import Tilix configuration'
   shell: "dbus-launch dconf load {{ tilix_dconf_key }} < {{ tilix_tmp_file }}"
@@ -19,5 +23,17 @@
   become_user: root
   become: true
 
+# https://gnunn1.github.io/tilix-web/manual/vteconfig/
+- name: 'Add VTE configuration for Tilix'
+  blockinfile:
+    path: "~/.bashrc"
+    marker_begin: "# {mark} VTE configuration for tilix https://gnunn1.github.io/tilix-web/manual/vteconfig/"
+    block: |
+      if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+        source /etc/profile.d/vte*.sh
+      fi
+
 - name: 'Delete Tilix temp configuration dump'
-  file: path="{{ tilix_tmp_file }}" state='absent'
+  file:
+    path: "{{ tilix_tmp_file }}"
+    state: 'absent'
