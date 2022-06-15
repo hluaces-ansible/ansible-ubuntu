@@ -1,5 +1,4 @@
 ---
-# defaults file for role_template
 
 # Extra apt_keys from keyservers to manage
 extra_packages_keys: []
@@ -10,9 +9,9 @@ extra_packages_keys: []
 
 # Extra apt_keys from urls to manage
 extra_packages_keys_url: []
-#- url:
-#  validate_certs: true
-#  state: 'present'
+# - url:
+#   validate_certs: true
+#   state: 'present'
 
 # Extra repositories to configure
 extra_packages_repositories: []
