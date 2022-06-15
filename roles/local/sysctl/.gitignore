@@ -1,0 +1,5 @@
+# Ansible-lint caching
+.cache
+
+# IDE stuff
+.vscode

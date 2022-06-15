@@ -1,0 +1,10 @@
+---
+
+sysctl_configuration:
+  "{{ sysctl_default_configuration | combine(sysctl_extra_configuration) }}"
+
+sysctl_default_configuration:
+  'fs.inotify.max_user_watches':
+    value: 524288
+
+sysctl_extra_configuration: {}
