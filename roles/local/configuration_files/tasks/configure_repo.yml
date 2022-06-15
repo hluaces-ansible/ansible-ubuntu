@@ -2,20 +2,19 @@
 
 - name: 'Create destination dir'
   file:
-    path: "{{ item.dest }}"
+    path: "{{ ditem['dest'] }}"
     state: 'directory'
-    owner: "{{ item.dest_owner|default(omit) }}"
-    group: "{{ item.dest_group|default(omit) }}"
-    mode: "{{ item.dest_mode|default(omit) }}"
+    owner: "{{ ditem['dest_owner']|default(omit) }}"
+    group: "{{ ditem['dest_group']|default(omit) }}"
+    mode: "{{ ditem['dest_mode']|default(omit) }}"
 
 
 - name: 'Clone remote repository'
   git:
-    accept_hostkey: "{{ item.accept_hostkey|default(omit) }}"
-    key_file: "{{ item.key_file|default(omit) }}"
-    repo: "{{ item.repo|default(omit) }}"
-    ssh_opts: "{{ item.ssh_opts|default(omit) }}"
-    version: "{{ item.version|default(omit) }}"
-    dest: "{{ item.dest|default(omit) }}"
-    accept_hostkey: "{{ item.accept_hostkey|default(true) }}"
-    force: "{{ item.force|default(false) }}"
+    accept_hostkey: "{{ ditem['accept_hostkey']|default(omit) }}"
+    key_file: "{{ ditem['key_file']|default(omit) }}"
+    repo: "{{ ditem['repo']|default(omit) }}"
+    ssh_opts: "{{ ditem['ssh_opts']|default(omit) }}"
+    version: "{{ ditem['version']|default(omit) }}"
+    dest: "{{ ditem['dest']|default(omit) }}"
+    force: "{{ ditem['force']|default(false) }}"

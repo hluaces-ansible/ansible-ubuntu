@@ -1,0 +1,39 @@
+---
+
+- name: 'Create destination dir'
+  file:
+    path: "{{ item.dest }}"
+    state: 'directory'
+    owner: "{{ item.dest_owner|default(omit) }}"
+    group: "{{ item.dest_group|default(omit) }}"
+    mode: "{{ item.dest_mode|default(omit) }}"
+
+- name: 'Download remote file'
+  ansible.builtin.get_url:
+    url: "{{ item['url'] | default(omit) }}"
+    dest: "{{ item['dest'] | default(omit) }}"
+    force: "{{ item['force'] | default(omit) }}"
+    validate_certs: "{{ item['validate_certs'] | default(omit) }}"
+    attributes: "{{ item['attributes'] | default(omit) }}"
+    backup: "{{ item['backup'] | default(omit) }}"
+    group: "{{ item['group'] | default(omit) }}"
+    owner: "{{ item['owner'] | default(omit) }}"
+    mode: "{{ item['mode'] | default(omit) }}"
+    checksum: "{{ item['checksum'] | default(omit) }}"
+    client_cert: "{{ item['client_cert'] | default(omit) }}"
+    client_key: "{{ item['client_key'] | default(omit) }}"
+    force_basic_auth: "{{ item['force_basic_auth'] | default(omit) }}"
+    headers: "{{ item['headers'] | default(omit) }}"
+    http_agent: "{{ item['http_agent'] | default(omit) }}"
+    selevel: "{{ item['selevel'] | default(omit) }}"
+    serole: "{{ item['serole'] | default(omit) }}"
+    setype: "{{ item['setype'] | default(omit) }}"
+    seuser: "{{ item['seuser'] | default(omit) }}"
+    sha256sum: "{{ item['sha256sum'] | default(omit) }}"
+    timeout: "{{ item['timeout'] | default(omit) }}"
+    tmp_dest: "{{ item['tmp_dest'] | default(omit) }}"
+    unsafe_writes: "{{ item['unsafe_writes'] | default(omit) }}"
+    url_password: "{{ item['url_password'] | default(omit) }}"
+    url_username: "{{ item['url_username'] | default(omit) }}"
+    use_gssapi: "{{ item['use_gssapi'] | default(omit) }}"
+    use_proxy: "{{ item['use_proxy'] | default(omit) }}"

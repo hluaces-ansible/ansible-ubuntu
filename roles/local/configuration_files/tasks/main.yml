@@ -1,5 +1,5 @@
 ---
 
 - name: 'Manage configuration files'
-  include_tasks: "configure_{{ item.type }}.yml"
+  include_tasks: "configure_{{ item['type'] }}.yml"
   loop: "{{ configuration_files }}"

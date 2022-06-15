@@ -1,6 +1,4 @@
 ---
-# defaults file for role_template
-
 configuration_files: []
 #  # Files to be cloned to somewhere (destination dir will be created)
 #  # These files are expected to be templates. The name should not contain
@@ -30,3 +28,39 @@ configuration_files: []
 #    owner:
 #    group:
 #    mode:
+#
+#  # Remote files which will be hosted by fetch_url. They accept all arguments
+#  # used by the ansible.builtin.get_url module. Destination directories will
+#  # be created.
+#  - type: 'remote'
+#    dest:
+#    dest_owner:
+#    dest_group:
+#    dest_mode:
+#    url:
+#    dest:
+#    force:
+#    validate_certs:
+#    attributes:
+#    backup:
+#    group:
+#    owner:
+#    mode:
+#    checksum:
+#    client_cert:
+#    client_key:
+#    force_basic_auth:
+#    headers:
+#    http_agent:
+#    selevel:
+#    serole:
+#    setype:
+#    seuser:
+#    sha256sum:
+#    timeout:
+#    tmp_dest:
+#    unsafe_writes:
+#    url_password:
+#    url_username:
+#    use_gssapi:
+#    use_proxy:
