@@ -1,5 +1,4 @@
 ---
-# tasks file for role_template
 
 - name: 'Configure timezone'
   timezone:
@@ -13,4 +12,3 @@
     shell: '{{ configure_user_shell }}'
     groups: '{{ configure_user_groups }}'
     update_password: '{{ configure_user_update_password }}'
-

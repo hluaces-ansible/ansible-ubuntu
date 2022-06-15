@@ -1,5 +1,4 @@
 ---
-# vars file for role_template
 
 # Services or units that can block the dkpg lockfile causing ansible to fail
 apt_lock_holders:
