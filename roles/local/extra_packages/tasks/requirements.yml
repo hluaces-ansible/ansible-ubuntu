@@ -9,7 +9,10 @@
   notify: ['enable apt_lock_holders']
 
 - name: 'Stop apt-daily-upgrade.timer'
-  systemd: name='apt-daily-upgrade.timer' state='stopped' enabled='no'
+  systemd:
+    name: 'apt-daily-upgrade.timer'
+    state: 'stopped'
+    enabled: 'no'
 
 - name: 'Update Ubuntu Drivers'
   command: 'ubuntu-drivers autoinstall'
