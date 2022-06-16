@@ -1,8 +1,5 @@
 ---
 
-- name: 'Manage gsettings/dconf preferences'
-  dconf:
-    key: "{{ item.key }}"
-    value: "{{ item.value | string }}"
-    state: "{{ item.state | default('present') }}"
-  loop: "{{ gsettings }}"
+- name: 'Include gsettings configuration'
+  include_tasks: 'do_gsettings.yml'
+  when: gsettings_do_gsettings | bool

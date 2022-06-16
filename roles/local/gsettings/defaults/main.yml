@@ -1,7 +1,19 @@
 ---
 
+################################################################################
+# Actions
+################################################################################
+gsettings_default_action: true
+
+# Configures or not the "gsettings" variable through dconf
+gsettings_do_gsettings: "{{ gsettings_default_action }}"
+
+################################################################################
+# Variables
+################################################################################
+
 # Gsettings value
-gsettings: "{{ gsetings_defaults | combine(gsettings_extra) }}"
+gsettings: "{{ gsettings_defaults + gsettings_extra }}"
 # - key:
 #   value:
 #   state:
@@ -69,4 +81,7 @@ gsettings_defaults:
   - key: '/org/gnome/desktop/privacy/remember-recent-files'
     value: 'false'
 
-gsettings_extra: {}
+gsettings_extra: []
+
+# Enables or not the "Privacy -> Conectivity check" option
+gsettings_conectivty_check: false
