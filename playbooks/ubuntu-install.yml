@@ -62,8 +62,6 @@
       vars:
         configuration_files: "{{ configuration_files_user }}"
     - role: 'gsettings'
-      vars:
-        gsettings: "{{ gnome_settings }}"
       tags: ['role-gsettings']
     - role: 'tilix'
       tags: ['role-tilix']
