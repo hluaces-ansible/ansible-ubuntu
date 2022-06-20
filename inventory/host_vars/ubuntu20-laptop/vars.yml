@@ -113,6 +113,9 @@ extra_packages_list:
   - 'etckeeper'
   - 'powerline'
 
+  # Laptop-specific
+  - 'ecryptfs-utils'
+
 # Snap packages to install
 extra_packages_snaps:
   - name: 'discord'
