@@ -65,9 +65,21 @@ gsettings_defaults:
   - key: '/org/gnome/desktop/interface/clock-show-date'
     value: 'true'
 
+  # Gnome: show battery percent
+  - key: '/org/gnome/desktop/interface/show-battery-percentage'
+    value: 'true'
+
   # Gnome: Move the "applications button" at top
   - key: '/org/gnome/shell/extensions/dash-to-dock/show-apps-at-top'
     value: 'true'
+
+  # Gnome: Dock on all screens
+  - key: '/org/gnome/shell/extensions/dash-to-dock/multi-monitor'
+    value: 'true'
+
+  # Gnome: Element size on dock
+  - key: '/org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size'
+    value: '48'
 
   # Gnome: Privacy
   - key: '/org/gnome/desktop/privacy/send-software-usage-stats'
