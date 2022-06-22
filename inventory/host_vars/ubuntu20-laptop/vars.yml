@@ -89,6 +89,7 @@ extra_packages_list:
   - 'unzip'
   - 'vim'
   - 'nmap'
+  - 'jq'
 
   # Media
   - 'vlc'

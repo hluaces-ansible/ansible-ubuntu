@@ -1,0 +1,9 @@
+---
+
+hadolint_release: 'v2.10.0'
+
+hadolint_install_dir: '/usr/bin/hadolint'
+
+hadolint_mode: '0755'
+
+hadolint_binary: 'hadolint-Linux-x86_64'
