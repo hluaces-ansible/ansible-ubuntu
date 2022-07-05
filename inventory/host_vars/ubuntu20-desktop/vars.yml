@@ -104,6 +104,9 @@ extra_packages_list:
   - 'network-manager-pptp'
   - 'network-manager-pptp-gnome'
   - 'sshpass'
+  - 'remmina'
+  - 'remmina-plugin-vnc'
+  - 'telnet-ssl'
 
   # System
   - 'libinput-tools'
