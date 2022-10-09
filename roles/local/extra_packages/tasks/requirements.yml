@@ -27,7 +27,7 @@
     # So that ansible does not complain. See issue #56832 @ ansible
     - aptitude
     - ubuntu-restricted-extras
-    - gnome-tweak-tool
+    - gnome-tweaks
     - apt-transport-https
 
 - name: "Refresh apt-cache (apt-get update)"
