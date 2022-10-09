@@ -4,13 +4,20 @@
   apt:
     name: 'tilix'
     state: 'present'
-  become_user: root
+  become_user: 'root'
   become: true
 
 - name: 'Copy Tilix configuration to remote'
   copy:
     src: 'tilix.dconf'
     dest: "{{ tilix_tmp_file }}"
+
+- name: 'Install dbus dependencies'
+  apt:
+    name: 'dbus-x11'
+    update_cache: true
+  become_user: 'root'
+  become: true
 
 - name: 'Import Tilix configuration'
   shell: "dbus-launch dconf load {{ tilix_dconf_key }} < {{ tilix_tmp_file }}"
