@@ -1,0 +1,320 @@
+---
+
+# Required as Ubuntu ships with Python3 and not 2
+ansible_python_interpreter: /usr/bin/python3
+
+# System's timezone
+configure_timezone: 'Europe/Madrid'
+
+# Additional users to create
+configure_user_name: 'hector'
+configure_user_password: 'hector'
+configure_user_groups: ['sudo']
+
+# List of apt-keys to load from disk
+# See "extra_packages" role.
+extra_packages_keys: []
+
+# List of apt-keys to load from URLs.
+# See "extra_packages" role
+extra_packages_keys_url:
+  - url: 'https://dl.google.com/linux/linux_signing_key.pub'
+  - url: 'https://download.sublimetext.com/sublimehq-pub.gpg'
+  - url: 'https://packages.microsoft.com/keys/microsoft.asc'
+  - url: 'https://apt.releases.hashicorp.com/gpg'
+
+# Extra apt repositories to add
+# See "extra_packages" role
+extra_packages_repositories:
+  - name: 'google-chrome'
+    repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+  - name: 'sublime_text'
+    repo: 'deb https://download.sublimetext.com/ apt/stable/'
+  - name: 'vscode'
+    repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
+  - name: 'hashicorp'
+    repo: 'deb [arch=amd64] https://apt.releases.hashicorp.com focal main'
+
+# Extra APT packages to install
+# See "extra_packages" role
+extra_packages_list:
+  # Everyday apps
+  - 'thunderbird'
+  - 'gnome-calendar'
+  - 'firefox'
+  - 'google-chrome-stable'
+  - 'keepassxc'
+  - 'libreoffice'
+  - 'mythes-gl'
+  - 'hyphen-gl'
+  - 'calibre'
+
+  # Gaming
+  - 'steam'
+
+  # Programming
+  - 'sublime-text'
+  - 'code'
+  - 'clang-format'
+  - 'cppcheck'
+  - 'fonts-firacode'
+  - 'git'
+  - 'lua-check'
+  - 'luarocks'
+  - 'nodejs'
+  - 'npm'
+  - 'python3'
+  - 'pylint'
+  - 'python3-pip'
+  - 'shellcheck'
+  - 'sqlite3'
+
+  # Infra stuff
+  - 'vagrant'
+  - 'virtualbox'
+  - 'terraform'
+
+  # CLI tools
+  - 'terminator'
+  - 'iotop'
+  - 'mysql-client'
+  - 'postgresql-client-14'
+  - 'strace'
+  - 'telnet'
+  - 'unrar'
+  - 'unzip'
+  - 'vim'
+  - 'nmap'
+  - 'jq'
+
+  # Media
+  - 'vlc'
+  - 'gimp'
+
+  # System utils
+  - 'gpg'
+  - 'gparted'
+  - 'p7zip'
+  - 'p7zip-full'
+  - 'default-jdk'
+  - 'network-manager-l2tp'
+  - 'network-manager-l2tp-gnome'
+  - 'network-manager-openvpn'
+  - 'network-manager-openvpn-gnome'
+  - 'network-manager-pptp'
+  - 'network-manager-pptp-gnome'
+  - 'sshpass'
+  - 'remmina'
+  - 'remmina-plugin-vnc'
+  - 'telnet-ssl'
+
+  # System
+  - 'libinput-tools'
+  - 'etckeeper'
+  - 'powerline'
+
+# Snap packages to install
+extra_packages_snaps:
+  - name: 'discord'
+  - name: 'spotify'
+  - name: 'bitwarden'
+  - name: 'telegram-desktop'
+  - name: 'phpstorm'
+    classic: true
+  - name: 'dbeaver-ce'
+  - name: 'postman'
+  - name: 'telegram-desktop'
+    channel: 'latest/beta'
+  - name: 'authy'
+    channel: 'latest/beta'
+
+# Pip packages to install
+extra_packages_pip:
+  - name: 'ansible'
+    executable: pip3
+  - name: 'ansible-lint'
+    executable: pip3
+  - name: 'molecule'
+    executable: pip3
+  - name: 'molecule[docker]'
+    executable: pip3
+  - name: 'molecule[vagrant]'
+    executable: pip3
+  - name: 'yamllint'
+    executable: pip3
+  - name: 'docker'
+    executable: pip3
+  - name: 'molecule-vagrant'
+    executable: pip3
+  - name: 'python-vagrant'
+    executable: pip3
+
+# NPM utils
+extra_packages_npm:
+  - name: 'jshint'
+    global: true
+
+docker_apt_release_channel: 'stable'
+
+# Docker users
+docker_users: ["{{ configure_user_name}}"]
+
+# Git configuration for the .gitconfig file
+git_config:
+  user:
+    name: 'Héctor Luaces'
+    email: "{{ vault_email }}"
+    signingkey: '11A11DEBC6EC8723'
+  core:
+    editor: 'vi'
+    excludesfile: '~/.gitignore'
+    fileMode: 'false'
+  web:
+    browser: 'firefox'
+  color:
+    diff: 'auto'
+    status: 'auto'
+    branch: 'auto'
+    interactive: 'auto'
+    ui: 'true'
+    pager: 'true'
+  # This helps Go access private repos
+  'url "git@github.com:"':
+    insteadOf: 'https://github.com/'
+  commit:
+    gpgsign: 'true'
+
+# Configuration files for the newly created user
+configuration_files_user:
+  # Thunderbird configuration. It is not fuly portable but it makes things
+  # waaaaay easier.
+  - type: 'file'
+    src: 'thunderbird/profiles.ini'
+    dest: '~/.thunderbird/profiles.ini'
+  - type: 'file'
+    src: 'thunderbird/installs.ini'
+    dest: '~/.thunderbird/installs.ini'
+  - type: 'file'
+    src: 'thunderbird/prefs.js'
+    dest: "~/.thunderbird/{{ configure_user_name }}.default/prefs.js"
+
+  # Terminator
+  - type: 'file'
+    src: 'terminator/config'
+    dest: '~/.config/terminator/config'
+
+  # Private keys
+  - type: 'file'
+    src: 'ssh/config'
+    dest: '~/.ssh/config'
+    dest_mode: '700'
+    mode: '600'
+  - type: 'file'
+    src: 'ssh/red-queen'
+    dest: '~/.ssh/red-queen'
+    dest_mode: '700'
+    mode: '600'
+  - type: 'file'
+    src: 'ssh/red-queen.pub'
+    dest: '~/.ssh/red-queen.pub'
+    dest_mode: '700'
+    mode: '600'
+  - type: 'file'
+    src: 'ssh/git'
+    dest: '~/.ssh/git'
+    dest_mode: '700'
+    mode: '600'
+
+  # Sublime text configuration. Too much stuff in here to not do this...
+  - type: 'repo'
+    accept_hostkey: true
+    repo: "{{ vault_sublime_text_repo }}"
+    version: 'master'
+    key_file: "~/.ssh/git"
+    dest: "~/.config/sublime-text-3"
+    force: true
+
+# aws-cli configuration
+awscli_configuration: "{{ vault_awscli_configuration }}"
+
+
+gsettings_defaults:
+  # Gnome: Dark theme
+  - key: '/org/gnome/desktop/interface/gtk-theme'
+    value: "'Yaru-purple-dark'"
+  - key: '/org/gnome/desktop/interface/icon-theme'
+    value : "'Yaru-purple'"
+
+  # Gnome: hide mounts & trash from the dock
+  - key: '/org/gnome/shell/extensions/dash-to-dock/show-mounts'
+    value: 'false'
+  - key: '/org/gnome/shell/extensions/dash-to-dock/show-trash'
+    value: 'false'
+
+  # Gnome: Night light
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-enabled'
+    value: 'true'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-temperature'
+    value: 'uint32 3140'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic'
+    value: 'true'
+
+  # Gnome: Screenshots shortcuts
+  - key: '/org/gnome/shell/keybindings/show-screenshot-ui'
+    value: '["<Primary><Shift><Alt>dollar"]'
+  - key: '/org/gnome/shell/keybindings/show-screen-recordingui'
+    value: '["<Primary><Shift><Alt>r"]'
+  - key: '/org/gnome/shell/keybindings/screenshot'
+    value: '["<Alt>3"]'
+  - key: '/org/gnome/shell/keybindings/screenshot-window'
+    value: '["<Shift><Alt>periodcentered"]'
+
+  # Gnome: Custom keybindings
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings'
+    value: '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"]'
+
+  # Gnome: Custom keybinding #0: tilix quake dropdown
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding'
+    value: "'masculine'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command'
+    value: "'tilix --quake'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name'
+    value: "'tilix --quake'"
+
+  # Gnome: Emoji selector (conflicts with a keybinding for terminator)
+  - key: '/org/freedesktop/ibus/panel/emoji/hotkey'
+    value: '["<Control><Shift>space"]'
+
+  # Gnome: Calendar configuration
+  - key: '/org/gnome/desktop/calendar/show-weekdate'
+    value: 'true'
+  - key: '/org/gnome/desktop/interface/clock-show-date'
+    value: 'true'
+
+  # Gnome: show battery percent
+  - key: '/org/gnome/desktop/interface/show-battery-percentage'
+    value: 'true'
+
+  # Gnome: Move the "applications button" at top
+  - key: '/org/gnome/shell/extensions/dash-to-dock/show-apps-at-top'
+    value: 'true'
+
+  # Gnome: Dock on all screens
+  - key: '/org/gnome/shell/extensions/dash-to-dock/multi-monitor'
+    value: 'true'
+
+  # Gnome: Element size on dock
+  - key: '/org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size'
+    value: '48'
+
+  # Gnome: Privacy
+  - key: '/org/gnome/desktop/privacy/send-software-usage-stats'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/report-technical-problems'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/remember-app-usage'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/remove-old-temp-files'
+    value: 'true'
+  - key: '/org/gnome/desktop/privacy/remember-recent-files'
+    value: 'false'
