@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  Build new release:
+  Build-new-release:
     runs-on: ubuntu-latest
     steps:
       - uses: rymndhng/release-on-push-action@v0.27.0
