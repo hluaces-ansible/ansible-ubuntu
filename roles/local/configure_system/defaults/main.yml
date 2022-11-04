@@ -1,6 +1,4 @@
 ---
-# defaults file for role_template
-
 # System's timezone
 configure_timezone: 'Europe/Madrid'
 

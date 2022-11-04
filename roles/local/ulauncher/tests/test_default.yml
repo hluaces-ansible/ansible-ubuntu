@@ -1,18 +1,20 @@
 ---
 # Installation for root without config as they do not have a gnome session
-- hosts: all
+- name: 'Execute Ulauncher role without configuration'
+  hosts: all
   remote_user: root
   become: true
   roles:
-    - name: ulauncher
+    - role: ulauncher
       vars:
         ulauncher_default_action: false
         ulauncher_do_install: true
 
 # Configuration for "vagrant" as they do, indeed, have a gnome session
-- hosts: all
+- name: 'Execute Ulauncher role with configuration'
+  hosts: all
   roles:
-    - name: ulauncher
+    - role: ulauncher
       vars:
         ulauncher_default_action: false
         ulauncher_do_configure: true

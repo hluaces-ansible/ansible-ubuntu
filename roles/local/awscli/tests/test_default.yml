@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: 'Run tests for the awscli role'
+  hosts: all
   remote_user: root
   roles:
     - role: 'awscli'

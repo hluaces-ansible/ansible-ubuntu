@@ -3,11 +3,11 @@ galaxy_info:
   author: Héctor Luaces Novo
   description: Installs Joplin
   license: MIT
-  min_ansible_version: 2.10
+  min_ansible_version: '2.10'
 
   platforms:
     - name: 'Ubuntu'
-      versions: [18, 19, 20]
+      versions: ['bionic', 'focal']
 
   galaxy_tags: []
 dependencies: []

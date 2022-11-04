@@ -4,6 +4,6 @@
   hosts: 'all'
   tasks:
     - name: 'Check Hadolint version'
-      command: 'hadolint --version'
+      ansible.builtin.command: 'hadolint --version'
       changed_when: false
       check_mode: false

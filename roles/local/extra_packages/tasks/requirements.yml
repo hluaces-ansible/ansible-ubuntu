@@ -1,7 +1,7 @@
 ---
 
 - name: 'Disable apt-daily services to unlock dpkg'
-  systemd:
+  ansible.builtin.systemd:
     name: '{{ item }}'
     state: 'stopped'
     enabled: false
@@ -9,18 +9,19 @@
   notify: ['enable apt_lock_holders']
 
 - name: 'Stop apt-daily-upgrade.timer'
-  systemd:
+  ansible.builtin.systemd:
     name: 'apt-daily-upgrade.timer'
     state: 'stopped'
     enabled: 'no'
 
 - name: 'Update Ubuntu Drivers'
-  command: 'ubuntu-drivers autoinstall'
+  ansible.builtin.command: 'ubuntu-drivers autoinstall'
   when: ansible_virtualization_role != 'guest'
-  ignore_errors: true
+  failed_when: false
+  changed_when: true
 
 - name: 'Install base packages'
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: 'present'
   loop:
@@ -31,5 +32,5 @@
     - apt-transport-https
 
 - name: "Refresh apt-cache (apt-get update)"
-  apt:
+  ansible.builtin.apt:
     update_cache: true

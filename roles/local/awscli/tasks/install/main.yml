@@ -1,7 +1,7 @@
 ---
 
 - name: 'Install awscli and dependencies'
-  apt:
+  ansible.builtin.apt:
     name: ['awscli', 'gnupg']
     state: 'present'
     update_cache: 'true'
@@ -14,13 +14,13 @@
     force: true
 
 - name: 'Add yubico/stable repository'
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'ppa:yubico/stable'
     state: 'present'
     filename: 'yubico'
 
 - name: 'Install yubikey-manager'
-  apt:
+  ansible.builtin.apt:
     name: 'yubikey-manager'
     state: 'present'
     update_cache: true

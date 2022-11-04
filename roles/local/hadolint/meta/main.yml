@@ -1,13 +1,14 @@
 ---
 galaxy_info:
-  author: your name
-  role_name: role_template
-  namespace: your-namespace
-  description: your role description
-  company: Your company
-  license: Copyrighted to your company
-  min_ansible_version: 2.8
+  author: Héctor Luaces <hector@luaces-novo.es>
+  role_name: hadolint
+  namespace: hluaces
+  description: Installs hadolint
+  license: MIT
+  min_ansible_version: '2.8'
 
-  platforms: {}
+  platforms:
+    - name: 'Ubuntu'
+      versions: ['focal']
   galaxy_tags: []
-  dependencies: []
+dependencies: []

@@ -1,10 +1,10 @@
 ---
 
 - name: 'Manage NPM packages'
-  npm:
+  community.general.packaging.language.npm:
     name: "{{ item.name }}"
-    global: "{{ item.global|default(false) }}"
-    version: "{{ item.version|default(omit) }}"
-    path: "{{ item.path|default(omit) }}"
-    ignore_scripts: "{{ item.ignore_scripts|default(false) }}"
+    global: "{{ item.global | default(false) }}"
+    version: "{{ item.version | default(omit) }}"
+    path: "{{ item.path | default(omit) }}"
+    ignore_scripts: "{{ item.ignore_scripts | default(false) }}"
   loop: "{{ extra_packages_npm }}"

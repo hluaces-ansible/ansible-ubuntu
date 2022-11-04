@@ -1,17 +1,17 @@
 ---
 
 - name: 'Create destination dir'
-  file:
+  ansible.builtin.file:
     path: "{{ item['dest'] | dirname }}"
     state: 'directory'
-    owner: "{{ item['dest_owner']|default(omit) }}"
-    group: "{{ item['dest_group']|default(omit) }}"
-    mode: "{{ item['dest_mode']|default(omit) }}"
+    owner: "{{ item['dest_owner'] | default(omit) }}"
+    group: "{{ item['dest_group'] | default(omit) }}"
+    mode: "{{ item['dest_mode'] | default(omit) }}"
 
 - name: 'Copy configuration template'
-  template:
+  ansible.builtin.template:
     src: "{{ item['src'] }}.j2"
     dest: "{{ item['dest'] }}"
-    owner: "{{ item['owner']|default(omit) }}"
-    group: "{{ item['group']|default(omit) }}"
-    mode: "{{ item['mode']|default(omit) }}"
+    owner: "{{ item['owner'] | default(omit) }}"
+    group: "{{ item['group'] | default(omit) }}"
+    mode: "{{ item['mode'] | default(omit) }}"

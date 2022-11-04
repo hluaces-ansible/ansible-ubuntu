@@ -1,6 +1,6 @@
 ---
 
-- name: "Get Hadolint version '{{ hadolint_release }}'"
+- name: "Get Hadolint version {{ hadolint_release }}"
   ansible.builtin.get_url:
     url: "{{ hadolint_releases_url }}/{{ hadolint_release }}/{{ hadolint_binary }}"
     dest: "{{ hadolint_install_dir }}"
