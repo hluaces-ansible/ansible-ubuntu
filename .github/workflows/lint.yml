@@ -1,5 +1,6 @@
 ---
 name: Linting
+run-name: Run linting and syntax checks
 'on':
   push:
     branches: main
