@@ -1,0 +1,7 @@
+- revisar dconfs
+- revisar dconfs again (screenshot)
+- revisar ssh config
+- revisar cifrados
+- drop work_device
+- tilix dropdown
+- 

@@ -243,7 +243,7 @@ gsettings_defaults:
   - key: '/org/gnome/desktop/interface/gtk-theme'
     value: "'Yaru-purple-dark'"
   - key: '/org/gnome/desktop/interface/icon-theme'
-    value : "'Yaru-purple'"
+    value: "'Yaru-purple'"
 
   # Gnome: hide mounts & trash from the dock
   - key: '/org/gnome/shell/extensions/dash-to-dock/show-mounts'
