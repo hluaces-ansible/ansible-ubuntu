@@ -1,0 +1,11 @@
+---
+name: Run linters and syntax checks
+run-name: Linters
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:

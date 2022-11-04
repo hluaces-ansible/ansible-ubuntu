@@ -1,0 +1,19 @@
+---
+
+offline: false
+
+kinds:
+  - playbook: "**/tests/*.{yml,yaml}"
+  - galaxy: "**/folder/galaxy.yml"
+  - tasks: "**/tasks/*.yml"
+  - vars: "**/vars/*.yml"
+  - meta: "**/meta/main.yml"
+
+exclude_paths:
+  - ".cache/"
+  - ".github/"
+  - "vagrant/"
+  - "**/molecule/**/collections.yml"
+  - "**/molecule/**/requirements.yml"
+  - "roles/vendors"
+  - "collections/vendors"
