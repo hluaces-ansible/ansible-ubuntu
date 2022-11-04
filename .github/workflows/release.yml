@@ -1,5 +1,6 @@
 ---
 name: Build new release
+run-name: Build new release
 on:
   push:
     branches:
@@ -10,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: rymndhng/release-on-push-action@v0.27.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           bump_version_scheme: patch
-          tag_prefix: ""
+          tag_prefix: "test"
           use_github_release_notes: true
