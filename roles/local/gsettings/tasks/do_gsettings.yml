@@ -13,15 +13,17 @@
     section: 'connectivity'
     option: '.set.enabled'
     values: "{{ gsettings_conectivty_check | ternary('true', 'false') }}"
+    mode: '0644'
     no_extra_spaces: true
     create: true
   become: true
   become_user: 'root'
 
-- name: 'Configure the "Privacy -> Connectivity check" option (1/2)'
+- name: 'Configure the "Privacy -> Connectivity check" option (2/2)'
   ansible.builtin.file:
     path: '/etc/NetworkManager/conf.d/20-connectivity-ubuntu.conf'
     state: "{{ gsettings_conectivty_check | ternary('touch', 'absent') }}"
+    mode: '0664'
     access_time: 'preserve'
     modification_time: 'preserve'
   become: true

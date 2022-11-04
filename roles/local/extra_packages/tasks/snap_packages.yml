@@ -1,9 +1,9 @@
 ---
 
 - name: 'Configure SNAP packages'
-  snap:
+  community.general.packaging.os.snap:
     name: "{{ item.name }}"
-    channel: "{{ item.channel|default('stable') }}"
-    classic: "{{ item.classic|default(false) }}"
-    state: "{{ item.state|default('present') }}"
+    channel: "{{ item.channel | default('stable') }}"
+    classic: "{{ item.classic | default(false) }}"
+    state: "{{ item.state | default('present') }}"
   loop: "{{ extra_packages_snaps }}"

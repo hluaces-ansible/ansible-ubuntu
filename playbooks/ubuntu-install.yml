@@ -1,8 +1,5 @@
 ---
 
-- name: 'Build vendor packages'
-  import_playbook: 0_local_requirements.yaml
-
 - name: 'Install Ubuntu Workstation (root configuration)'
   hosts: 'ubuntu_group'
   remote_user: "{{ remote_user | default(omit) }}"
@@ -42,7 +39,7 @@
 
   post_tasks:
     - name: 'Include extra tasks for root user'
-      include_tasks:
+      ansible.builtin.include_tasks:
         file: "{{ item }}"
         apply:
           tags: ['privileged-extra-tasks']
@@ -81,7 +78,7 @@
       tags: ['role-ulauncher']
   post_tasks:
     - name: 'Include extra tasks for non-privileged users'
-      include_tasks:
+      ansible.builtin.include_tasks:
         file: "{{ item }}"
         apply:
           tags: ['unprivileged-extra-tasks']

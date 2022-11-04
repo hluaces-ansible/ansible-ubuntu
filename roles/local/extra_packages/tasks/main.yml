@@ -1,16 +1,16 @@
 ---
 
 - name: 'Include role requirements'
-  include_tasks: 'requirements.yml'
+  ansible.builtin.include_tasks: 'requirements.yml'
 
 - name: 'Include custom APT package configuration'
-  include_tasks: 'apt_packages.yml'
+  ansible.builtin.include_tasks: 'apt_packages.yml'
 
 - name: 'Include custom SNAP package configuration'
-  include_tasks: 'snap_packages.yml'
+  ansible.builtin.include_tasks: 'snap_packages.yml'
 
 - name: 'Include custom PIP package configuration'
-  include_tasks: 'pip_packages.yml'
+  ansible.builtin.include_tasks: 'pip_packages.yml'
 
 - name: 'Include custom NPM package configuration'
-  include_tasks: 'npm_packages.yml'
+  ansible.builtin.include_tasks: 'npm_packages.yml'

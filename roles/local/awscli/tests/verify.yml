@@ -6,10 +6,14 @@
   gather_facts: false
   tasks:
     - name: 'Verify aws-cli is installed'
-      command: 'aws --version'
+      ansible.builtin.command: 'aws --version'
+      changed_when: false
 
     - name: 'Verify aws-vault is installed'
-      command: 'aws-vault --version'
+      ansible.builtin.command: 'aws-vault --version'
+      changed_when: false
 
     - name: 'Verify ykman is installed'
-      shell: 'command -v ykman'
+      ansible.builtin.shell: 'command -v ykman'
+      changed_when: false
+      tags: ['skip_ansible_lint']

@@ -1,5 +1,5 @@
 ---
 
 - name: 'Include gsettings configuration'
-  include_tasks: 'do_gsettings.yml'
+  ansible.builtin.include_tasks: 'do_gsettings.yml'
   when: gsettings_do_gsettings | bool

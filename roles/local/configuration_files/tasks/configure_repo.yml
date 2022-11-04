@@ -1,20 +1,20 @@
 ---
 
 - name: 'Create destination dir'
-  file:
+  ansible.builtin.file:
     path: "{{ item['dest'] }}"
     state: 'directory'
-    owner: "{{ item['dest_owner']|default(omit) }}"
-    group: "{{ item['dest_group']|default(omit) }}"
-    mode: "{{ item['dest_mode']|default(omit) }}"
+    owner: "{{ item['dest_owner'] | default(omit) }}"
+    group: "{{ item['dest_group'] | default(omit) }}"
+    mode: "{{ item['dest_mode'] | default(omit) }}"
 
 
 - name: 'Clone remote repository'
-  git:
-    accept_hostkey: "{{ item['accept_hostkey']|default(omit) }}"
-    key_file: "{{ item['key_file']|default(omit) }}"
-    repo: "{{ item['repo']|default(omit) }}"
-    ssh_opts: "{{ item['ssh_opts']|default(omit) }}"
-    version: "{{ item['version']|default(omit) }}"
-    dest: "{{ item['dest']|default(omit) }}"
-    force: "{{ item['force']|default(false) }}"
+  ansible.builtin.git:
+    accept_hostkey: "{{ item['accept_hostkey'] | default(omit) }}"
+    key_file: "{{ item['key_file'] | default(omit) }}"
+    repo: "{{ item['repo'] | default(omit) }}"
+    ssh_opts: "{{ item['ssh_opts'] | default(omit) }}"
+    version: "{{ item['version'] | default(omit) }}"
+    dest: "{{ item['dest'] | default(omit) }}"
+    force: "{{ item['force'] | default(false) }}"

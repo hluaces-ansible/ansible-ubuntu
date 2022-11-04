@@ -6,6 +6,6 @@
     repo: 'ppa:agornostal/ulauncher'
 
 - name: 'Install Ulauncher'
-  apt:
+  ansible.builtin.apt:
     name: ['ulauncher']
     update_cache: true

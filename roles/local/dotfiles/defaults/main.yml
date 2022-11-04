@@ -1,6 +1,4 @@
 ---
-# defaults file for role_template
-
 # A dict with the following format:
 # git_category:
 #   git_config_option : git_config_value

@@ -1,13 +1,13 @@
 ---
 
-- name: "Create directory '{{ awscli_config_directory }}'"
-  file:
+- name: "Create directory {{ awscli_config_directory }}"
+  ansible.builtin.file:
     path: "{{ awscli_config_directory }}"
     state: 'directory'
     mode: '0700'
 
-- name: "Generate '{{ awscli_config_file }}'"
-  copy:
+- name: "Generate {{ awscli_config_file }}"
+  ansible.builtin.copy:
     dest: "{{ awscli_config_file }}"
     content: "{{ awscli_configuration }}"
     mode: '0700'

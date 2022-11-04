@@ -1,10 +1,15 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: requirements.yml
+    requirements-file: collections.yml
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
 platforms:
   - name: centos7
     image: centos:7
@@ -12,9 +17,11 @@ platforms:
     image: debian:stable
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
-verifier:
-  name: testinfra
-  lint:
-    name: flake8
+  log: true
+  options:
+    forks: '20'
+  config_options:
+    defaults:
+      strategy: ${MOLECULE_STRATEGY-linear}
+      strategy_plugins: ${MOLECULE_STRATEGY_PLUGINS}
+      force_color: true
