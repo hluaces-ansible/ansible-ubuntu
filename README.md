@@ -96,33 +96,14 @@ After this:
 
 This assumes that you have both Virtualbox and Vagrant installed on your machine.
 
-Before doing this you might need to run the `playbooks/0_local_requirements.yml` playbook in order to install local Ansible-galaxy dependencies.
+Start by running `make dependencies` to download Ansible Galaxy dependencies.
 
-As it only targets `localhost`  you can simply execute it with the following command:
-
-```
-ansible-playbook -vv playbooks/0_local_requirements.yml
-```
-
-To create and provision a new environment:
-
-```
-cd vagrant
-vagrant up
-```
-
-To reprovision an already created environment:
-
-```
-cd vagrant
-vagrant provision
-```
+After that run `make test` to create and provision a new environment (or an already existing one).
 
 If you want to destroy the newly created testing environment:
 
 ```
-cd vagrant
-vagrant destroy
+make destroy
 ```
 
 ## Run the playbook against your local machine (production)
