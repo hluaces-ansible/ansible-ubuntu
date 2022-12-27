@@ -131,25 +131,25 @@ extra_packages_snaps:
 # Pip packages to install
 extra_packages_pip:
   - name: 'ansible'
-    executable: pip3
+    executable: 'pip3'
   - name: 'ansible-lint'
-    executable: pip3
+    executable: 'pip3'
   - name: 'ansible-navigator'
-    executable: pip3
+    executable: 'pip3'
   - name: 'molecule'
-    executable: pip3
+    executable: 'pip3'
   - name: 'molecule[docker]'
-    executable: pip3
+    executable: 'pip3'
   - name: 'molecule[vagrant]'
-    executable: pip3
+    executable: 'pip3'
   - name: 'yamllint'
-    executable: pip3
+    executable: 'pip3'
   - name: 'docker'
-    executable: pip3
+    executable: 'pip3'
   - name: 'molecule-vagrant'
-    executable: pip3
+    executable: 'pip3'
   - name: 'python-vagrant'
-    executable: pip3
+    executable: 'pip3'
 
 # NPM utils
 extra_packages_npm:
