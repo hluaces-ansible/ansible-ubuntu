@@ -134,6 +134,8 @@ extra_packages_pip:
     executable: pip3
   - name: 'ansible-lint'
     executable: pip3
+  - name: 'ansible-navigator'
+    executable: pip3
   - name: 'molecule'
     executable: pip3
   - name: 'molecule[docker]'
