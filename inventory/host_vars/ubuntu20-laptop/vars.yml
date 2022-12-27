@@ -23,7 +23,6 @@ extra_packages_keys: []
 # See "extra_packages" role
 extra_packages_keys_url:
   - url: 'https://dl.google.com/linux/linux_signing_key.pub'
-  - url: 'https://download.sublimetext.com/sublimehq-pub.gpg'
   - url: 'https://packages.microsoft.com/keys/microsoft.asc'
   - url: 'https://apt.releases.hashicorp.com/gpg'
 
@@ -32,8 +31,6 @@ extra_packages_keys_url:
 extra_packages_repositories:
   - name: 'google-chrome'
     repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
-  - name: 'sublime_text'
-    repo: 'deb https://download.sublimetext.com/ apt/stable/'
   - name: 'vscode'
     repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
   - name: 'hashicorp'
@@ -42,31 +39,40 @@ extra_packages_repositories:
 # Extra APT packages to install
 # See "extra_packages" role
 extra_packages_list:
+  # Jumpcloud agent
+  - apt-rdepends
+  - apt-show-versions
+  - coreutils
+  - grep
+  - hostname
+  - libc-bin
+  - libnss3
+  - libnss3-tools
+  - lsb-release
+  - lsof
+  - npm
+  - mawk
+  - openssl
+  - passwd
+  - procps
+  - sysvinit-utils
+  - sudo
+  - tar
+
   # Everyday apps
-  - 'thunderbird'
   - 'gnome-calendar'
   - 'firefox'
   - 'google-chrome-stable'
-  - 'keepassxc'
   - 'libreoffice'
   - 'mythes-gl'
   - 'hyphen-gl'
-  - 'calibre'
-
-  # Gaming
-  - 'steam'
 
   # Programming
-  - 'sublime-text'
   - 'code'
   - 'clang-format'
   - 'cppcheck'
   - 'fonts-firacode'
   - 'git'
-  - 'lua-check'
-  - 'luarocks'
-  - 'nodejs'
-  - 'npm'
   - 'python3'
   - 'pylint'
   - 'python3-pip'
@@ -85,6 +91,7 @@ extra_packages_list:
   - 'postgresql-client-12'
   - 'strace'
   - 'telnet'
+  - 'telnet-ssl'
   - 'unrar'
   - 'unzip'
   - 'vim'
@@ -110,7 +117,6 @@ extra_packages_list:
   - 'sshpass'
   - 'remmina'
   - 'remmina-plugin-vnc'
-  - 'telnet-ssl'
 
   # System
   - 'libinput-tools'
@@ -122,10 +128,8 @@ extra_packages_list:
 
 # Snap packages to install
 extra_packages_snaps:
-  - name: 'discord'
   - name: 'spotify'
   - name: 'bitwarden'
-  - name: 'telegram-desktop'
   - name: 'phpstorm'
     classic: true
   - name: 'dbeaver-ce'
@@ -171,7 +175,7 @@ git_config:
   user:
     name: 'Héctor Luaces'
     email: "{{ vault_email }}"
-    signingkey: '11A11DEBC6EC8723'
+    signingkey: '33835F136C261136'
   core:
     editor: 'vi'
     excludesfile: '~/.gitignore'
@@ -193,18 +197,6 @@ git_config:
 
 # Configuration files for the newly created user
 configuration_files_user:
-  # Thunderbird configuration. It is not fuly portable but it makes things
-  # waaaaay easier.
-  - type: 'file'
-    src: 'thunderbird/profiles.ini'
-    dest: '~/.thunderbird/profiles.ini'
-  - type: 'file'
-    src: 'thunderbird/installs.ini'
-    dest: '~/.thunderbird/installs.ini'
-  - type: 'file'
-    src: 'thunderbird/prefs.js'
-    dest: "~/.thunderbird/{{ configure_user_name }}.default/prefs.js"
-
   # Terminator
   - type: 'file'
     src: 'terminator/config'
@@ -212,18 +204,18 @@ configuration_files_user:
 
   # Private keys
   - type: 'file'
-    src: 'ssh/config'
+    src: 'ssh/config_work_user'
     dest: '~/.ssh/config'
     dest_mode: '700'
     mode: '600'
   - type: 'file'
-    src: 'ssh/red-queen'
-    dest: '~/.ssh/red-queen'
+    src: 'ssh/work'
+    dest: '~/.ssh/work'
     dest_mode: '700'
     mode: '600'
   - type: 'file'
-    src: 'ssh/red-queen.pub'
-    dest: '~/.ssh/red-queen.pub'
+    src: 'ssh/work.pub'
+    dest: '~/.ssh/work.pub'
     dest_mode: '700'
     mode: '600'
   - type: 'file'
@@ -231,15 +223,6 @@ configuration_files_user:
     dest: '~/.ssh/git'
     dest_mode: '700'
     mode: '600'
-
-  # Sublime text configuration. Too much stuff in here to not do this...
-  - type: 'repo'
-    accept_hostkey: true
-    repo: "{{ vault_sublime_text_repo }}"
-    version: 'master'
-    key_file: "~/.ssh/git"
-    dest: "~/.config/sublime-text-3"
-    force: true
 
 # aws-cli configuration
 awscli_configuration: "{{ vault_awscli_configuration }}"

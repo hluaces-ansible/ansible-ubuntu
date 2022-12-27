@@ -114,12 +114,6 @@ You'll need to run this as a sudoer.
 ansible-playbook -kK -v -i inventory/prod.ini playbooks/ubuntu-install.yml -l laptop
 ```
 
-In case you also want to run the `work-device` environment, run this after the previous command:
-
-```
-ansible-playbook -kK -v -i inventory/prod.ini playbooks/ubuntu-install.yml -l laptop
-```
-
 ## License
 
 Please read [GNU AFFERO GENERAL PUBLIC LICENSE](LICENSE).
