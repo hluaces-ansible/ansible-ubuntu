@@ -1,6 +1,6 @@
 ---
 
-- name: 'Enable apt_lock_holders'
+- name: 'enable apt_lock_holders'
   ansible.builtin.systemd:
     name: '{{ item }}'
     state: 'started'
