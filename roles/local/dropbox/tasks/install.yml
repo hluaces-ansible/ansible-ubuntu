@@ -15,8 +15,20 @@
     keyserver: 'pgp.mit.edu'
     id: '1C61A2656FB57B7E4DE0F4C1FC918B335044912E'
 
+# Dropbox is prone to serve 404s, so this task is here to minimise blips
+- name: 'Download the Dropbox .deb package'
+  ansible.builtin.get_url:
+    url: "{{ dropbox_deb_package_url }}"
+    dest: "{{ dropbox_tmp_deb_file }}"
+    force: true
+    mode: "0600"
+  register: _get_dropbox
+  until: not _get_dropbox.failed
+  retries: 5
+  delay: 20
+
 - name: 'Install the Dropbox .deb package'
   ansible.builtin.apt:
-    deb: "{{ dropbox_deb_package_url }}"
+    deb: "{{ dropbox_tmp_deb_file }}"
     state: 'present'
   when: ansible_facts['distribution_file_variety'] == 'Debian'
