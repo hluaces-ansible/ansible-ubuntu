@@ -1,13 +1,15 @@
+ANSIBLE_ARGS=
+VAGRANT_BOX="ubuntu20-desktop"
 
 dependencies:
-	ansible-galaxy role install -f -r roles/requirements.yml -p roles/vendors
-	ansible-galaxy collection install -f -r collections/requirements.yml -p collections/vendors
+	ansible-galaxy role install -r roles/requirements.yml -p roles/vendors
+	ansible-galaxy collection install -r collections/requirements.yml -p collections/vendors
 
 clean:
 	rm -rf roles/vendors/* collections/vendors/*
 
 test:
-	cd vagrant && vagrant up --provision && cd .. || cd ..
+	(cd vagrant; ANSIBLE_ARGS="$(ANSIBLE_ARGS)" vagrant up $(VAGRANT_BOX) --provision)
 
 destroy:
-	cd vagrant && vagrant destroy -f && cd .. || cd ..
+	(cd vagrant; vagrant destroy -f)

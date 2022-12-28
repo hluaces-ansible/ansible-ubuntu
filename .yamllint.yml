@@ -8,3 +8,4 @@ ignore: |
   vault_*.yml
   collections/vendors
   roles/vendors
+  .github/
