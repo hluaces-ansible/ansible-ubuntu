@@ -1,0 +1,77 @@
+---
+name: Test
+run-name: Test for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }})
+'on':
+  push:
+  schedule:
+    - cron: "0 0 * * 1"
+
+jobs:
+  Test:
+    runs-on: macos-10.15
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ["ubuntu20-laptop", "ubuntu20-desktop", "ubuntu22-desktop"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      ################
+      # Caches
+      ################
+      - name: Cache Vagrant boxes
+        uses: actions/cache@v3
+        with:
+          path: ~/.vagrant.d/boxes
+          key: vagrant-boxes
+
+      - name: Cache Ansible Galaxy roles
+        uses: actions/cache@v3
+        with:
+          path: roles/
+          key: ansible-galaxy-roles-${{ hashFiles('roles/requirements.yml') }}
+
+      - name: Cache Ansible Galaxy collections
+        uses: actions/cache@v3
+        with:
+          path: collections/
+          key: ansible-galaxy-collections-${{ hashFiles('collections/requirements.yml') }}
+
+      ################
+      # Bootstrapping
+      ################
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Set up Ansible
+        run: pip install ansible==6.5
+
+      - name: Set up MacOS requirements
+        run: pip install passlib
+
+      - name: Set up Ansible homedir and show tools versions
+        run: ansible --version && vagrant --version
+
+      - name: Set up Ansible Vault
+        run: echo "$VAULT_TOKEN" > ~/.ansible/default.vault && chmod 600 ~/.ansible/default.vault
+        env:
+          VAULT_TOKEN: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+
+      - name: Set up Ansible Galaxy dependencies
+        run: make dependencies
+
+      - name: Provision Vagrant box
+        run: make test ANSIBLE_ARGS="-l localhost,${{ matrix.host }}" VAGRANT_BOX="${{ matrix.host }}"
+
+      ################
+      # Artifacts
+      ################
+      - name: Upload logs
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: ansible.log
+          path: config/tmp/ansible.log

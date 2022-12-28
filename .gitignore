@@ -14,6 +14,7 @@ collections/vendors/*
 *.pyc
 *.retry
 
-# Vagrant state
+# Vagrant state and artifacts
 vagrant/.vagrant
 vagrant/.vagrant/*
+vagrant/ubuntu.vm
