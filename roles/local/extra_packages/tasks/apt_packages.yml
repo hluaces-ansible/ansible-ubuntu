@@ -3,6 +3,7 @@
 - name: 'Install and upgrade APT utilities for Ansible'
   ansible.builtin.apt:
     name: ['ca-certificates', 'apt-transport-https']
+    state: 'latest'
     update_cache: true
 
 - name: 'Manage extra APT-keys from keyservers'
