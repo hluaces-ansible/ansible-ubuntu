@@ -14,6 +14,10 @@
     state: 'stopped'
     enabled: 'no'
 
+- name: "Refresh apt-cache (apt-get update)"
+  ansible.builtin.apt:
+    update_cache: true
+
 - name: 'Update Ubuntu Drivers'
   ansible.builtin.command: 'ubuntu-drivers autoinstall'
   when: ansible_virtualization_role != 'guest'
@@ -22,15 +26,10 @@
 
 - name: 'Install base packages'
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name:
+      # So that ansible does not complain. See issue #56832 @ ansible
+      - aptitude
+      - ubuntu-restricted-extras
+      - gnome-tweaks
+      - apt-transport-https
     state: 'present'
-  loop:
-    # So that ansible does not complain. See issue #56832 @ ansible
-    - aptitude
-    - ubuntu-restricted-extras
-    - gnome-tweaks
-    - apt-transport-https
-
-- name: "Refresh apt-cache (apt-get update)"
-  ansible.builtin.apt:
-    update_cache: true
