@@ -8,19 +8,19 @@
   roles:
     - role: 'configure_system'
       tags: ['role-configure_system']
-    - role: 'sysctl'
+    - role: 'hluaces.iac.sysctl'
       tags: ['role-sysctl']
-    - role: 'extra_packages'
+    - role: 'hluaces.iac.extra_packages'
       tags: ['role-extra_packages']
     - role: 'geerlingguy.docker'
       tags: ['role-geerlingguy.docker']
-    - role: 'dropbox'
+    - role: 'hluaces.gnome.dropbox'
       tags: ['role-dropbox']
     - role: 'hadolint'
       tags: ['role-hadolint']
 
     # Root dotfiles
-    - role: 'dotfiles'
+    - role: 'hluaces.iac.dotfiles'
       tags: ['role-dotfiles']
 
     # Root only installs this, configuration is per-user
@@ -31,7 +31,7 @@
       tags: ['role-awscli']
 
     # Only installation
-    - role: 'ulauncher'
+    - role: 'hluaces.gnome.ulauncher'
       vars:
         ulauncher_default_action: false
         ulauncher_do_install: true
@@ -52,17 +52,17 @@
   become: true
   become_user: "{{ configure_user_name }}"
   roles:
-    - role: 'dotfiles'
+    - role: 'hluaces.iac.dotfiles'
       tags: ['role-dotfiles']
-    - role: 'configuration_files'
+    - role: 'hluaces.iac.configuration_files'
       tags: ['role-configuration_files']
       vars:
         configuration_files: "{{ configuration_files_user }}"
-    - role: 'gsettings'
+    - role: 'hluaces.gnome.gsettings'
       tags: ['role-gsettings']
-    - role: 'tilix'
+    - role: 'hluaces.gnome.tilix'
       tags: ['role-tilix']
-    - role: 'joplin'
+    - role: 'hluaces.gnome.joplin'
       tags: ['role-joplin']
     # The user only configures this
     - role: 'awscli'
@@ -71,7 +71,7 @@
         awscli_do_configure: true
       tags: ['role-awscli']
     # The user only configures this
-    - role: 'ulauncher'
+    - role: 'hluaces.gnome.ulauncher'
       vars:
         ulauncher_default_action: false
         ulauncher_do_configure: true
