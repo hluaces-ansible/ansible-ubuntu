@@ -29,13 +29,13 @@ jobs:
       - name: Cache Ansible Galaxy roles
         uses: actions/cache@v3
         with:
-          path: roles/
+          path: roles/vendors/
           key: ansible-galaxy-roles-${{ hashFiles('roles/requirements.yml') }}
 
       - name: Cache Ansible Galaxy collections
         uses: actions/cache@v3
         with:
-          path: collections/
+          path: collections/vendors/
           key: ansible-galaxy-collections-${{ hashFiles('collections/requirements.yml') }}
 
       ################
