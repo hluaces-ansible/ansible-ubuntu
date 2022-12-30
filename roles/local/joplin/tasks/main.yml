@@ -1,7 +1,7 @@
 ---
 
 - name: 'Download and execute Joplin install script'
-  ansible.builtin.shell: "wget -O - {{ joplin_install_script }} | bash"
+  ansible.builtin.shell: "wget -O - {{ joplin_install_script }} | bash -x"
   environment:
     TERM: 'xterm-256color'
   tags: ['skip_ansible_lint']
