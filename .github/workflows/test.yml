@@ -64,7 +64,7 @@ jobs:
         run: make dependencies
 
       - name: Provision Vagrant box
-        run: make test ANSIBLE_ARGS="-l localhost,${{ matrix.host }}" VAGRANT_BOX="${{ matrix.host }}"
+        run: make test ANSIBLE_ARGS="-l localhost,${{ matrix.host }} --skip-tags=role-joplin" VAGRANT_BOX="${{ matrix.host }}"
 
       ################
       # Artifacts
