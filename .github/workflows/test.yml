@@ -73,5 +73,5 @@ jobs:
         uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: ansible.log
+          name: ansible-${{ matrix.host }}.log
           path: config/tmp/ansible.log
