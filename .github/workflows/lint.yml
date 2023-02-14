@@ -43,7 +43,7 @@ jobs:
         run: sudo apt update && sudo apt install -y make
 
       - name: Set up PIP dependencies
-        run: sudo pip install ansible==6.5 ansible-lint yamllint
+        run: pip install ansible==6.7 ansible-lint==6.12 yamllint==1.29
 
       - name: Set up Ansible Galaxy dependencies
         run: make dependencies
