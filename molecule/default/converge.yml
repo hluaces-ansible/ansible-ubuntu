@@ -1,0 +1,3 @@
+---
+- name: Converge
+  import_playbook: '../../playbooks/ubuntu-install.yml'

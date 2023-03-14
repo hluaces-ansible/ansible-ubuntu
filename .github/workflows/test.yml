@@ -46,9 +46,6 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Set up Ansible
-        run: pip install ansible==6.5
-
       - name: Set up dependencies
         run: make dependencies
 
@@ -61,7 +58,7 @@ jobs:
           VAULT_TOKEN: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
 
       - name: Provision Vagrant box
-        run: make test ANSIBLE_ARGS="-l localhost,${{ matrix.host }} --skip-tags=role-joplin" VAGRANT_BOX="${{ matrix.host }}"
+        run: molecule converge -- -l "${{ matrix.host }}" --skip-tags="role-joplin"
 
       ################
       # Artifacts
