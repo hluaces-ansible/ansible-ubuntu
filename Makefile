@@ -10,7 +10,7 @@ clean:
 	rm -rf roles/vendors/* collections/vendors/*
 
 test:
-	(cd vagrant; ANSIBLE_ARGS="$(ANSIBLE_ARGS)" vagrant up $(VAGRANT_BOX) --provision)
+	molecule converge
 
-destroy:
-	(cd vagrant; vagrant destroy -f)
+clean:
+	molecule destroy
