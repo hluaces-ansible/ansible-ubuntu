@@ -73,10 +73,13 @@ extra_packages_list:
   - 'vagrant'
   - 'virtualbox'
   - 'terraform'
+  - 'packer'
 
   # CLI tools
   - 'terminator'
   - 'iotop'
+  - 'iftop'
+  - 'ngrep'
   - 'mysql-client'
   - 'postgresql-client-14'
   - 'strace'
