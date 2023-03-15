@@ -4,25 +4,25 @@ This is my Ubuntu 18/19/20 workstation playbook.
 
 Its purposes are:
 
-- Document everything that I use on my workstation.
-- Keep track of my preferences on a git repository.
-- Ease the deployment of a new workstation or the upgrade of the current one.
+- Document everything that I use on my workstation
+- Keep track of my preferences on a git repository
+- Ease the deployment of a new workstation or the upgrade of the current one
 
 ## What does it do?
 
 Basically it does this:
 
-- Self-installs the `ansible-galaxy` requirements.
-- Creates a new user which will be flagged as a sudoer.
+- Self-installs the `ansible-galaxy` requirements
+- Creates a new user which will be flagged as a sudoer
 - Installs a bunch of software from several package managers:
     - apt
     - pip
     - npm
-- Deploys my Thunderbird configuration.
-- Deploys my `.dotfiles` to both root and the newly created user.
-- Installs a bunch of software.
-- Configures Gnome preferences and privacy settings to my liking.
-- Installs a few extra things.
+- Deploys my Thunderbird configuration
+- Deploys my `.dotfiles` to both root and the newly created user
+- Installs a bunch of software
+- Configures Gnome preferences and privacy settings to my liking
+- Installs a few extra things
 
 ## How does it do it?
 
@@ -32,6 +32,12 @@ As you can see, every role on this repository is pretty minimalistic as the main
 
 That's the reason as to why some of these roles seem pretty basic: they indeed are, but are coded in a way that allow me to declare on a yaml file my requirements.
 
+## What does it require?
+
+A Python `requirements.txt` file is provided. It includes the versiones of Ansible, related tools and libraries required to run the playbook.
+
+If you also want to run tests locally, you'll need `vagrant`.
+
 ## File structure
 
 ```
@@ -39,6 +45,7 @@ That's the reason as to why some of these roles seem pretty basic: they indeed a
 ├── LICENSE
 ├── README.md                             # This file
 ├── ansible.cfg -> config/ansible.cfg     # Ansible.cfg file being used
+├── requirements.txt                      # Contains Python and Ansible
 ├── config                                # Configuration directory
 │   ├── ansible.cfg                       # Ansible configuration
 │   ├── known_hosts                       # Custom known_hosts file
@@ -54,6 +61,7 @@ That's the reason as to why some of these roles seem pretty basic: they indeed a
 │   ├── default.ini -> dev.ini            # Default inventory to use
 │   ├── dev.ini                           # Dev inventory (vagrant)
 │   └── prod.ini                          # Production inventory (localhost)
+├── molecule                              # Used by the tests
 ├── playbooks                             # Playbook directory
 │   ├── files                             # Files used by the playbook
 │   ├── tasks                             # Extra tasks ran by the playbook
@@ -86,25 +94,18 @@ You'll need `git` and `ansible` installed for this to work. Also, this is used t
 
 After this:
 
-- Clone this repo.
-- Delete the `./inventory/group_vars/all/vault_secrets.yml` file and create yours.
-- Add or tweak and inventory entry in `./inventory/prod.ini` or `./inventory/dev.ini`.
-- Add or tweak the `./inventory/host_vars` of the host you want to provision.
-- If you want to run extra tasks save them either inside the `playbooks/tasks/root` directory or inside `playbooks/tasks/user`. They will be loaded automatically.
+- Clone this repo
+- Delete the `./inventory/group_vars/all/vault_secrets.yml` file and create yours
+- Add or tweak and inventory entry in `./inventory/prod.ini` or `./inventory/dev.ini`
+- Add or tweak the `./inventory/host_vars` of the host you want to provision
+- If you want to run extra tasks save them either inside the `playbooks/tasks/root` directory or inside `playbooks/tasks/user`. They will be loaded automatically
 
-## Run the playbook against a self-provisioning testing environment
+## Run tests
 
-This assumes that you have both Virtualbox and Vagrant installed on your machine.
-
-Start by running `make dependencies` to download Ansible Galaxy dependencies.
-
-After that run `make test` to create and provision a new environment (or an already existing one).
-
-If you want to destroy the newly created testing environment:
-
-```
-make destroy
-```
+- Install Vagrant and Virtualbox
+- Install all dependencies with `make dependencies`
+- After dependencies were installed, run the tests with `molecule test`
+- Use `molecule destroy` when you are done to clean up the environment
 
 ## Run the playbook against your local machine (production)
 
