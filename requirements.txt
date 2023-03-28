@@ -1,8 +1,8 @@
-ansible==6.7
-ansible-lint==6.12
-yamllint==1.29
-molecule==4.0.4
-molecule-docker==2.1.0
-molecule-vagrant==0.6.1
+ansible==6.*
+ansible-lint==6.*
+yamllint==1.*
+molecule==4.*
+molecule-docker==2.*
+molecule-vagrant==0.*
 passlib==1.7.4
-python-vagrant==0.5.15
+python-vagrant==0.*
