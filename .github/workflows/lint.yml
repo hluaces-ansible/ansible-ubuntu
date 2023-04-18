@@ -45,6 +45,9 @@ jobs:
       - name: Set up Ansible dependencies
         run: make dependencies
 
+      - name: Set up Ansible Vault
+        run: echo "hello world" > ~/.ansible/default.vault && chmod 600 ~/.ansible/default.vault
+
       ################
       # Linting
       ################
