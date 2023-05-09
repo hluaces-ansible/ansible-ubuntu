@@ -10,17 +10,17 @@ lint: |
   yamllint -s .
   ansible-lint .
 platforms:
-  - name: 'ubuntu22-desktop'
-    box: 'hluaces/ubuntu-gnome'
-    box_version: '22.04.1'
+  - name: ubuntu22-desktop
+    box: hluaces/ubuntu-gnome
+    box_version: 22.04.1
     groups: ['ubuntu_group']
-  - name: 'ubuntu20-laptop'
-    box: 'hluaces/ubuntu-gnome'
-    box_version: '20.04.04'
+  - name: ubuntu20-laptop
+    box: hluaces/ubuntu-gnome
+    box_version: 20.04.04
     groups: ['ubuntu_group']
-  - name: 'ubuntu20-desktop'
-    box: 'hluaces/ubuntu-gnome'
-    box_version: '20.04.04'
+  - name: ubuntu20-desktop
+    box: hluaces/ubuntu-gnome
+    box_version: 20.04.04
     groups: ['ubuntu_group']
 provisioner:
   name: ansible
