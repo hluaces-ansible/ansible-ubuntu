@@ -5,10 +5,6 @@ dependency:
   command: 'make dependencies'
 driver:
   name: vagrant
-lint: |
-  set -e
-  yamllint -s .
-  ansible-lint .
 platforms:
   - name: ubuntu22-desktop
     box: hluaces/ubuntu-gnome
