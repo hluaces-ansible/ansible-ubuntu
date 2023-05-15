@@ -3,7 +3,7 @@ ansible-compat==3.0.2
 ansible-lint==6.16.0
 yamllint==1.31.0
 molecule==4.0.4
-molecule-docker==2
+molecule-docker==2.1.0
 molecule-vagrant==2
 passlib==1.7.4
 python-vagrant==1.0.0
