@@ -14,10 +14,6 @@ platforms:
     box: hluaces/ubuntu-gnome
     box_version: 20.04.04
     groups: ['ubuntu_group']
-  - name: ubuntu20-desktop
-    box: hluaces/ubuntu-gnome
-    box_version: 20.04.04
-    groups: ['ubuntu_group']
 provisioner:
   name: ansible
   inventory:
