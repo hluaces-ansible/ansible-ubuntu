@@ -292,16 +292,16 @@ gsettings_defaults:
   - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding'
     value: "'masculine'"
   - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command'
-    value: "'tilix --quake'"
+    value: "'env GDK_BACKEND=x11 tilix --quake'"
   - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name'
     value: "'tilix --quake'"
 
   # Gnome: Custom keybinding #1: show ulauncher
-  - key:  '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding'
     value: "'<Primary><Shift>space'"
-  - key:  '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command'
     value: "'ulauncher-toggle'"
-  - key:  '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name'
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name'
     value: "'ulauncher'"
 
   # Gnome: Emoji selector (conflicts with a keybinding for terminator)
