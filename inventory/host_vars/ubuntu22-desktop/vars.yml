@@ -266,7 +266,7 @@ gsettings_defaults:
 
   # Gnome: Screenshots shortcuts
   - key: '/org/gnome/shell/keybindings/show-screenshot-ui'
-    value: '["<Primary><Shift><Alt>dollar"]'
+    value: '["<Primary><Shift><Alt>4"]'
   - key: '/org/gnome/shell/keybindings/show-screen-recordingui'
     value: '["<Primary><Shift><Alt>r"]'
   - key: '/org/gnome/shell/keybindings/screenshot'
