@@ -9,7 +9,7 @@ configure_timezone: 'Europe/Madrid'
 # Additional user to create
 configure_user_name: 'hector'
 configure_user_password: 'hector'
-configure_user_groups: ['sudo', 'input']
+configure_user_groups: ['sudo', 'input', 'plugdev']
 
 # User created for work stuff. Will be ignored if undefined
 configure_work_user_name: ''
