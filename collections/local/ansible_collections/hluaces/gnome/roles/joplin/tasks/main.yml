@@ -1,4 +1,9 @@
 ---
+- name: 'Install Joplin dependencies'
+  ansible.builtin.apt:
+    update_cache: true
+    name: 'libfuse'
+    state: 'present'
 
 - name: 'Download and execute Joplin install script'
   ansible.builtin.shell: "wget -O - {{ joplin_install_script }} | bash"
