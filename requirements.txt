@@ -2,7 +2,8 @@ ansible==8.2.0
 ansible-lint==6.16.2
 yamllint==1.32.0
 molecule==6.0.0
-molecule-docker==2.1.0
-molecule-vagrant==2
+molecule-plugins==23.5.0
+molecule-plugins[vagrant]==23.5.0
+molecule-plugins[docker]==23.5.0
 passlib==1.7.4
 python-vagrant==1.0.0
