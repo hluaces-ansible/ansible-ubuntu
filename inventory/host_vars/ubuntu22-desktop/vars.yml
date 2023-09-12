@@ -115,6 +115,8 @@ extra_packages_list:
   - 'libinput-tools'
   - 'etckeeper'
   - 'powerline'
+  - 'libfuse2'
+  - 'libfuse3-3'
 
 # Snap packages to install
 extra_packages_snaps:
