@@ -50,7 +50,7 @@ jobs:
         run: make dependencies
 
       - name: Set up Ansible homedir and show tools versions
-        run: ansible --version && vagrant --version
+        run: ansible --version && vagrant --version && virtualbox --help
 
       - name: Set up Ansible Vault
         run: echo "$VAULT_TOKEN" > ~/.ansible/default.vault && chmod 600 ~/.ansible/default.vault
