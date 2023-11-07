@@ -100,6 +100,7 @@ extra_packages_list:
   - 'vim'
   - 'nmap'
   - 'jq'
+  - 'whois'
 
   # Media
   - 'vlc'
@@ -125,6 +126,7 @@ extra_packages_list:
   - 'libinput-tools'
   - 'etckeeper'
   - 'powerline'
+  - 'mdadm'
 
   # Laptop-specific
   - 'ecryptfs-utils'

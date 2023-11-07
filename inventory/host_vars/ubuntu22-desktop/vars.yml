@@ -48,6 +48,7 @@ extra_packages_list:
   - 'mythes-gl'
   - 'hyphen-gl'
   - 'calibre'
+  - 'deluge'
 
   # Gaming
   - 'steam'
@@ -110,6 +111,7 @@ extra_packages_list:
   - 'remmina'
   - 'remmina-plugin-vnc'
   - 'telnet-ssl'
+  - 'whois'
 
   # System
   - 'libinput-tools'
@@ -117,6 +119,7 @@ extra_packages_list:
   - 'powerline'
   - 'libfuse2'
   - 'libfuse3-3'
+  - 'mdadm'
 
 # Snap packages to install
 extra_packages_snaps:
