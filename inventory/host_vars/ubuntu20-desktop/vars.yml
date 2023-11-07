@@ -48,6 +48,7 @@ extra_packages_list:
   - 'mythes-gl'
   - 'hyphen-gl'
   - 'calibre'
+  - 'deluge'
 
   # Gaming
   - 'steam'
@@ -89,6 +90,7 @@ extra_packages_list:
   - 'vim'
   - 'nmap'
   - 'jq'
+  - 'whois'
 
   # Media
   - 'vlc'
@@ -115,6 +117,7 @@ extra_packages_list:
   - 'libinput-tools'
   - 'etckeeper'
   - 'powerline'
+  - 'mdadm'
 
 # Snap packages to install
 extra_packages_snaps:
