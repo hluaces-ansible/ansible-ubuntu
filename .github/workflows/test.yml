@@ -8,7 +8,7 @@ run-name: Test for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }}
 
 jobs:
   Test:
-    runs-on: macos-12
+    runs-on: macos-13
     strategy:
       fail-fast: false
       matrix:
