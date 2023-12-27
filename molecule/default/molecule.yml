@@ -10,9 +10,9 @@ platforms:
     box: hluaces/ubuntu-gnome
     box_version: 22.04.1
     groups: ['ubuntu_group']
-  - name: ubuntu20-laptop
+  - name: ubuntu22-laptop
     box: hluaces/ubuntu-gnome
-    box_version: 20.04.04
+    box_version: 22.04.01
     groups: ['ubuntu_group']
 provisioner:
   name: ansible

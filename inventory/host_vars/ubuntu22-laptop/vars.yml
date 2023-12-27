@@ -28,6 +28,8 @@ extra_packages_keys_url:
 extra_packages_repositories:
   - name: 'google-chrome'
     repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+  - name: 'sublime_text'
+    repo: 'deb https://download.sublimetext.com/ apt/stable/'
   - name: 'vscode'
     repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
   - name: 'hashicorp'
@@ -65,6 +67,7 @@ extra_packages_list:
   - 'hyphen-gl'
 
   # Programming
+  - 'sublime-text'
   - 'code'
   - 'clang-format'
   - 'cppcheck'
@@ -88,7 +91,7 @@ extra_packages_list:
   - 'iftop'
   - 'ngrep'
   - 'mysql-client'
-  - 'postgresql-client-12'
+  - 'postgresql-client-14'
   - 'strace'
   - 'telnet'
   - 'telnet-ssl'
@@ -118,6 +121,7 @@ extra_packages_list:
   - 'sshpass'
   - 'remmina'
   - 'remmina-plugin-vnc'
+  - 'telnet-ssl'
 
   # System
   - 'libinput-tools'
@@ -137,8 +141,6 @@ extra_packages_snaps:
   - name: 'dbeaver-ce'
   - name: 'postman'
   - name: 'telegram-desktop'
-    channel: 'latest/beta'
-  - name: 'authy'
     channel: 'latest/beta'
 
 # Pip packages to install
@@ -230,3 +232,103 @@ configuration_files_user:
 
 # aws-cli configuration
 awscli_configuration: "{{ vault_awscli_configuration }}"
+
+
+gsettings_defaults:
+  # Gnome: Dark theme
+  - key: '/org/gnome/desktop/interface/gtk-theme'
+    value: "'Yaru-purple-dark'"
+  - key: '/org/gnome/desktop/interface/icon-theme'
+    value: "'Yaru-purple'"
+
+  # Gnome: hide mounts & trash from the dock
+  - key: '/org/gnome/shell/extensions/dash-to-dock/show-mounts'
+    value: 'false'
+  - key: '/org/gnome/shell/extensions/dash-to-dock/show-trash'
+    value: 'false'
+
+  # Gnome: Night light
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-enabled'
+    value: 'true'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-temperature'
+    value: 'uint32 3140'
+  - key: '/org/gnome/settings-daemon/plugins/color/night-light-schedule-automatic'
+    value: 'true'
+
+  # Gnome: Screenshots shortcuts
+  - key: '/org/gnome/shell/keybindings/show-screenshot-ui'
+    value: '["<Primary><Shift><Alt>4"]'
+  - key: '/org/gnome/shell/keybindings/show-screen-recordingui'
+    value: '["<Primary><Shift><Alt>r"]'
+  - key: '/org/gnome/shell/keybindings/screenshot'
+    value: '["<Alt>3"]'
+  - key: '/org/gnome/shell/keybindings/screenshot-window'
+    value: '["<Shift><Alt>periodcentered"]'
+
+  # Gnome: navigation
+  - key: '/org/gnome/desktop/wm/keybindings/switch-to-workspace-right'
+    value: '["<Primary><Alt>Down"]'
+  - key: '/org/gnome/desktop/wm/keybindings/switch-to-workspace-left'
+    value: '["<Primary><Alt>Up"]'
+  - key: '/org/gnome/desktop/wm/keybindings/move-to-workspace-right'
+    value: '["<Primary><Shift><Alt>Down"]'
+  - key: '/org/gnome/desktop/wm/keybindings/move-to-workspace-left'
+    value: '["<Primary><Shift><Alt>Up"]'
+
+  # Gnome: Custom keybindings
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings'
+    value: '["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/","/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"]'
+
+  # Gnome: Custom keybinding #0: tilix quake dropdown
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding'
+    value: "'masculine'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command'
+    value: "'env GDK_BACKEND=x11 tilix --quake'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name'
+    value: "'tilix --quake'"
+
+  # Gnome: Custom keybinding #1: show ulauncher
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding'
+    value: "'<Primary><Shift>space'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command'
+    value: "'ulauncher-toggle'"
+  - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name'
+    value: "'ulauncher'"
+
+  # Gnome: Emoji selector (conflicts with a keybinding for terminator)
+  - key: '/org/freedesktop/ibus/panel/emoji/hotkey'
+    value: '["<Primary><Shift>underscore"]'
+
+  # Gnome: Calendar configuration
+  - key: '/org/gnome/desktop/calendar/show-weekdate'
+    value: 'true'
+  - key: '/org/gnome/desktop/interface/clock-show-date'
+    value: 'true'
+
+  # Gnome: show battery percent
+  - key: '/org/gnome/desktop/interface/show-battery-percentage'
+    value: 'true'
+
+  # Gnome: Move the "applications button" at top
+  - key: '/org/gnome/shell/extensions/dash-to-dock/show-apps-at-top'
+    value: 'true'
+
+  # Gnome: Dock on all screens
+  - key: '/org/gnome/shell/extensions/dash-to-dock/multi-monitor'
+    value: 'true'
+
+  # Gnome: Element size on dock
+  - key: '/org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size'
+    value: '48'
+
+  # Gnome: Privacy
+  - key: '/org/gnome/desktop/privacy/send-software-usage-stats'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/report-technical-problems'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/remember-app-usage'
+    value: 'false'
+  - key: '/org/gnome/desktop/privacy/remove-old-temp-files'
+    value: 'true'
+  - key: '/org/gnome/desktop/privacy/remember-recent-files'
+    value: 'false'

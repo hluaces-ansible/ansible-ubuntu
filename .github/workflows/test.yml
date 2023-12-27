@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        host: ["ubuntu20-laptop", "ubuntu22-desktop"]
+        host: ["ubuntu22-laptop", "ubuntu22-desktop"]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
