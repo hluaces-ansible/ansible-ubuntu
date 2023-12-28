@@ -12,7 +12,7 @@
 
 - name: 'Add Dropbox GPG key'
   ansible.builtin.apt_key:
-    keyserver: 'keyserver.ubuntu.com'
+    keyserver: 'hkp://keyserver.ubuntu.com:80'
     id: '1C61A2656FB57B7E4DE0F4C1FC918B335044912E'
 
 # Dropbox is prone to serve 404s, so this task is here to minimise blips
