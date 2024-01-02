@@ -64,14 +64,14 @@ jobs:
       # Artifacts
       ################
       - name: Upload ansible logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ansible-${{ matrix.host }}.log
           path: config/tmp/ansible.log
 
       - name: Upload vagrant logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: vagrant-${{ matrix.host }}.log
