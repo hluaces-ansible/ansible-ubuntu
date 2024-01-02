@@ -127,6 +127,8 @@ extra_packages_list:
   - 'libinput-tools'
   - 'etckeeper'
   - 'powerline'
+  - 'libfuse2'
+  - 'libfuse3-3'
   - 'mdadm'
 
   # Laptop-specific
