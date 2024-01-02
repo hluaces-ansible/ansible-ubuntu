@@ -9,10 +9,14 @@ platforms:
   - name: ubuntu22-desktop
     box: hluaces/ubuntu-gnome
     box_version: 22.04.1
+    memory: 1024
+    cpus: 1
     groups: ['ubuntu_group']
   - name: ubuntu22-laptop
     box: hluaces/ubuntu-gnome
     box_version: 22.04.01
+    memory: 1024
+    cpus: 1
     groups: ['ubuntu_group']
 provisioner:
   name: ansible
