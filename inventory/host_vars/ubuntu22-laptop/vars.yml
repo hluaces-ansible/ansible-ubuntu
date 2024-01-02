@@ -33,7 +33,9 @@ extra_packages_repositories:
   - name: 'vscode'
     repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
   - name: 'hashicorp'
-    repo: 'deb [arch=amd64] https://apt.releases.hashicorp.com focal main'
+    repo: 'deb [arch=amd64] https://apt.releases.hashicorp.com jammy main'
+  - name: 'slimbook'
+    repo: 'ppa:slimbook/slimbook'
 
 # Extra APT packages to install
 # See "extra_packages" role
@@ -130,6 +132,7 @@ extra_packages_list:
   - 'libfuse2'
   - 'libfuse3-3'
   - 'mdadm'
+  - 'slimbookbattery'
 
   # Laptop-specific
   - 'ecryptfs-utils'
