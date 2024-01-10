@@ -34,6 +34,8 @@ extra_packages_repositories:
     repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
   - name: 'hashicorp'
     repo: 'deb [arch=amd64] https://apt.releases.hashicorp.com focal main'
+  - name: 'mozillateam'
+    repo: 'ppa:mozillateam/ppa'
 
 # Extra APT packages to install
 # See "extra_packages" role
@@ -136,6 +138,9 @@ extra_packages_snaps:
     channel: 'latest/beta'
   - name: 'authy'
     channel: 'latest/beta'
+  # We don't want firefox on snap
+  - name: 'firefox'
+    state: 'absent'
 
 # Pip packages to install
 extra_packages_pip:

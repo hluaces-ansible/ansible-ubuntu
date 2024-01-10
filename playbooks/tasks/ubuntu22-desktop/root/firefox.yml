@@ -1,0 +1,32 @@
+---
+
+- name: 'Add apt-priority to the mozillateam repo'
+  ansible.builtin.copy:
+    dest: '/etc/apt/preferences.d/mozillateam.pref'
+    content: |
+      # To prevent repository packages from triggering the installation of Ubuntus snap
+      # version of firefox, this file prioritizes the packages of mozillateam
+
+      Package: firefox*
+      Pin: release o=LP-PPA-mozillateam
+      Pin-Priority: 1001
+    force: true
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Configure unattended-upgrades to use the mozilateam repo'
+  ansible.builtin.copy:
+    dest: '/etc/apt/apt.conf.d/51unattended-upgrades-firefox'
+    content: |
+      Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
+    force: true
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Install firefox from apt'
+  ansible.builtin.apt:
+    name: 'firefox'
+    state: 'latest'
+    update_cache: true
