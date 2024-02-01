@@ -63,6 +63,10 @@ jobs:
       ################
       # Artifacts
       ################
+      - name: Clean up molecule resources
+        if: always()
+        run: molecule destroy --all --parallel
+
       - name: Upload ansible logs
         uses: actions/upload-artifact@v4
         if: always()
