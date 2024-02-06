@@ -21,19 +21,19 @@ jobs:
       # Caches
       ################
       - name: Cache Vagrant boxes
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.vagrant.d/boxes
           key: vagrant-boxes
 
       - name: Cache Ansible Galaxy roles
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: roles/vendors/
           key: ansible-galaxy-roles-${{ hashFiles('roles/requirements.yml') }}
 
       - name: Cache Ansible Galaxy collections
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: collections/vendors/
           key: ansible-galaxy-collections-${{ hashFiles('collections/requirements.yml') }}
