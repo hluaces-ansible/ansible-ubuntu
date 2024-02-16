@@ -1,0 +1,28 @@
+---
+name: Clean up unused scaleway instances
+on:
+  schedule:
+    - cron: '30 */2 * * *'
+  workflow_dispatch:
+
+jobs:
+  scaleway:
+    name: Clean up self-hosted runners
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Clean up instances
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_ORGANIZATION: ${{ secrets.SCW_ORGANIZATION_ID }}
+        uses: ./.github/actions/scaleway/cleanup
+
+      - name: Clean up GitHub runners
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_RUNNERS }}
+        uses: ./.github/actions/runners/delete_offline
+        with:
+          repo: ${{ github.repository }}

@@ -1,0 +1,59 @@
+---
+name: Create scaleway instance
+description: Creates a scaleway instance
+
+inputs:
+  name:
+    description: Name of the scaleway instance.
+    required: true
+  image:
+    description: Image to use in the scaleway instance.
+    default: 'ubuntu_jammy'
+    required: false
+  type:
+    description: Type of the instance to use.
+    default: 'PRO2-XS'
+    required: false
+  root_size:
+    description: Size specification for the root block volume (e.g. 10G).
+    default: '50G'
+    required: false
+  tag:
+    description: Tag to apply to the instance
+    default: 'github'
+    required: false
+  cloud_init:
+    description: Path to a cloud-init script to pass to the command.
+    default: './.github/templates/cloud-init.cfg'
+    required: false
+
+outputs:
+  id:
+    description: ID of the created instance.
+    value: ${{ steps.create_instance.outputs.id }}
+  ip:
+    description: IP of the created instance.
+    value: ${{ steps.create_instance.outputs.ip }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install scaleway-cli
+      uses: ./.github/actions/scaleway/install-cli
+
+    - name: Create instance
+      id: create_instance
+      shell: bash
+      run: |
+        instance="$(scw instance server create image="${{ inputs.image }}" \
+          type="${{ inputs.type }}" \
+          name="${{ inputs.name }}" \
+          ip=new \
+          root-volume=block:"${{ inputs.root_size }}" \
+          cloud-init=@"${{ inputs.cloud_init }}" \
+          tags.0="${{ inputs.tag }}" \
+          -o json)"
+
+        echo "id=$(jq -r .id <<< ${instance})" >> "$GITHUB_OUTPUT"
+        echo "ip=$(jq -r .public_ip.address <<< ${instance})" >> "$GITHUB_OUTPUT"
+

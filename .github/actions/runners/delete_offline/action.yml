@@ -1,0 +1,30 @@
+---
+name: Delete offline runners in a given repo
+description: Deletes offline runners in a given repo.
+
+inputs:
+  repository:
+    description: Path to the repo (owner/repo-name).
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Delete offline self-hosted runners for ${{ inputs.repository }}
+      shell: bash
+      run: |
+        IDS=$(gh api --method GET \
+          -H 'Accept: application/vnd.github+json' \
+          /repos/${{ inputs.repository }}/actions/runners \
+          | jq -r '.runners[] | select(.status == "online").id' \
+        )
+
+        for id in $IDS; do
+          echo "🕐 Deleting offline runner ${id}..."
+          gh api --method DELETE \
+            -H 'Accept: application/vnd.github+json' \
+            /repos/${{ inputs.repository }}/actions/runners/$id
+          echo "✅ Done"
+        done
+
+        echo "Offline runner cleanup finished"

@@ -1,0 +1,29 @@
+---
+name: Gets self-hosted runner token
+description: Gets the token required to add a new self-hosted runner to a given repository.
+
+inputs:
+  repository:
+    description: Path to the repo (owner/repo-name).
+    required: true
+
+outputs:
+  token:
+    description: ID of the created instance.
+    value: ${{ steps.get_token.outputs.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Fetch self-hosted runner token from the repo
+      id: get_token
+      shell: bash
+      run: |
+        TOKEN=$(gh api --method POST \
+          -H "Accept: application/vnd.github+json" \
+          /repos/${{ inputs.repository }}/actions/runners/registration-token \
+          | jq -r .token\
+        )
+
+        echo "::add-mask::$TOKEN"
+        echo "token=${TOKEN}" >> "$GITHUB_OUTPUT"

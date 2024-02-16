@@ -1,0 +1,37 @@
+---
+name: Clean up scaleway instances
+description: Cleans up scaleway instances that might have been left behind.
+
+inputs:
+  tag:
+    description: Tag used to select the instances to clean up
+    default: 'github'
+    required: false
+
+outputs:
+  id:
+    description: ID of the created instance.
+    value: ${{ steps.create_instance.outputs.id }}
+  ip:
+    description: IP of the created instance.
+    value: ${{ steps.create_instance.outputs.ip }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Install scaleway-cli
+      uses: ./.github/actions/scaleway/install-cli
+
+    - name: Clean up instances with the '${{ inputs.tag }}' tag
+      shell: bash
+      run: |
+        instances="$(scw instance server list tags.0=${{ inputs.tag }} -o json | jq -r '.[].id')"
+        for id in ${instances}; do
+          echo "🕐 Terminating ${id}..."
+          scw instance server terminate "${id}" with-ip=true with-block=true
+        done
+
+        echo "Cleanup finished"
