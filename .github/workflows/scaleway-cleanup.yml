@@ -25,4 +25,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN_RUNNERS }}
         uses: ./.github/actions/runners/delete_offline
         with:
-          repo: ${{ github.repository }}
+          repository: ${{ github.repository }}
