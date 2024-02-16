@@ -16,7 +16,7 @@ runs:
         IDS=$(gh api --method GET \
           -H 'Accept: application/vnd.github+json' \
           /repos/${{ inputs.repository }}/actions/runners \
-          | jq -r '.runners[] | select(.status == "online").id' \
+          | jq -r '.runners[] | select(.status == "offline").id' \
         )
 
         for id in $IDS; do
