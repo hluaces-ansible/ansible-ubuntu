@@ -1,0 +1,32 @@
+---
+name: Install scaleway-cli
+description: Installs scaleway-cli
+
+inputs:
+  arch:
+    description: Architecture for the binary.
+    default: 'amd64'
+    required: false
+  version:
+    description: Version tag to install.
+    default: '2.26.0'
+    required: false
+  install_path:
+    description: Full absolute path where the binary will be installed.
+    default: '/usr/local/bin/scw'
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Cache Scaleway-cli
+      uses: actions/cache@v4
+      with:
+        path: ${{ inputs.install_path }}
+        key: scaleway-cli-${{ inputs.arch }}-${{ inputs.version }}
+
+    - name: Download Scaleway-cli version ${{ inputs.version }}
+      shell: bash
+      run: |
+        wget -q -O ${{ inputs.install_path }} https://github.com/scaleway/scaleway-cli/releases/download/v${{ inputs.version }}/scaleway-cli_${{ inputs.version }}_linux_${{ inputs.arch }}
+        chmod +x ${{ inputs.install_path }}

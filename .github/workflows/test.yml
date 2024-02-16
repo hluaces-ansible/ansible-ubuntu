@@ -6,8 +6,48 @@ run-name: Test for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }}
   schedule:
     - cron: "0 0 * * 1"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  provision-runner:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ["ubuntu22-laptop", "ubuntu22-desktop"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Install scaleway-cli
+        uses: ./.github/actions/scaleway/install-cli
+
+      - name: Create runner token
+        id: runner_token
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_RUNNERS }}
+        uses: ./.github/actions/runners/get_token
+        with:
+          repository: ${{ github.repository }}
+
+      - name: Create cloud-init file
+        shell: bash
+        run: sed -i -e "s|%%TOKEN%%|${{ steps.runner_token.outputs.token }}|g" ./.github/templates/cloud-init.cfg
+
+      - name: Provision new self-hosted runner
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_ORGANIZATION: ${{ secrets.SCW_ORGANIZATION_ID }}
+        uses: ./.github/actions/scaleway/create-instance
+        with:
+          name: ${{ matrix.host }}-${{ github.sha }}
+          type: 'PRO2-S'
+
   Test:
+    needs: provision-runner
     runs-on: self-hosted
     strategy:
       fail-fast: false
@@ -80,3 +120,26 @@ jobs:
         with:
           name: vagrant-${{ matrix.host }}.log
           path: /Users/runner/.cache/molecule/ansible-ubuntu/default/vagrant.err
+
+  cleanup:
+    needs: Test
+    name: Clean up self-hosted runners
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Clean up instances
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_ORGANIZATION: ${{ secrets.SCW_ORGANIZATION_ID }}
+        uses: ./.github/actions/scaleway/cleanup
+
+      - name: Clean up GitHub runners
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_RUNNERS }}
+        uses: ./.github/actions/runners/delete_offline
+        with:
+          repository: ${{ github.repository }}
