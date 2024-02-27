@@ -90,6 +90,7 @@ extra_packages_list:
   - 'vim'
   - 'nmap'
   - 'jq'
+  - 'whois'
   - 'smbclient'
   - 'tree'
 
