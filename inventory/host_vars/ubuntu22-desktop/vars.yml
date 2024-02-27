@@ -134,8 +134,6 @@ extra_packages_snaps:
   - name: 'postman'
   - name: 'telegram-desktop'
     channel: 'latest/beta'
-  - name: 'authy'
-    channel: 'latest/beta'
 
 # Pip packages to install
 extra_packages_pip:
