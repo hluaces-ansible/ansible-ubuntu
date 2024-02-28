@@ -62,7 +62,6 @@ extra_packages_list:
 
   # Everyday apps
   - 'gnome-calendar'
-  - 'firefox'
   - 'google-chrome-stable'
   - 'libreoffice'
   - 'mythes-gl'
@@ -148,6 +147,8 @@ extra_packages_snaps:
   - name: 'postman'
   - name: 'telegram-desktop'
     channel: 'latest/beta'
+  - name: 'firefox'
+    state: 'absent'
 
 # Pip packages to install
 extra_packages_pip:
