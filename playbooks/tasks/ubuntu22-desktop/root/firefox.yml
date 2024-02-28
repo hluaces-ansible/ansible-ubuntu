@@ -1,0 +1,29 @@
+---
+
+- name: 'Add apt-priority to the mozillateam repo'
+  ansible.builtin.copy:
+    dest: '/etc/apt/preferences.d/mozilla'
+    content: |
+      Package: *
+      Pin: origin packages.mozilla.org
+      Pin-Priority: 1000
+    force: true
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Configure unattended-upgrades to use the mozilateam repo'
+  ansible.builtin.copy:
+    dest: '/etc/apt/apt.conf.d/51unattended-upgrades-firefox'
+    content: |
+      Unattended-Upgrade::Allowed-Origins:: "packages.mozilla.org:${distro_codename}";
+    force: true
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Install firefox from apt'
+  ansible.builtin.apt:
+    name: 'firefox'
+    state: 'latest'
+    update_cache: true
