@@ -1,5 +1,5 @@
 ansible==9.5.1
-ansible-lint==24.2.2
+ansible-lint==24.2.3
 yamllint==1.35.1
 molecule==24.2.1
 molecule-plugins==23.5.3
