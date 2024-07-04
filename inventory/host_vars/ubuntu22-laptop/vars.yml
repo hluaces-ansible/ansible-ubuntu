@@ -172,6 +172,12 @@ extra_packages_pip:
     executable: 'pip3'
   - name: 'python-vagrant'
     executable: 'pip3'
+  - name: 'harlequin'
+    executable: 'pip3'
+  - name: 'harlequin-postgres'
+    executable: 'pip3'
+  - name: 'harlequin-mysql'
+    executable: 'pip3'
 
 # NPM utils
 extra_packages_npm:
