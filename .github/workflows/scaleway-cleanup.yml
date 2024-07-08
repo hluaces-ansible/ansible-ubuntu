@@ -2,7 +2,7 @@
 name: Clean up unused scaleway instances
 on:
   schedule:
-    - cron: '30 */12 * * *'
+    - cron: '30 07 * * *'
   workflow_dispatch:
 
 jobs:
