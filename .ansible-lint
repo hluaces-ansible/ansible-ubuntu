@@ -11,6 +11,7 @@ kinds:
 
 exclude_paths:
   - ".cache/"
+  - ".ansible/"
   - ".github/"
   - "vagrant/"
   - "**/molecule/**/collections.yml"

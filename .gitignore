@@ -1,3 +1,5 @@
+# Cache
+.ansible
 
 # Ignore some config files/dir
 config/var/*
