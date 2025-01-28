@@ -9,3 +9,4 @@ ignore: |
   collections/vendors
   roles/vendors
   .github/
+  .ansible/
