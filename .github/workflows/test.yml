@@ -2,7 +2,7 @@
 name: Test
 run-name: Test for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }})
 'on':
-  push:
+  pull_request:
   schedule:
     - cron: "0 3 * * 1"
 
