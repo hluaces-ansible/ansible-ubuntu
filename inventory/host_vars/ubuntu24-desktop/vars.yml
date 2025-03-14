@@ -234,6 +234,13 @@ configuration_files_user:
     src: 'terminator/config'
     dest: '~/.config/terminator/config'
 
+  # Git configuration for colum width
+  - type: 'file'
+    src: 'gitcommit.vim'
+    dest: '~/.vim/after/ftplugin/gitcommit.vim '
+    dest_mode: '700'
+    mode: '600'
+
   # Private keys
   - type: 'file'
     src: 'ssh/config'
