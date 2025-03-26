@@ -74,6 +74,7 @@ extra_packages_list:
   - 'cppcheck'
   - 'fonts-firacode'
   - 'git'
+  - 'git-filter-repo'
   - 'python3'
   - 'pylint'
   - 'python3-pip'
@@ -222,6 +223,13 @@ configuration_files_user:
   - type: 'file'
     src: 'terminator/config'
     dest: '~/.config/terminator/config'
+
+  # Git configuration for colum width
+  - type: 'file'
+    src: 'gitcommit.vim'
+    dest: '~/.vim/after/ftplugin/gitcommit.vim '
+    dest_mode: '700'
+    mode: '600'
 
   # Private keys
   - type: 'file'
