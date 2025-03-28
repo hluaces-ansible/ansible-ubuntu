@@ -2,5 +2,5 @@
 
 roles:
   - src: 'geerlingguy.docker'
-    version: '7.4.4'
+    version: '7.4.7'
     name: 'geerlingguy.docker'

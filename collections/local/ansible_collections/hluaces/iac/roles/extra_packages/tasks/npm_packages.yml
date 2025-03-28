@@ -1,7 +1,7 @@
 ---
 
 - name: 'Manage NPM packages'
-  community.general.packaging.language.npm:
+  community.general.npm:
     name: "{{ item.name }}"
     global: "{{ item.global | default(false) }}"
     version: "{{ item.version | default(omit) }}"
