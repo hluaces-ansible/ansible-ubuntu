@@ -1,7 +1,7 @@
 ---
 
 - name: 'Configure timezone'
-  community.general.system.timezone:
+  community.general.timezone:
     name: "{{ configure_timezone }}"
 
 - name: 'Configure linux user'

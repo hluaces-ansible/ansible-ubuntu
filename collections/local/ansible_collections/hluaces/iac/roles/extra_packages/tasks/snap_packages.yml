@@ -1,7 +1,7 @@
 ---
 
 - name: 'Configure SNAP packages'
-  community.general.packaging.os.snap:
+  community.general.snap:
     name: "{{ item.name }}"
     channel: "{{ item.channel | default('stable') }}"
     classic: "{{ item.classic | default(false) }}"
