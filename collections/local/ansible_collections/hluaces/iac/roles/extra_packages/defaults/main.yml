@@ -1,23 +1,16 @@
 ---
 
-# Extra apt_keys from keyservers to manage
-extra_packages_keys: []
-# - id:
-#   keyserver:
-#   state: 'present'
-#   validate_certs: true
-
-# Extra apt_keys from urls to manage
-extra_packages_keys_url: []
-# - url:
-#   validate_certs: true
-#   state: 'present'
-
-# Extra repositories to configure
-extra_packages_repositories: []
+# Extra repositories to add to the system
+# See the builtin.deb822_repository_module module for more information
+extra_packages_deb822_repositories: []
 # - name:
-#   repo:
-#   state: 'present'
+#   types: deb|deb-src
+#   uris:
+#   signed_by:
+#   architectures: []
+#   allow_insecure: false
+#   allow_weak: false
+
 
 # Extra pacakages to configure
 extra_packages_list: []
@@ -38,3 +31,36 @@ extra_packages_npm: []
 #   version: ''
 #   global: 'false'
 #   ignore_scripts: 'false'
+
+# Pipx packages to configure
+# See the community.general.pipx module for attributes
+extra_packages_pipx: []
+# - name:
+#   global:
+#   state:
+
+################################################################################
+# DEPRECATED OPTIONS
+################################################################################
+
+# LEGACY: see extra_packages_deb822_repositories
+# Extra apt_keys from keyservers to manage
+extra_packages_keys: []
+# - id:
+#   keyserver:
+#   state: 'present'
+#   validate_certs: true
+
+# LEGACY: see extra_packages_deb822_repositories
+# Extra apt_keys from urls to manage
+extra_packages_keys_url: []
+# - url:
+#   validate_certs: true
+#   state: 'present'
+
+# LEGACY: see extra_packages_deb822_repositories
+# Extra repositories to configure
+extra_packages_repositories: []
+# - name:
+#   repo:
+#   state: 'present'

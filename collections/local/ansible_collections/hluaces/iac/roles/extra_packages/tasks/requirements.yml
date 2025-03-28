@@ -32,4 +32,6 @@
       - ubuntu-restricted-extras
       - gnome-tweaks
       - apt-transport-https
+      # This is actually required by the module
+      - pipx
     state: 'present'
