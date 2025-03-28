@@ -1,9 +1,22 @@
 ---
 
-- name: 'Configure PIP packages'
-  ansible.builtin.pip:
+- name: 'Configure PIPx packages'
+  community.general.pipx:
     name: "{{ item.name }}"
     state: "{{ item.state | default('present') }}"
-    extra_args: "{{ item.extra_args | default(omit) }}"
+    editable: "{{ item.editable | default(omit) }}"
     executable: "{{ item.executable | default(omit) }}"
-  loop: "{{ extra_packages_pip }}"
+    force: "{{ item.force | default(omit) }}"
+    global: "{{ item.global | default(omit) }}"
+    include_injected: "{{ item.include_injected | default(omit) }}"
+    index_url: "{{ item.index_url | default(omit) }}"
+    inject_packages: "{{ item.inject_packages | default(omit) }}"
+    install_apps: "{{ item.install_apps | default(omit) }}"
+    install_deps: "{{ item.install_deps | default(omit) }}"
+    pip_args: "{{ item.pip_args | default(omit) }}"
+    python: "{{ item.python | default(omit) }}"
+    source: "{{ item.source | default(omit) }}"
+    spec_metadata: "{{ item.spec_metadata | default(omit) }}"
+    suffix: "{{ item.suffix | default(omit) }}"
+    system_site_packages: "{{ item.system_site_packages | default(omit) }}"
+  loop: "{{ extra_packages_pipx }}"

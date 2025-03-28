@@ -6,7 +6,7 @@
     state: 'latest'
     update_cache: true
 
-- name: 'Manage extra APT-keys from keyservers'
+- name: '[DEPRECATED] Manage extra APT-keys from keyservers'
   ansible.builtin.apt_key:
     id: "{{ item.id }}"
     keyserver: "{{ item.keyserver }}"
@@ -14,14 +14,41 @@
     state: "{{ item.state | default('present') }}"
   loop: "{{ extra_packages_keys }}"
 
-- name: 'Manage extra APT-keys from URLs'
+- name: '[DEPRECATED] Manage extra APT-keys from URLs'
   ansible.builtin.apt_key:
     validate_certs: "{{ item.validate_certs | default(true) }}"
     url: "{{ item.url }}"
     state: "{{ item.state | default('present') }}"
   loop: "{{ extra_packages_keys_url }}"
 
-- name: 'Manage extra APT-repositories'
+# Before apt-cache refresh or else a bad repo can cause the role to fail
+- name: 'Manage extra deb822 repositories'
+  ansible.builtin.deb822_repository:
+    allow_downgrade_to_insecure: "{{ item.allow_downgrade_to_insecure | default(omit) }}"
+    allow_insecure: "{{ item.allow_insecure | default(omit) }}"
+    allow_weak: "{{ item.allow_weak | default(omit) }}"
+    architectures: "{{ item.architectures | default(omit) }}"
+    by_hash: "{{ item.by_hash | default(omit) }}"
+    check_date: "{{ item.check_date | default(omit) }}"
+    check_valid_until: "{{ item.check_valid_until | default(omit) }}"
+    components: "{{ item.components | default(omit) }}"
+    date_max_future: "{{ item.date_max_future | default(omit) }}"
+    enabled: "{{ item.enabled | default(omit) }}"
+    inrelease_path: "{{ item.inrelease_path | default(omit) }}"
+    languages: "{{ item.languages | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+    name: "{{ item.name | default(omit) }}"
+    pdiffs: "{{ item.pdiffs | default(omit) }}"
+    signed_by: "{{ item.signed_by | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+    suites: "{{ item.suites | default(omit) }}"
+    targets: "{{ item.targets | default(omit) }}"
+    trusted: "{{ item.trusted | default(omit) }}"
+    types: "{{ item.types | default(omit) }}"
+    uris: "{{ item.uris | default(omit) }}"
+  loop: "{{ extra_packages_deb822_repositories }}"
+
+- name: '[DEPRECATED] Manage extra APT-repositories'
   ansible.builtin.apt_repository:
     filename: "{{ item.name }}"
     repo: "{{ item.repo }}"

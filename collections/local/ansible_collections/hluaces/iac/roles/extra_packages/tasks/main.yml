@@ -9,7 +9,7 @@
 - name: 'Include custom SNAP package configuration'
   ansible.builtin.include_tasks: 'snap_packages.yml'
 
-- name: 'Include custom PIP package configuration'
+- name: 'Include custom PIPx package configuration'
   ansible.builtin.include_tasks: 'pip_packages.yml'
 
 - name: 'Include custom NPM package configuration'
