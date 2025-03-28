@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        host: ["ubuntu22-laptop", "ubuntu22-desktop"]
+        host: ["ubuntu24-laptop", "ubuntu24-desktop"]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -84,7 +84,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Set up dependencies
         run: make dependencies
