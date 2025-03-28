@@ -6,15 +6,15 @@ dependency:
 driver:
   name: vagrant
 platforms:
-  - name: ubuntu22-desktop
+  - name: ubuntu24-desktop
     box: hluaces/ubuntu-gnome
-    box_version: 22.04.1
+    box_version: 24.04.2
     memory: 4096
     cpus: 4
     groups: ['ubuntu_group']
-  - name: ubuntu22-laptop
+  - name: ubuntu24-laptop
     box: hluaces/ubuntu-gnome
-    box_version: 22.04.01
+    box_version: 24.04.02
     memory: 4096
     cpus: 4
     groups: ['ubuntu_group']

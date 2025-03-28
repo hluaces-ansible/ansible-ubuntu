@@ -26,7 +26,7 @@ extra_packages_keys_url:
 # Extra apt repositories to add
 # See "extra_packages" role
 extra_packages_repositories:
-  - name: 'google-chrome'
+  - name: 'google_chrome'
     repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
   - name: 'sublime_text'
     repo: 'deb https://download.sublimetext.com/ apt/stable/'
@@ -34,8 +34,6 @@ extra_packages_repositories:
     repo: 'deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main'
   - name: 'hashicorp'
     repo: 'deb [arch=amd64] https://apt.releases.hashicorp.com jammy main'
-  - name: 'slimbook'
-    repo: 'ppa:slimbook/slimbook'
 
 # Extra APT packages to install
 # See "extra_packages" role
@@ -92,7 +90,7 @@ extra_packages_list:
   - 'iftop'
   - 'ngrep'
   - 'mysql-client'
-  - 'postgresql-client-14'
+  - 'postgresql-client-16'
   - 'strace'
   - 'telnet'
   - 'telnet-ssl'
@@ -134,7 +132,6 @@ extra_packages_list:
   - 'libfuse2'
   - 'libfuse3-3'
   - 'mdadm'
-  - 'slimbookbattery'
 
   # Laptop-specific
   - 'ecryptfs-utils'
@@ -152,34 +149,18 @@ extra_packages_snaps:
   - name: 'firefox'
     state: 'absent'
 
-# Pip packages to install
-extra_packages_pip:
+# Pipx packages to install
+extra_packages_pipx:
   - name: 'ansible'
-    executable: 'pip3'
   - name: 'ansible-lint'
-    executable: 'pip3'
   - name: 'ansible-navigator'
-    executable: 'pip3'
   - name: 'molecule'
-    executable: 'pip3'
   - name: 'molecule[docker]'
-    executable: 'pip3'
   - name: 'molecule[vagrant]'
-    executable: 'pip3'
   - name: 'yamllint'
-    executable: 'pip3'
   - name: 'docker'
-    executable: 'pip3'
   - name: 'molecule-vagrant'
-    executable: 'pip3'
   - name: 'python-vagrant'
-    executable: 'pip3'
-  - name: 'harlequin'
-    executable: 'pip3'
-  - name: 'harlequin-postgres'
-    executable: 'pip3'
-  - name: 'harlequin-mysql'
-    executable: 'pip3'
 
 # NPM utils
 extra_packages_npm:
@@ -247,7 +228,6 @@ configuration_files_user:
 
 # aws-cli configuration
 awscli_configuration: "{{ vault_awscli_configuration }}"
-
 
 gsettings_defaults:
   # Gnome: Dark theme
