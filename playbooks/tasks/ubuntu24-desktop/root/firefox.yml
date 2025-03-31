@@ -27,3 +27,4 @@
     name: 'firefox'
     state: 'latest'
     update_cache: true
+    allow_downgrade: true
