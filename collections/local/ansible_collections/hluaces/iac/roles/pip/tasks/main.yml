@@ -1,0 +1,9 @@
+---
+
+- name: 'Include pip packages installation'
+  ansible.builtin.include_tasks: 'pip.yml'
+  when: pip_do_pip_packages | bool
+
+- name: 'Include pipx packages installation'
+  ansible.builtin.include_tasks: 'pipx.yml'
+  when: pip_do_pipx_packages | bool

@@ -159,8 +159,17 @@ extra_packages_snaps:
   - name: 'firefox'
     state: 'absent'
 
+# Pip packages to install (not present in apt)
+pip_packages:
+  - name: 'docker'
+    break_system_packages: true
+  - name: 'molecule-vagrant'
+    break_system_packages: true
+  - name: 'python-vagrant'
+    break_system_packages: true
+
 # Pipx packages to install
-extra_packages_pipx:
+pip_pipx_packages:
   - name: 'ansible'
   - name: 'ansible-lint'
   - name: 'ansible-navigator'
@@ -168,9 +177,6 @@ extra_packages_pipx:
   - name: 'molecule[docker]'
   - name: 'molecule[vagrant]'
   - name: 'yamllint'
-  - name: 'docker'
-  - name: 'molecule-vagrant'
-  - name: 'python-vagrant'
 
 # NPM utils
 extra_packages_npm:

@@ -1,0 +1,19 @@
+---
+
+- name: 'Configure PIP packages'
+  ansible.builtin.pip:
+    break_system_packages: "{{ item.break_system_packages | default(omit) }}"
+    chdir: "{{ item.chdir | default(omit) }}"
+    editable: "{{ item.editable | default(omit) }}"
+    executable: "{{ item.executable | default(omit) }}"
+    extra_args: "{{ item.extra_args | default(omit) }}"
+    name: "{{ item.name }}"
+    requirements: "{{ item.requirements | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+    umask: "{{ item.umask | default(omit) }}"
+    version: "{{ item.version | default(omit) }}"
+    virtualenv: "{{ item.virtualenv | default(omit) }}"
+    virtualenv_command: "{{ item.virtualenv_command | default(omit) }}"
+    virtualenv_python: "{{ item.virtualenv_python | default(omit) }}"
+    virtualenv_site_packages: "{{ item.virtualenv_site_packages | default(omit) }}"
+  loop: "{{ pip_packages }}"
