@@ -19,4 +19,4 @@
     spec_metadata: "{{ item.spec_metadata | default(omit) }}"
     suffix: "{{ item.suffix | default(omit) }}"
     system_site_packages: "{{ item.system_site_packages | default(omit) }}"
-  loop: "{{ extra_packages_pipx }}"
+  loop: "{{ pip_pipx_packages }}"

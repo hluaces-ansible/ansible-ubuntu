@@ -1,0 +1,22 @@
+---
+
+# Whether to install pip packages or not
+pip_do_pip_packages: true
+
+# Whether to install pipx packages or not
+pip_do_pipx_packages: true
+
+# Pip packages to configure
+# See the ansible.builtin.pip module for attributes
+pip_packages: []
+# - name:
+#   global:
+#   state:
+
+# Pipx packages to configure
+# See the community.general.pipx module for attributes
+pip_pipx_packages: []
+# - name:
+#   global:
+#   state:
+

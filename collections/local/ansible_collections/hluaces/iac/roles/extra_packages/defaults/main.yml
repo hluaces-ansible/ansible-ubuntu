@@ -11,7 +11,6 @@ extra_packages_deb822_repositories: []
 #   allow_insecure: false
 #   allow_weak: false
 
-
 # Extra pacakages to configure
 extra_packages_list: []
 # - name
@@ -31,13 +30,6 @@ extra_packages_npm: []
 #   version: ''
 #   global: 'false'
 #   ignore_scripts: 'false'
-
-# Pipx packages to configure
-# See the community.general.pipx module for attributes
-extra_packages_pipx: []
-# - name:
-#   global:
-#   state:
 
 ################################################################################
 # DEPRECATED OPTIONS
