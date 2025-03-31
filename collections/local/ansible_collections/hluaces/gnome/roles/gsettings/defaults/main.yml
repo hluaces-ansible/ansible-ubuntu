@@ -13,7 +13,7 @@ gsettings_do_gsettings: "{{ gsettings_default_action }}"
 ################################################################################
 
 # Gsettings value
-gsettings: "{{ gsettings_defaults + gsettings_extra }}"
+gsettings_settings: "{{ gsettings_defaults + gsettings_extra }}"
 # - key:
 #   value:
 #   state:
