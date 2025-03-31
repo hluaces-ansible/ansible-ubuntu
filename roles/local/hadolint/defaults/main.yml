@@ -1,6 +1,6 @@
 ---
 
-hadolint_release: 'v2.10.0'
+hadolint_release: 'v2.12.0'
 
 hadolint_install_dir: '/usr/bin/hadolint'
 
