@@ -1,0 +1,7 @@
+---
+
+- name: 'Install awscli and dependencies (apt)'
+  ansible.builtin.apt:
+    name: ['awscli', 'gnupg']
+    state: 'present'
+    update_cache: 'true'

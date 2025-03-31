@@ -1,10 +1,7 @@
 ---
 
-- name: 'Install awscli and dependencies'
-  ansible.builtin.apt:
-    name: ['awscli', 'gnupg']
-    state: 'present'
-    update_cache: 'true'
+- name: 'Include aws-cli installation'
+  ansible.builtin.include_tasks: "{{ awscli_install_method }}.yml"
 
 - name: 'Download aws-vault'
   ansible.builtin.get_url:

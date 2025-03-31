@@ -1,0 +1,6 @@
+---
+
+- name: 'Install awscli and dependencies (snap)'
+  community.general.snap:
+    name: 'aws-cli'
+    classic: true
