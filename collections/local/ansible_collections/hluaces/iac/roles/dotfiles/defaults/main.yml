@@ -6,9 +6,9 @@
 # git_category2:
 #   git_config_option : git_config_value
 #   git_config_option2 : git_config_value2
-git_config: {}
+dotfiles_git_config: {}
 
-# git_config:
+# dotfiles_git_config:
 #   user:
 #     name: ''
 #     email: ''
