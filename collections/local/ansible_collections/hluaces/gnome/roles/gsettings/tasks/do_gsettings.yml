@@ -5,7 +5,7 @@
     key: "{{ item['key'] }}"
     value: "{{ item['value'] | string }}"
     state: "{{ item['state'] | default('present') }}"
-  loop: "{{ gsettings }}"
+  loop: "{{ gsettings_settings }}"
 
 - name: 'Configure the "Privacy -> Connectivity check" option (1/2)'
   community.general.ini_file:
