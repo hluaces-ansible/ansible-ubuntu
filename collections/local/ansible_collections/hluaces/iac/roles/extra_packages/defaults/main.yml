@@ -11,7 +11,7 @@ extra_packages_deb822_repositories: []
 #   allow_insecure: false
 #   allow_weak: false
 
-# Extra pacakages to configure
+# Extra packages to configure
 extra_packages_list: []
 # - name
 # - name2
