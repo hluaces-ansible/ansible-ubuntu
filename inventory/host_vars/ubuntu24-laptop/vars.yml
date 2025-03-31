@@ -161,7 +161,7 @@ extra_packages_snaps:
     classic: true
   - name: 'dbeaver-ce'
   - name: 'firefox'
-    state: 'absent' # Firefox is installed via apt
+    state: 'absent'  # Firefox is installed via apt
   - name: 'postman'
   - name: 'spotify'
   - name: 'telegram-desktop'
