@@ -152,7 +152,7 @@ extra_packages_snaps:
   - name: 'dbeaver-ce'
   - name: 'discord'
   - name: 'firefox'
-    state: 'absent' # Firefox is installed via apt
+    state: 'absent'  # Firefox is installed via apt
   - name: 'phpstorm'
     classic: true
   - name: 'postman'
