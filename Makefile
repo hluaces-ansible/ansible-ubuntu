@@ -1,5 +1,5 @@
 ANSIBLE_ARGS=
-VAGRANT_BOX="ubuntu22-desktop"
+VAGRANT_BOX="ubuntu24-desktop"
 
 dependencies:
 	pip3 install -r requirements.txt
