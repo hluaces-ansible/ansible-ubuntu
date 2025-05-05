@@ -269,6 +269,24 @@ gsettings_defaults:
   - key: '/org/gnome/shell/extensions/dash-to-dock/show-trash'
     value: 'false'
 
+  # Gnome: Move the "applications button" at top
+  - key: '/org/gnome/shell/extensions/dash-to-dock/show-apps-at-top'
+    value: 'true'
+
+  # Gnome: Dock on all screens
+  - key: '/org/gnome/shell/extensions/dash-to-dock/multi-monitor'
+    value: 'true'
+
+  # Gnome: Element size on dock
+  - key: '/org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size'
+    value: '48'
+
+  # Gnome: auto hide dock and extend it
+  - key: '/org/gnome/shell/extensions/dash-to-dock/dock-fixed'
+    value: 'false'
+  - key: '/org/gnome/shell/extensions/dash-to-dock/extend-height'
+    value: 'true'
+
   # Gnome: Night light
   - key: '/org/gnome/settings-daemon/plugins/color/night-light-enabled'
     value: 'true'
@@ -303,7 +321,7 @@ gsettings_defaults:
 
   # Gnome: Custom keybinding #0: tilix quake dropdown
   - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding'
-    value: "'masculine'"
+    value: "'<Alt>masculine'"
   - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command'
     value: "'env GDK_BACKEND=x11 tilix --quake'"
   - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name'
@@ -331,14 +349,6 @@ gsettings_defaults:
   - key: '/org/gnome/desktop/interface/show-battery-percentage'
     value: 'true'
 
-  # Gnome: Move the "applications button" at top
-  - key: '/org/gnome/shell/extensions/dash-to-dock/show-apps-at-top'
-    value: 'true'
-
-  # Gnome: Dock on all screens
-  - key: '/org/gnome/shell/extensions/dash-to-dock/multi-monitor'
-    value: 'true'
-
   # Gnome: enable hot corners
   - key: '/org/gnome/desktop/interface/enable-hot-corners'
     value: 'true'
@@ -347,13 +357,10 @@ gsettings_defaults:
   - key: '/org/gnome/mutter/edge-tiling'
     value: 'true'
 
-  # Gnome: enable workspaces on all screens
-  - key: '/org/gnome/mutter/workspaces-only-on-primary'
-    value: 'false'
-
-  # Gnome: Element size on dock
-  - key: '/org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size'
-    value: '48'
+  # Gnome: Fractional scaling. Prevents issues on multi-monitors setups
+  # See: https://github.com/micheleg/dash-to-dock/issues/435
+  - key: '/org/gnome/mutter/experimental-features'
+    value: ['scale-monitor-framebuffer']
 
   # Gnome: Privacy
   - key: '/org/gnome/desktop/privacy/send-software-usage-stats'
