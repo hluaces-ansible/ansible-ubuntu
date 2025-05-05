@@ -40,6 +40,20 @@ extra_packages_deb822_repositories:
     suites: 'mozilla'
     components: 'main'
     signed_by: 'https://packages.mozilla.org/apt/repo-signing-key.gpg'
+  - name: 'github-cli'
+    types: 'deb'
+    architectures: 'amd64'
+    uris: 'https://cli.github.com/packages'
+    suites: 'stable'
+    components: 'main'
+    signed_by: 'https://cli.github.com/packages/githubcli-archive-keyring.gpg'
+  - name: 'tailscale'
+    types: 'deb'
+    architectures: 'amd64'
+    uris: 'https://pkgs.tailscale.com/stable/ubuntu'
+    suites: 'noble'
+    components: 'main'
+    signed_by: 'https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg'
 
 # [deprecated] Legacy packages and keys. These utilities write their own
 # `*.list` files, which would cause the system to fail if they were to be
@@ -51,7 +65,7 @@ extra_packages_keys_url:
 # [deprecated] Extra apt repositories to add
 # See "extra_packages" role
 extra_packages_repositories:
-  - name: 'google_chrome'
+  - name: 'google-chrome'
     repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
   - name: 'steam-stable'
     repo: 'deb [arch=amd64,i386] https://repo.steampowered.com/steam/ stable steam'
@@ -90,6 +104,7 @@ extra_packages_list:
   - 'python3-pip'
   - 'shellcheck'
   - 'sqlite3'
+  - 'gh'
 
   # Infra stuff
   - 'vagrant'
@@ -98,6 +113,7 @@ extra_packages_list:
   - 'packer'
 
   # CLI tools
+  - 'curl'
   - 'terminator'
   - 'iotop'
   - 'iftop'
@@ -137,6 +153,7 @@ extra_packages_list:
   - 'remmina'
   - 'remmina-plugin-vnc'
   - 'telnet-ssl'
+  - 'tailscale'
   - 'whois'
 
   # System
@@ -160,6 +177,7 @@ extra_packages_snaps:
   - name: 'spotify'
   - name: 'telegram-desktop'
     channel: 'latest/beta'
+  - name: 'tflint'
 
 # Pip packages to install (not present in apt)
 pip_packages:
