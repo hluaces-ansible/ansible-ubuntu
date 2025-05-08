@@ -8,13 +8,13 @@ driver:
 platforms:
   - name: ubuntu24-desktop
     box: hluaces/ubuntu-gnome
-    box_version: 24.04.2
+    box_version: 24.04.06
     memory: 4096
     cpus: 4
     groups: ['ubuntu_group']
   - name: ubuntu24-laptop
     box: hluaces/ubuntu-gnome
-    box_version: 24.04.02
+    box_version: 24.04.06
     memory: 4096
     cpus: 4
     groups: ['ubuntu_group']
