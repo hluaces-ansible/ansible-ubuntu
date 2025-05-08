@@ -178,6 +178,11 @@ extra_packages_snaps:
   - name: 'telegram-desktop'
     channel: 'latest/beta'
   - name: 'tflint'
+  - name: 'go'
+    classic: true
+  - name: 'golangci-lint'
+    classic: true
+  - name: 'yt-dlp'
 
 # Pip packages to install (not present in apt)
 pip_packages:
