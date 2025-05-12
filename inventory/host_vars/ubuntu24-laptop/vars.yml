@@ -251,7 +251,7 @@ configuration_files_user:
   # Git configuration for colum width
   - type: 'file'
     src: 'gitcommit.vim'
-    dest: '~/.vim/after/ftplugin/gitcommit.vim '
+    dest: '~/.vim/after/ftplugin/gitcommit.vim'
     dest_mode: '700'
     mode: '600'
 
