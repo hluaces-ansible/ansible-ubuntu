@@ -1,0 +1,8 @@
+---
+- name: 'Add fzf configuration to bashrc'
+  ansible.builtin.blockinfile:
+    path: "~/.bashrc"
+    marker_begin: "# {mark} fzf configuration for Ubuntu -- https://github.com/junegunn/fzf/issues/3395#issue-1844507337 "
+    block: |
+      source /usr/share/doc/fzf/examples/key-bindings.bash
+      source /usr/share/bash-completion/completions/fzf
