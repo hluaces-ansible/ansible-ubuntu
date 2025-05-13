@@ -12,7 +12,7 @@ inputs:
     required: false
   type:
     description: Type of the instance to use.
-    default: 'PRO2-XS'
+    default: 'GP1-M'
     required: false
   root_size:
     description: Size specification for the root block volume (e.g. 10G).
