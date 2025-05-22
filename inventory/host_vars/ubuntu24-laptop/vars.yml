@@ -81,130 +81,139 @@ extra_packages_list:
   - libnss3-tools
   - lsb-release
   - lsof
-  - npm
   - mawk
+  - npm
   - openssl
   - passwd
   - procps
-  - sysvinit-utils
   - sudo
+  - sysvinit-utils
   - tar
 
   # Everyday apps
   - 'gnome-calendar'
   - 'google-chrome-stable'
+  - 'hyphen-gl'
   - 'libreoffice'
   - 'mythes-gl'
-  - 'hyphen-gl'
 
   # Programming
-  - 'sublime-text'
   - 'code'
+  - 'fonts-firacode'
+  - 'git-filter-repo'
+  - 'git'
+  - 'luarocks'
+  - 'nodejs'
+  - 'npm'
+  - 'python3-pip'
+  - 'python3'
+  - 'sqlite3'
+  - 'sublime-text'
+
+  # Linting
+  - 'ansible-lint'
   - 'clang-format'
   - 'cppcheck'
-  - 'fonts-firacode'
-  - 'git'
-  - 'git-filter-repo'
-  - 'python3'
+  - 'lua-check'
   - 'pylint'
-  - 'python3-pip'
   - 'shellcheck'
-  - 'sqlite3'
-  - 'gh'
+  - 'yamllint'
 
-  # Infra stuff
+  # Ansible
+  - 'ansible'
+  - 'python3-docker'
   - 'vagrant'
   - 'virtualbox'
+
+  # Infra stuff
   - 'terraform'
   - 'packer'
 
   # CLI tools
+  - 'acpi'
+  - 'bat'
   - 'curl'
-  - 'terminator'
-  - 'iotop'
+  - 'fzf'
+  - 'gh'
+  - 'gpg'
   - 'iftop'
-  - 'ngrep'
+  - 'iotop'
+  - 'jq'
   - 'mysql-client'
+  - 'ngrep'
+  - 'nmap'
+  - 'p7zip-full'
+  - 'p7zip'
   - 'postgresql-client-16'
+  - 'powertop'
+  - 'sqlite3'
   - 'strace'
-  - 'telnet'
+  - 'tailscale'
   - 'telnet-ssl'
+  - 'telnet'
+  - 'terminator'
+  - 'tree'
   - 'unrar'
   - 'unzip'
   - 'vim'
-  - 'bat'
-  - 'fzf'
-  - 'nmap'
-  - 'jq'
   - 'whois'
-  - 'tree'
-  - 'powertop'
-  - 'acpi'
 
   # Media
-  - 'vlc'
+  - 'easyeffects'
   - 'gimp'
+  - 'vlc'
 
   # System utils
-  - 'gpg'
-  - 'gparted'
-  - 'p7zip'
-  - 'p7zip-full'
   - 'default-jdk'
-  - 'network-manager-l2tp'
-  - 'network-manager-l2tp-gnome'
-  - 'network-manager-openvpn'
-  - 'network-manager-openvpn-gnome'
-  - 'network-manager-pptp'
-  - 'network-manager-pptp-gnome'
-  - 'sshpass'
-  - 'remmina'
-  - 'remmina-plugin-vnc'
-  - 'telnet-ssl'
-  - 'tailscale'
-
-  # System
-  - 'libinput-tools'
   - 'etckeeper'
-  - 'powerline'
+  - 'gparted'
   - 'libfuse2'
   - 'libfuse3-3'
+  - 'libinput-tools'
   - 'mdadm'
+  - 'network-manager-l2tp-gnome'
+  - 'network-manager-l2tp'
+  - 'network-manager-openvpn-gnome'
+  - 'network-manager-openvpn'
+  - 'network-manager-pptp-gnome'
+  - 'network-manager-pptp'
+  - 'powerline'
+  - 'remmina-plugin-vnc'
+  - 'remmina'
+  - 'sshpass'
 
   # Laptop-specific
   - 'ecryptfs-utils'
 
 # Snap packages to install
 extra_packages_snaps:
-  - name: 'bitwarden'
-  - name: 'phpstorm'
-    classic: true
-  - name: 'dbeaver-ce'
+  # Firefox is installed via apt
   - name: 'firefox'
-    state: 'absent'  # Firefox is installed via apt
-  - name: 'postman'
+    state: 'absent'
+
+  # Everyday apps
+  - name: 'discord'
+  - name: 'dbeaver-ce'
   - name: 'spotify'
   - name: 'telegram-desktop'
     channel: 'latest/beta'
+
+  # CLI
   - name: 'tflint'
+  - name: 'terraform-docs'
+  - name: 'yt-dlp'
+  - name: 'kubectl'
+    classic: true
+  - name: 'fx'
+
+  # Programming
+  - name: 'phpstorm'
+    classic: true
+  - name: 'postman'
   - name: 'go'
     classic: true
   - name: 'golangci-lint'
     classic: true
-  - name: 'yt-dlp'
-
-# Pipx packages to install
-extra_packages_pipx:
-  - name: 'ansible'
-  - name: 'ansible-lint'
-  - name: 'ansible-navigator'
-  - name: 'molecule'
-  - name: 'molecule[docker]'
-  - name: 'molecule[vagrant]'
-  - name: 'yamllint'
-  - name: 'docker'
-  - name: 'molecule-vagrant'
-  - name: 'python-vagrant'
 
 # NPM utils
 extra_packages_npm:
