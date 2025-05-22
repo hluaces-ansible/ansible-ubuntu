@@ -74,134 +74,131 @@ extra_packages_repositories:
 # See "extra_packages" role
 extra_packages_list:
   # Everyday apps
-  - 'thunderbird'
+  - 'calibre'
+  - 'deluge'
   - 'gnome-calendar'
   - 'google-chrome-stable'
+  - 'hyphen-gl'
   - 'keepassxc'
   - 'libreoffice'
   - 'mythes-gl'
-  - 'hyphen-gl'
-  - 'calibre'
-  - 'deluge'
+  - 'thunderbird'
 
   # Gaming
   - 'steam-launcher'
 
   # Programming
-  - 'sublime-text'
   - 'code'
-  - 'clang-format'
-  - 'cppcheck'
   - 'fonts-firacode'
-  - 'git'
   - 'git-filter-repo'
-  - 'lua-check'
+  - 'git'
   - 'luarocks'
   - 'nodejs'
   - 'npm'
-  - 'python3'
-  - 'pylint'
   - 'python3-pip'
-  - 'shellcheck'
-  - 'sqlite3'
-  - 'gh'
+  - 'python3'
+  - 'sublime-text'
 
-  # Infra stuff
+  # Linting
+  - 'ansible-lint'
+  - 'clang-format'
+  - 'cppcheck'
+  - 'lua-check'
+  - 'pylint'
+  - 'shellcheck'
+  - 'yamllint'
+
+  # Ansible
+  - 'ansible'
+  - 'python3-docker'
   - 'vagrant'
   - 'virtualbox'
+
+  # Infra stuff
   - 'terraform'
   - 'packer'
 
   # CLI tools
+  - 'bat'
   - 'curl'
-  - 'terminator'
-  - 'iotop'
+  - 'fzf'
+  - 'gh'
+  - 'gpg'
   - 'iftop'
-  - 'ngrep'
+  - 'iotop'
+  - 'jq'
   - 'mysql-client'
+  - 'ngrep'
+  - 'nmap'
+  - 'p7zip-full'
+  - 'p7zip'
   - 'postgresql-client-16'
+  - 'smbclient'
+  - 'sqlite3'
   - 'strace'
+  - 'tailscale'
+  - 'telnet-ssl'
   - 'telnet'
+  - 'terminator'
+  - 'tree'
   - 'unrar'
   - 'unzip'
   - 'vim'
-  - 'bat'
-  - 'fzf'
-  - 'nmap'
-  - 'jq'
   - 'whois'
-  - 'smbclient'
-  - 'tree'
 
   # Media
-  - 'vlc'
+  - 'easyeffects'
   - 'gimp'
+  - 'vlc'
 
   # System utils
-  - 'gpg'
-  - 'gparted'
-  - 'p7zip'
-  - 'p7zip-full'
   - 'default-jdk'
-  - 'network-manager-l2tp'
-  - 'network-manager-l2tp-gnome'
-  - 'network-manager-openvpn'
-  - 'network-manager-openvpn-gnome'
-  - 'network-manager-pptp'
-  - 'network-manager-pptp-gnome'
-  - 'sshpass'
-  - 'remmina'
-  - 'remmina-plugin-vnc'
-  - 'telnet-ssl'
-  - 'tailscale'
-  - 'whois'
-
-  # System
-  - 'libinput-tools'
   - 'etckeeper'
-  - 'powerline'
+  - 'gparted'
   - 'libfuse2'
   - 'libfuse3-3'
+  - 'libinput-tools'
   - 'mdadm'
+  - 'network-manager-l2tp-gnome'
+  - 'network-manager-l2tp'
+  - 'network-manager-openvpn-gnome'
+  - 'network-manager-openvpn'
+  - 'network-manager-pptp-gnome'
+  - 'network-manager-pptp'
+  - 'powerline'
+  - 'remmina-plugin-vnc'
+  - 'remmina'
+  - 'sshpass'
 
 # Snap packages to install
 extra_packages_snaps:
-  - name: 'bitwarden'
-  - name: 'dbeaver-ce'
-  - name: 'discord'
+  # Firefox is installed via apt
   - name: 'firefox'
-    state: 'absent'  # Firefox is installed via apt
-  - name: 'phpstorm'
-    classic: true
-  - name: 'postman'
+    state: 'absent'
+
+  # Everyday apps
+  - name: 'discord'
+  - name: 'dbeaver-ce'
   - name: 'spotify'
   - name: 'telegram-desktop'
     channel: 'latest/beta'
+
+  # CLI
   - name: 'tflint'
+  - name: 'terraform-docs'
+  - name: 'yt-dlp'
+  - name: 'kubectl'
+    classic: true
+  - name: 'fx'
+
+  # Programming
+  - name: 'phpstorm'
+    classic: true
+  - name: 'postman'
   - name: 'go'
     classic: true
   - name: 'golangci-lint'
     classic: true
-  - name: 'yt-dlp'
-
-# Pip packages to install (not present in apt)
-pip_packages:
-  - name: 'docker'
-    break_system_packages: true
-  - name: 'molecule-vagrant'
-    break_system_packages: true
-  - name: 'python-vagrant'
-    break_system_packages: true
-
-# Pipx packages to install
-pip_pipx_packages:
-  - name: 'ansible'
-  - name: 'ansible-lint'
-  - name: 'ansible-navigator'
-  - name: 'molecule'
-  - name: 'molecule[docker]'
-  - name: 'molecule[vagrant]'
-  - name: 'yamllint'
 
 # NPM utils
 extra_packages_npm:
