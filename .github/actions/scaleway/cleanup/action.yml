@@ -29,9 +29,16 @@ runs:
       shell: bash
       run: |
         instances="$(scw instance server list tags.0=${{ inputs.tag }} -o json | jq -r '.[].id')"
+
         for id in ${instances}; do
           echo "🕐 Terminating ${id}..."
           scw instance server terminate "${id}" with-ip=true with-block=true
+
+          volumes="$(scw block volume list product-resource-id="${id}" -o json | jq -r '.[].id')"
+          for volumeId in ${volumes}; do
+            echo "🕐 Deleting block volume ${volumeId} from instance ${id}..."
+            scw block volume delete "${volumeId}"
+          done
         done
 
         echo "Cleanup finished"
