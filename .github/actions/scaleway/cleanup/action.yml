@@ -31,8 +31,12 @@ runs:
         instances="$(scw instance server list tags.0=${{ inputs.tag }} -o json | jq -r '.[].id')"
 
         for id in ${instances}; do
-          echo "🕐 Terminating ${id}..."
+          echo "🕐 Terminating instance ${id}..."
           scw instance server terminate "${id}" with-ip=true with-block=true
+
+          # The new block storage API for scaleway can't detatch block storage from machines
+          # and it takes a while to consolidate, so we're forced to do this
+          sleep 30
 
           volumes="$(scw block volume list product-resource-id="${id}" -o json | jq -r '.[].id')"
           for volumeId in ${volumes}; do
