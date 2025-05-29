@@ -31,6 +31,8 @@ runs:
         instances="$(scw instance server list tags.0=${{ inputs.tag }} -o json | jq -r '.[].id')"
 
         for id in ${instances}; do
+          volumes="$(scw block volume list product-resource-id="${id}" -o json | jq -r '.[].id')"
+
           echo "🕐 Terminating instance ${id}..."
           scw instance server terminate "${id}" with-ip=true with-block=true
 
@@ -38,7 +40,6 @@ runs:
           # and it takes a while to consolidate, so we're forced to do this
           sleep 30
 
-          volumes="$(scw block volume list product-resource-id="${id}" -o json | jq -r '.[].id')"
           for volumeId in ${volumes}; do
             echo "🕐 Deleting block volume ${volumeId} from instance ${id}..."
             scw block volume delete "${volumeId}"
