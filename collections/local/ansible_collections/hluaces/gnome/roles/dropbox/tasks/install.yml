@@ -32,3 +32,13 @@
     deb: "{{ dropbox_tmp_deb_file }}"
     state: 'present'
   when: ansible_facts['distribution_file_variety'] == 'Debian'
+
+# Noble seems to have transient issues with the repo, so this works around it
+- name: 'Use the jammy repository on Ubuntu noble'
+  ansible.builtin.replace:
+    path: '/etc/apt/sources.list.d/dropbox.list'
+    regexp: 'noble'
+    replace: 'focal'
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_release == 'noble'
