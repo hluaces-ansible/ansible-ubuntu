@@ -19,7 +19,7 @@ jobs:
         host: ["ubuntu24-laptop", "ubuntu24-desktop"]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install scaleway-cli
         uses: ./.github/actions/scaleway/install-cli
@@ -55,7 +55,7 @@ jobs:
         host: ["ubuntu24-laptop", "ubuntu24-desktop"]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       ################
       # Caches
@@ -128,7 +128,7 @@ jobs:
     if: ${{ always() }}
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Clean up instances
         env:
