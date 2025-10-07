@@ -36,6 +36,10 @@ inputs:
       - pl-waw-1
       - pl-waw-2
       - pl-waw-3
+  default_organization_id:
+    description: Default organization ID to set.
+    default: ''
+    required: false
 
 runs:
   using: composite
@@ -59,3 +63,4 @@ runs:
         touch /home/runner/.config/scw/config.yaml
         ${{ inputs.install_path }} config set default-region=${{ inputs.default_region }}
         ${{ inputs.install_path }} config set default-zone=${{ inputs.default_zone }}
+        ${{ inputs.install_path }} config set default-organization-id=${{ inputs.default_organization_id }}
