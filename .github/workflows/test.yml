@@ -1,7 +1,7 @@
 ---
 name: Test
 run-name: Test for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }})
-'on':
+"on":
   pull_request:
   schedule:
     - cron: "0 3 * * 1"
@@ -11,43 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  provision-runner:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        host: ["ubuntu24-laptop", "ubuntu24-desktop"]
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v5
-
-      - name: Install scaleway-cli
-        uses: ./.github/actions/scaleway/install-cli
-
-      - name: Create runner token
-        id: runner_token
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_RUNNERS }}
-        uses: ./.github/actions/runners/get_token
-        with:
-          repository: ${{ github.repository }}
-
-      - name: Create cloud-init file
-        shell: bash
-        run: sed -i -e "s|%%TOKEN%%|${{ steps.runner_token.outputs.token }}|g" ./.github/templates/cloud-init.cfg
-
-      - name: Provision new self-hosted runner
-        env:
-          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
-          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
-          SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
-        uses: ./.github/actions/scaleway/create-instance
-        with:
-          name: ${{ matrix.host }}-${{ github.sha }}
-          type: 'PRO2-S'
-
   Test:
-    needs: provision-runner
     runs-on: self-hosted
     strategy:
       fail-fast: false
@@ -60,23 +24,23 @@ jobs:
       ################
       # Caches
       ################
-      - name: Cache Vagrant boxes
-        uses: actions/cache@v4
-        with:
-          path: ~/.vagrant.d/boxes
-          key: vagrant-boxes
+      # - name: Cache Vagrant boxes
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.vagrant.d/boxes
+      #     key: vagrant-boxes
 
-      - name: Cache Ansible Galaxy roles
-        uses: actions/cache@v4
-        with:
-          path: roles/vendors/
-          key: ansible-galaxy-roles-${{ hashFiles('roles/requirements.yml') }}
+      # - name: Cache Ansible Galaxy roles
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: roles/vendors/
+      #     key: ansible-galaxy-roles-${{ hashFiles('roles/requirements.yml') }}
 
-      - name: Cache Ansible Galaxy collections
-        uses: actions/cache@v4
-        with:
-          path: collections/vendors/
-          key: ansible-galaxy-collections-${{ hashFiles('collections/requirements.yml') }}
+      # - name: Cache Ansible Galaxy collections
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: collections/vendors/
+      #     key: ansible-galaxy-collections-${{ hashFiles('collections/requirements.yml') }}
 
       ################
       # Bootstrapping
@@ -84,13 +48,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Set up dependencies
         run: make dependencies
 
       - name: Set up Ansible homedir and show tools versions
-        run: ansible --version && vagrant --version && virtualbox --help
+        run: ansible --version && vagrant --version && VBoxManage --help
 
       - name: Set up Ansible Vault
         run: echo "$VAULT_TOKEN" > ~/.ansible/default.vault && chmod 600 ~/.ansible/default.vault
@@ -98,14 +62,16 @@ jobs:
           VAULT_TOKEN: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
 
       - name: Provision Vagrant box
-        run: molecule converge -- -l "${{ matrix.host }}" --skip-tags="role-joplin"
+        run: |
+          molecule destroy --all
+          molecule converge -- -l "${{ matrix.host }}" --skip-tags="role-joplin"
 
       ################
       # Artifacts
       ################
       - name: Clean up molecule resources
         if: always()
-        run: molecule destroy --all --parallel
+        run: molecule destroy --all
 
       - name: Upload ansible logs
         uses: actions/upload-artifact@v4
@@ -120,26 +86,3 @@ jobs:
         with:
           name: vagrant-${{ matrix.host }}.log
           path: /Users/runner/.cache/molecule/ansible-ubuntu/default/vagrant.err
-
-  cleanup:
-    needs: Test
-    name: Clean up self-hosted runners
-    runs-on: ubuntu-latest
-    if: ${{ always() }}
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v5
-
-      - name: Clean up instances
-        env:
-          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
-          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
-          SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
-        uses: ./.github/actions/scaleway/cleanup
-
-      - name: Clean up GitHub runners
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_RUNNERS }}
-        uses: ./.github/actions/runners/delete_offline
-        with:
-          repository: ${{ github.repository }}
