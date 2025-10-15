@@ -63,8 +63,8 @@ jobs:
 
       - name: Provision Vagrant box
         run: |
-          molecule destroy --all
-          molecule converge -- -l "${{ matrix.host }}" --skip-tags="role-joplin"
+          export MOLECULE_EPHEMERAL_DIRECTORY="${GITHUB_WORKSPACE}/.molecule_ephemeral/${{ matrix.host }}"
+          molecule test -s "${{ matrix.host }}"
 
       ################
       # Artifacts
