@@ -50,6 +50,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Init variables
+        run: |
+          # Helps with isolation
+          echo "MOLECULE_EPHEMERAL_DIRECTORY="${GITHUB_WORKSPACE}/.molecule_ephemeral/${{ matrix.host }}"" >> $GITHUB_ENV
+
+          # Workaround for https://github.com/ansible-community/molecule-plugins/issues/301
+          echo "_MOLECULE_VAGRANT_PLUGIN_DIR="$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/molecule_plugins/vagrant"" >> $GITHUB_ENV
+
       - name: Set up dependencies
         run: make dependencies
 
@@ -62,16 +70,19 @@ jobs:
           VAULT_TOKEN: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
 
       - name: Provision Vagrant box
-        run: |
-          export MOLECULE_EPHEMERAL_DIRECTORY="${GITHUB_WORKSPACE}/.molecule_ephemeral/${{ matrix.host }}"
-          molecule test -s "${{ matrix.host }}"
+        run: make test MOLECULE_ARGS="-s "${{ matrix.host }}""
 
       ################
       # Artifacts
       ################
+      - name: Find logs
+        run: |
+          find . -iname 'vagrant.err'
+          find . -iname 'ansible.log'
+
       - name: Clean up molecule resources
         if: always()
-        run: molecule destroy --all
+        run: molecule destroy -s "${{ matrix.host }}"
 
       - name: Upload ansible logs
         uses: actions/upload-artifact@v4
@@ -85,4 +96,4 @@ jobs:
         if: always()
         with:
           name: vagrant-${{ matrix.host }}.log
-          path: /Users/runner/.cache/molecule/ansible-ubuntu/default/vagrant.err
+          path: ${{ env.MOLECULE_EPHEMERAL_DIRECTORY }}/vagrant.err

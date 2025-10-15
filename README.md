@@ -104,8 +104,9 @@ After this:
 
 - Install Vagrant and Virtualbox
 - Install all dependencies with `make dependencies`
-- After dependencies were installed, run the tests with `molecule test`
-- Use `molecule destroy` when you are done to clean up the environment
+- Run tests with `make test` (runs all scenarios)
+- Run specific scenario with `make test MOLECULE_ARGS="-s ubuntu24-laptop"`
+- Use `make clean` when you are done to clean up the environment
 
 ## Run the playbook against your local machine (production)
 
