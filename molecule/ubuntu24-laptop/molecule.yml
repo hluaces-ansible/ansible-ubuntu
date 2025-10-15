@@ -41,13 +41,13 @@ provisioner:
       cliconf_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/cliconf:~/.ansible/plugins/cliconf:/usr/share/ansible/plugins/cliconf"
       httpapi_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/httpapi:~/.ansible/plugins/httpapi:/usr/share/ansible/plugins/httpapi"
       inventory_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/inventory:~/.ansible/plugins/inventory:/usr/share/ansible/plugins/inventory"
-      library: "${MOLECULE_PROJECT_DIRECTORY}/plugins/modules:/usr/share/ansible"
+      library: "${MOLECULE_PROJECT_DIRECTORY}/plugins/modules:/usr/share/ansible:${_MOLECULE_VAGRANT_PLUGIN_DIR}"
     inventory_plugins:
       any_unparsed_is_failed: true
 scenario:
   test_sequence:
     - dependency
-    - cleanup
+    # - cleanup
     - destroy
     - syntax
     - create
@@ -56,5 +56,5 @@ scenario:
     # - idempotence
     - side_effect
     - verify
-    - cleanup
+    # - cleanup
     - destroy

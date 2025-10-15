@@ -8,11 +8,17 @@ updates:
       day: "tuesday"
       time: "01:00"
       timezone: "CET"
+    labels:
+      - "norelease"
     groups:
       molecule:
         patterns:
           - "molecule"
           - "molecule-plugins*"
+      linters:
+        patterns:
+          - "ansible-lint"
+          - "yamllint"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -20,3 +26,5 @@ updates:
       day: "tuesday"
       time: "01:00"
       timezone: "CET"
+    labels:
+      - "norelease"
