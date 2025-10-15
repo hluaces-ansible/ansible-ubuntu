@@ -8,6 +8,11 @@ updates:
       day: "tuesday"
       time: "01:00"
       timezone: "CET"
+    groups:
+      molecule:
+        patterns:
+          - "molecule"
+          - "molecule-plugins*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
