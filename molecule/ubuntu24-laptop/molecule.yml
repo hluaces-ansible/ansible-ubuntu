@@ -6,14 +6,6 @@ dependency:
 driver:
   name: vagrant
 platforms:
-  - name: ubuntu24-desktop
-    box: hluaces/ubuntu-gnome
-    box_version: 24.04.06
-    memory: 4096
-    cpus: 4
-    groups: ['ubuntu_group']
-    config_options:
-      vm.boot_timeout: 300
   - name: ubuntu24-laptop
     box: hluaces/ubuntu-gnome
     box_version: 24.04.06
@@ -52,3 +44,17 @@ provisioner:
       library: "${MOLECULE_PROJECT_DIRECTORY}/plugins/modules:/usr/share/ansible"
     inventory_plugins:
       any_unparsed_is_failed: true
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy

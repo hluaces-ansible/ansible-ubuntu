@@ -10,7 +10,7 @@ clean:
 	rm -rf roles/vendors/* collections/vendors/*
 
 test:
-	molecule converge
+	molecule test --all
 
 clean:
 	molecule destroy
