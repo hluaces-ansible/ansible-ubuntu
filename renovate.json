@@ -1,0 +1,122 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separateMajorReleases"
+  ],
+  "schedule": ["before 1am every weekday"],
+  "timezone": "Europe/Berlin",
+  "labels": ["dependencies", "renovate"],
+  "enabledManagers": [
+    "pip_requirements",
+    "ansible-galaxy",
+    "github-actions"
+  ],
+  "pip_requirements": {
+    "fileMatch": ["(^|/)requirements\\.txt$"]
+  },
+  "ansible-galaxy": {
+    "fileMatch": [
+      "roles/requirements\\.yml$",
+      "collections/requirements\\.yml$"
+    ]
+  },
+  "github-actions": {
+    "fileMatch": ["\\.github/workflows/.*\\.ya?ml$"],
+    "pinDigests": true,
+    "digest": {
+      "enabled": true
+    }
+  },
+  "packageRules": [
+    {
+      "description": "Linting tools: auto-merge, label: norelease",
+      "matchPackageNames": ["ansible-lint", "yamllint"],
+      "groupName": "Linting tools",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "ignoreTests": false,
+      "addLabels": ["norelease"]
+    },
+    {
+      "description": "Molecule: no auto-merge, label: norelease",
+      "matchPackagePatterns": ["^molecule"],
+      "groupName": "Molecule testing tools",
+      "automerge": false,
+      "addLabels": ["norelease"]
+    },
+    {
+      "description": "Ansible core: no auto-merge, label: release:minor",
+      "matchPackageNames": ["ansible"],
+      "groupName": "Ansible core",
+      "automerge": false,
+      "addLabels": ["release:minor"]
+    },
+    {
+      "description": "Ansible Galaxy: auto-merge, label: norelease",
+      "matchManagers": ["ansible-galaxy"],
+      "groupName": "Ansible Galaxy dependencies",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "ignoreTests": false,
+      "addLabels": ["norelease"]
+    },
+    {
+      "description": "GitHub Actions: no auto-merge, label: release:patch",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "automerge": false,
+      "pinDigests": true,
+      "addLabels": ["release:patch"]
+    },
+    {
+      "description": "Other Python deps: no auto-merge, label: release:patch",
+      "matchManagers": ["pip_requirements"],
+      "excludePackageNames": [
+        "ansible",
+        "ansible-lint",
+        "yamllint",
+        "molecule",
+        "molecule-plugins"
+      ],
+      "groupName": "Other Python dependencies",
+      "automerge": false,
+      "addLabels": ["release:patch"]
+    },
+    {
+      "description": "Never auto-merge major updates",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ],
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 0,
+  "prCreation": "immediate",
+  "rebaseWhen": "behind-base-branch",
+  "dependencyDashboardTitle": "📦 Ansible Ubuntu - Dependency Dashboard",
+  "dependencyDashboardHeader": "This dashboard shows all pending Renovate updates. Check boxes to create PRs immediately.",
+  "dependencyDashboardLabels": ["dependencies", "renovate"],
+  "dependencyDashboardAutoclose": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  },
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
+  "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{footer}}}",
+  "prBodyColumns": [
+    "Package",
+    "Type",
+    "Update",
+    "Change",
+    "Pending"
+  ],
+  "fetchChangeLogs": "pr",
+  "semanticCommitScope": "deps"
+}

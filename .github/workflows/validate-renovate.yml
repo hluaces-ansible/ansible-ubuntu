@@ -1,0 +1,36 @@
+---
+name: Validate Renovate Config
+run-name: Validate Renovate Config for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }})
+
+on:
+  pull_request:
+    paths:
+      - "renovate.json"
+      - ".renovaterc"
+      - ".renovaterc.json"
+  push:
+    branches:
+      - main
+    paths:
+      - "renovate.json"
+      - ".renovaterc"
+      - ".renovaterc.json"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate Renovate Config
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+
+      - name: Install Renovate
+        run: npm install -g renovate
+
+      - name: Validate Renovate config
+        run: renovate-config-validator
