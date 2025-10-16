@@ -1,0 +1,11 @@
+---
+
+- name: "Connect snap {{ item.name }} to plug {{ plug }}"
+  ansible.builtin.command:
+    cmd: "snap connect {{ item.name }}:{{ plug }}"
+  become: true
+  loop: "{{ item.plugs | default ([]) }}"
+  loop_control:
+    loop_var: plug
+  # fixme: idempotency, changed_when
+  tags: ['skip_ansible_lint']
