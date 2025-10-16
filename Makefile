@@ -21,7 +21,9 @@ dependencies:
 
 clean:
 	rm -rf roles/vendors/* collections/vendors/*
+	export _MOLECULE_VAGRANT_PLUGIN_DIR="$(MOLECULE_VAGRANT_PLUGIN_DIR)" && \
 	molecule cleanup --all
+	export _MOLECULE_VAGRANT_PLUGIN_DIR="$(MOLECULE_VAGRANT_PLUGIN_DIR)" && \
 	molecule destroy --all
 
 test:
