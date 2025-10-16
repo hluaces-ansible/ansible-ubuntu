@@ -1,8 +1,6 @@
 ---
 prerun: false
-dependency:
-  name: 'shell'
-  command: 'make dependencies'
+
 driver:
   name: vagrant
 platforms:
@@ -45,6 +43,7 @@ provisioner:
     inventory_plugins:
       any_unparsed_is_failed: true
 scenario:
+  name: ubuntu24-laptop
   test_sequence:
     - dependency
     # - cleanup

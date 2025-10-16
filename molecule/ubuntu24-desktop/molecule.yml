@@ -42,6 +42,7 @@ provisioner:
     inventory_plugins:
       any_unparsed_is_failed: true
 scenario:
+  name: ubuntu24-desktop
   test_sequence:
     - dependency
     # - cleanup

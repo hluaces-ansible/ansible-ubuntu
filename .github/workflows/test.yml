@@ -22,27 +22,6 @@ jobs:
         uses: actions/checkout@v5
 
       ################
-      # Caches
-      ################
-      # - name: Cache Vagrant boxes
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ~/.vagrant.d/boxes
-      #     key: vagrant-boxes
-
-      # - name: Cache Ansible Galaxy roles
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: roles/vendors/
-      #     key: ansible-galaxy-roles-${{ hashFiles('roles/requirements.yml') }}
-
-      # - name: Cache Ansible Galaxy collections
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: collections/vendors/
-      #     key: ansible-galaxy-collections-${{ hashFiles('collections/requirements.yml') }}
-
-      ################
       # Bootstrapping
       ################
       - name: Set up Python
@@ -52,8 +31,14 @@ jobs:
 
       - name: Init variables
         run: |
-          # Helps with isolation
-          echo "MOLECULE_EPHEMERAL_DIRECTORY="${GITHUB_WORKSPACE}/.molecule_ephemeral/${{ matrix.host }}"" >> $GITHUB_ENV
+          # Ephemeral storage
+          export MOLECULE_EPHEMERAL_DIRECTORY="${GITHUB_WORKSPACE}/.molecule_ephemeral/${{ matrix.host }}"
+          echo "MOLECULE_EPHEMERAL_DIRECTORY="${MOLECULE_EPHEMERAL_DIRECTORY}"" >> $GITHUB_ENV
+          mkdir -p "${MOLECULE_EPHEMERAL_DIRECTORY}"
+
+          export DEFAULT_VAULT_PASSWORD_FILE="${MOLECULE_EPHEMERAL_DIRECTORY}/.default.vault"
+          echo "DEFAULT_VAULT_PASSWORD_FILE="${DEFAULT_VAULT_PASSWORD_FILE}"" >> $GITHUB_ENV
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${DEFAULT_VAULT_PASSWORD_FILE}"
 
           # Workaround for https://github.com/ansible-community/molecule-plugins/issues/301
           echo "_MOLECULE_VAGRANT_PLUGIN_DIR="$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/molecule_plugins/vagrant"" >> $GITHUB_ENV
@@ -64,13 +49,8 @@ jobs:
       - name: Set up Ansible homedir and show tools versions
         run: ansible --version && vagrant --version && VBoxManage --help
 
-      - name: Set up Ansible Vault
-        run: echo "$VAULT_TOKEN" > ~/.ansible/default.vault && chmod 600 ~/.ansible/default.vault
-        env:
-          VAULT_TOKEN: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
-
       - name: Provision Vagrant box
-        run: make test MOLECULE_ARGS="-s "${{ matrix.host }}""
+        run: retry -t 1 -d 60 make test TEST_ARGS="-s ${{ matrix.host }}"
 
       ################
       # Artifacts
