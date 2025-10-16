@@ -23,6 +23,7 @@ extra_packages_snaps: []
 #   state: 'present'
 #   channel: 'stable'
 #   classic: false
+#   plugs: [list of plugs to connect to]
 
 extra_packages_npm: []
 # - name:

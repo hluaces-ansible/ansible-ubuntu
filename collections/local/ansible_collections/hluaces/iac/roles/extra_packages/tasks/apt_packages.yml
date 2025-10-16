@@ -57,7 +57,7 @@
 
 - name: 'Refresh apt-cache'
   ansible.builtin.apt:
-    update-cache: true
+    update_cache: true
   changed_when: false
 
 - name: 'Update all packages'
