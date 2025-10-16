@@ -75,6 +75,7 @@ extra_packages_list:
   - 'fonts-firacode'
   - 'git-filter-repo'
   - 'git'
+  - 'git-delta'
   - 'luarocks'
   - 'nodejs'
   - 'npm'
@@ -104,9 +105,7 @@ extra_packages_list:
 
   # CLI tools
   - 'acpi'
-  - 'bat'
   - 'curl'
-  - 'fzf'
   - 'gh'
   - 'gpg'
   - 'iftop'
@@ -121,7 +120,6 @@ extra_packages_list:
   - 'powertop'
   - 'sqlite3'
   - 'strace'
-  - 'tailscale'
   - 'telnet-ssl'
   - 'telnet'
   - 'terminator'
@@ -131,6 +129,15 @@ extra_packages_list:
   - 'vim'
   - 'whois'
 
+  # Modern CLI tools
+  - 'bat'
+  - 'duf'
+  - 'eza'
+  - 'fzf'
+  - 'gping'
+  - 'httpie'
+  - 'zoxide'
+
   # Media
   - 'easyeffects'
   - 'gimp'
@@ -139,6 +146,7 @@ extra_packages_list:
   # System utils
   - 'default-jdk'
   - 'etckeeper'
+  - 'gnutls-bin'
   - 'gparted'
   - 'libfuse2'
   - 'libfuse3-3'
@@ -165,7 +173,6 @@ extra_packages_snaps:
     state: 'absent'
 
   # Everyday apps
-  - name: 'discord'
   - name: 'dbeaver-ce'
   - name: 'spotify'
   - name: 'telegram-desktop'
@@ -177,6 +184,11 @@ extra_packages_snaps:
   - name: 'yt-dlp'
   - name: 'kubectl'
     classic: true
+
+  # Modern CLI
+  - name: 'bottom'
+    plugs: ["mount-observe", "hardware-observe", "system-observe", "process-control"]
+  - name: 'cheat'
   - name: 'fx'
 
   # Programming
@@ -203,11 +215,19 @@ dotfiles_git_config:
   user:
     name: 'Héctor Luaces'
     email: "{{ vault_email }}"
-    signingkey: '33835F136C261136'
+    signingkey: '11A11DEBC6EC8723'
   core:
     editor: 'vi'
     excludesfile: '~/.gitignore'
     fileMode: 'false'
+    pager: 'delta'
+  interactive:
+    diffFilter: 'delta --color-only'
+  delta:
+    navigate: 'true'
+    dark: 'true'
+  merge:
+    conflictStyle: 'zdiff3'
   web:
     browser: 'firefox'
   color:
