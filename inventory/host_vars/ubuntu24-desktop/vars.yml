@@ -91,6 +91,7 @@ extra_packages_list:
   - 'fonts-firacode'
   - 'git-filter-repo'
   - 'git'
+  - 'git-delta'
   - 'luarocks'
   - 'nodejs'
   - 'npm'
@@ -118,9 +119,7 @@ extra_packages_list:
   - 'packer'
 
   # CLI tools
-  - 'bat'
   - 'curl'
-  - 'fzf'
   - 'gh'
   - 'gpg'
   - 'iftop'
@@ -145,6 +144,15 @@ extra_packages_list:
   - 'vim'
   - 'whois'
 
+  # Modern CLI tools
+  - 'bat'
+  - 'duf'
+  - 'eza'
+  - 'fzf'
+  - 'gping'
+  - 'httpie'
+  - 'zoxide'
+
   # Media
   - 'easyeffects'
   - 'gimp'
@@ -153,6 +161,7 @@ extra_packages_list:
   # System utils
   - 'default-jdk'
   - 'etckeeper'
+  - 'gnutls-bin'
   - 'gparted'
   - 'libfuse2'
   - 'libfuse3-3'
@@ -188,6 +197,11 @@ extra_packages_snaps:
   - name: 'yt-dlp'
   - name: 'kubectl'
     classic: true
+
+  # Modern CLI
+  - name: 'bottom'
+    plugs: ["mount-observe", "hardware-observe", "system-observe", "process-control"]
+  - name: 'cheat'
   - name: 'fx'
 
   # Programming
@@ -219,6 +233,14 @@ dotfiles_git_config:
     editor: 'vi'
     excludesfile: '~/.gitignore'
     fileMode: 'false'
+    pager: 'delta'
+  interactive:
+    diffFilter: 'delta --color-only'
+  delta:
+    navigate: 'true'
+    dark: 'true'
+  merge:
+    conflictStyle: 'zdiff3'
   web:
     browser: 'firefox'
   color:
