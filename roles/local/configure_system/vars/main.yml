@@ -1,9 +1,1 @@
 ---
-
-# Services or units that can block the dkpg lockfile causing ansible to fail
-apt_lock_holders:
-  - "apt-daily-upgrade.service"
-  - "apt-daily-upgrade.timer"
-  - "apt-daily.timer"
-  - "apt-daily.service"
-  - "unattended-upgrades.service"

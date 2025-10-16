@@ -2,7 +2,7 @@
 galaxy_info:
   author: Héctor Luaces <hector@luaces-novo.es>
   namespace: hluaces
-  role_name: hluaces.gnome.ulauncher
+  role_name: ulauncher
   description: Installs ULauncher
   license: MIT
   min_ansible_version: '2.8'

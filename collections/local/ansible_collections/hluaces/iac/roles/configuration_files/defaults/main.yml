@@ -1,5 +1,5 @@
 ---
-configuration_files: []
+configuration_files_list: []
 #  # Files to be cloned to somewhere (destination dir will be created)
 #  # These files are expected to be templates. The name should not contain
 #  # the '.j2' extension.

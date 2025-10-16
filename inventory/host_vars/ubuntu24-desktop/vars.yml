@@ -4,12 +4,12 @@
 ansible_python_interpreter: /usr/bin/python3
 
 # System's timezone
-configure_timezone: 'Europe/Madrid'
+configure_system_timezone: 'Europe/Madrid'
 
 # Additional users to create
-configure_user_name: 'hector'
-configure_user_password: 'hector'
-configure_user_groups: ['sudo', 'input', 'plugdev']
+configure_system_user_name: 'hector'
+configure_system_user_password: 'hector'
+configure_system_user_groups: ['sudo', 'input', 'plugdev']
 
 # List of extra repositories:
 extra_packages_deb822_repositories:
@@ -82,7 +82,6 @@ extra_packages_list:
   - 'keepassxc'
   - 'libreoffice'
   - 'mythes-gl'
-  - 'thunderbird'
 
   # Gaming
   - 'steam-launcher'
@@ -208,7 +207,7 @@ extra_packages_npm:
 docker_apt_release_channel: 'stable'
 
 # Docker users
-docker_users: ["{{ configure_user_name}}"]
+docker_users: ["{{ configure_system_user_name }}"]
 
 # Git configuration for the .gitconfig file
 dotfiles_git_config:
@@ -237,18 +236,6 @@ dotfiles_git_config:
 
 # Configuration files for the newly created user
 configuration_files_user:
-  # Thunderbird configuration. It is not fuly portable but it makes things
-  # waaaaay easier.
-  - type: 'file'
-    src: 'thunderbird/profiles.ini'
-    dest: '~/.thunderbird/profiles.ini'
-  - type: 'file'
-    src: 'thunderbird/installs.ini'
-    dest: '~/.thunderbird/installs.ini'
-  - type: 'file'
-    src: 'thunderbird/prefs.js'
-    dest: "~/.thunderbird/{{ configure_user_name }}.default/prefs.js"
-
   # Terminator
   - type: 'file'
     src: 'terminator/config'

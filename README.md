@@ -18,7 +18,6 @@ Basically it does this:
     - apt
     - pip
     - npm
-- Deploys my Thunderbird configuration
 - Deploys my `.dotfiles` to both root and the newly created user
 - Installs a bunch of software
 - Configures Gnome preferences and privacy settings to my liking

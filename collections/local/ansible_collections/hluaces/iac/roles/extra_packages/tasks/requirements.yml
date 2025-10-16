@@ -5,8 +5,8 @@
     name: '{{ item }}'
     state: 'stopped'
     enabled: false
-  loop: "{{ apt_lock_holders }}"
-  notify: ['enable apt_lock_holders']
+  loop: "{{ extra_packages_apt_lock_holders }}"
+  notify: ['enable extra_packages_apt_lock_holders']
 
 - name: 'Stop apt-daily-upgrade.timer'
   ansible.builtin.systemd:

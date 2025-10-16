@@ -5,8 +5,8 @@
 
 - name: 'Download aws-vault'
   ansible.builtin.get_url:
-    url: "{{ aws_vault_artifact_url }}"
-    dest: "{{ aws_vault_install_dir }}"
+    url: "{{ awscli_aws_vault_artifact_url }}"
+    dest: "{{ awscli_aws_vault_install_dir }}"
     mode: '0755'
     force: true
 

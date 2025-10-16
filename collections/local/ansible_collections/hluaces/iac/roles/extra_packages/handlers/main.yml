@@ -1,11 +1,11 @@
 ---
 
-- name: 'enable apt_lock_holders'
+- name: 'enable extra_packages_apt_lock_holders'
   ansible.builtin.systemd:
     name: '{{ item }}'
     state: 'started'
     enabled: true
-  loop: "{{ apt_lock_holders }}"
+  loop: "{{ extra_packages_apt_lock_holders }}"
   # I really, really, really do not like this, but apparently the current
   # systemd module fails when dealing with masked units, so I'm going to
   # leave this here until a new ansible release fixes this 🙏

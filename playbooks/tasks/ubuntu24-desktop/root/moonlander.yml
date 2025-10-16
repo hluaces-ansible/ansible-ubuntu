@@ -1,7 +1,7 @@
 ---
 
 - name: 'Generate udev rules for the ZSA Moonlander'
-  copy:
+  ansible.builtin.copy:
     dest: '/etc/udev/rules.d/50-zsa.rules'
     mode: '0755'
     content: |
