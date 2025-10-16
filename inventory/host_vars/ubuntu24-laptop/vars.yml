@@ -131,6 +131,7 @@ extra_packages_list:
 
   # Modern CLI tools
   - 'bat'
+  - 'btop'
   - 'duf'
   - 'eza'
   - 'fzf'
@@ -148,7 +149,7 @@ extra_packages_list:
   - 'etckeeper'
   - 'gnutls-bin'
   - 'gparted'
-  - 'libfuse2'
+  - 'libfuse2t64'
   - 'libfuse3-3'
   - 'libinput-tools'
   - 'mdadm'
@@ -324,7 +325,7 @@ gsettings_defaults:
   # Gnome: Screenshots shortcuts
   - key: '/org/gnome/shell/keybindings/show-screenshot-ui'
     value: '["<Primary><Shift><Alt>4"]'
-  - key: '/org/gnome/shell/keybindings/show-screen-recordingui'
+  - key: '/org/gnome/shell/keybindings/show-screen-recording'
     value: '["<Primary><Shift><Alt>r"]'
   - key: '/org/gnome/shell/keybindings/screenshot'
     value: '["<Alt>3"]'
@@ -360,10 +361,6 @@ gsettings_defaults:
     value: "'ulauncher-toggle'"
   - key: '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name'
     value: "'ulauncher'"
-
-  # Gnome: Emoji selector (conflicts with a keybinding for terminator)
-  - key: '/org/freedesktop/ibus/panel/emoji/hotkey'
-    value: '["<Primary><Shift>underscore"]'
 
   # Gnome: Calendar configuration
   - key: '/org/gnome/desktop/calendar/show-weekdate'
