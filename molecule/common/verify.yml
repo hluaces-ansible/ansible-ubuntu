@@ -1,0 +1,448 @@
+---
+
+- name: 'Verify'
+  hosts: 'all'
+  gather_facts: true
+  become: true
+
+  tasks:
+    ################################################################################
+    # System user verification
+    ################################################################################
+    - name: 'Verify user exists'
+      ansible.builtin.getent:
+        database: 'passwd'
+        key: "{{ configure_system_user_name }}"
+      register: user_info
+
+    - name: 'Get user groups'
+      ansible.builtin.command: "groups {{ configure_system_user_name }}"
+      changed_when: false
+      register: user_groups
+
+    - name: 'Verify user is in expected groups'
+      ansible.builtin.assert:
+        that:
+          - item in user_groups.stdout
+        fail_msg: "User {{ configure_system_user_name }} not in group {{ item }}"
+        success_msg: "User {{ configure_system_user_name }} in group {{ item }}"
+      loop: "{{ configure_system_user_groups }}"
+
+    - name: 'Verify user is in docker group'
+      ansible.builtin.assert:
+        that:
+          - "'docker' in user_groups.stdout"
+        fail_msg: "User {{ configure_system_user_name }} not in docker group"
+        success_msg: "User {{ configure_system_user_name }} in docker group"
+
+    ################################################################################
+    # Package verification
+    ################################################################################
+    - name: 'Gather package facts'
+      ansible.builtin.package_facts:
+        manager: 'auto'
+
+    - name: 'Assert requested APT packages are installed'
+      ansible.builtin.assert:
+        that:
+          - item in ansible_facts.packages
+        fail_msg: "Package {{ item }} not installed"
+        success_msg: "Package {{ item }} installed"
+      loop: "{{ extra_packages_list }}"
+
+    - name: 'Verify snap packages'
+      ansible.builtin.command: "snap list {{ item.name }}"
+      changed_when: false
+      failed_when: false
+      register: snap_check
+      loop: "{{ extra_packages_snaps }}"
+      when: "item.state | default('present') == 'present'"
+
+    - name: 'Assert requested snap packages are installed'
+      ansible.builtin.assert:
+        that:
+          - "item.rc == 0"
+        fail_msg: "Snap package {{ item.item.name }} not installed"
+        success_msg: "Snap package {{ item.item.name }} installed"
+      loop: "{{ snap_check.results }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+      when: "not item.skipped | default(false)"
+
+    - name: 'Verify snap packages are absent when configured'
+      ansible.builtin.command: "snap list {{ item.name }}"
+      changed_when: false
+      failed_when: false
+      register: snap_absent_check
+      loop: "{{ extra_packages_snaps }}"
+      when: "item.state | default('present') == 'absent'"
+
+    - name: 'Assert undesired snap packages are not installed'
+      ansible.builtin.assert:
+        that:
+          - "item.rc != 0"
+        fail_msg: "Snap package {{ item.item.name }} should be absent but is installed"
+        success_msg: "Snap package {{ item.item.name }} correctly absent"
+      loop: "{{ snap_absent_check.results }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+      when: "not item.skipped | default(false)"
+
+    ################################################################################
+    # Firefox-specific verification (APT not snap)
+    ################################################################################
+    - name: 'Verify firefox is installed via APT'
+      ansible.builtin.assert:
+        that:
+          - "'firefox' in ansible_facts.packages"
+        fail_msg: 'Firefox not installed via APT'
+        success_msg: 'Firefox installed via APT'
+
+    - name: 'Verify firefox is installed via snap'
+      ansible.builtin.command: 'snap list firefox'
+      changed_when: false
+      failed_when: false
+      register: firefox_snap_check
+
+    - name: 'Assert firefox is NOT from snap'
+      ansible.builtin.assert:
+        that:
+          - "firefox_snap_check.rc != 0"
+        fail_msg: 'Firefox is installed via snap (should be APT only)'
+        success_msg: 'Firefox not installed via snap (correct)'
+
+    ################################################################################
+    # NPM packages verification
+    ################################################################################
+    - name: 'Verify npm global packages'
+      ansible.builtin.command: "npm list -g --depth=0 {{ item.name }}"
+      changed_when: false
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      register: npm_check
+      loop: "{{ extra_packages_npm }}"
+      when: "item.global | default(false)"
+
+    - name: 'Assert requested npm global packages are installed'
+      ansible.builtin.assert:
+        that:
+          - "item.rc == 0"
+        fail_msg: "NPM package {{ item.item.name }} not installed globally"
+        success_msg: "NPM package {{ item.item.name }} installed globally"
+      loop: "{{ npm_check.results }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+      when: "not item.skipped | default(false)"
+
+    ################################################################################
+    # Service verification
+    ################################################################################
+    - name: 'Gather service facts'
+      ansible.builtin.service_facts:
+
+    - name: 'Assert that Docker service is running'
+      ansible.builtin.assert:
+        that:
+          - "ansible_facts.services['docker.service'].state == 'running'"
+          - "ansible_facts.services['docker.service'].status == 'enabled'"
+        fail_msg: 'Docker service not running or not enabled'
+        success_msg: 'Docker service running and enabled'
+
+    ################################################################################
+    # Configuration files verification
+    ################################################################################
+    - name: 'Verify configuration files exist'
+      ansible.builtin.stat:
+        path: "{{ item.dest | regex_replace('^~', '/home/' + configure_system_user_name) }}"
+      register: config_files_stat
+      loop: "{{ configuration_files_user }}"
+
+    - name: 'Assert that configuration files exist with correct ownership'
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - "item.stat.pw_name == configure_system_user_name"
+        fail_msg: "File {{ item.item.dest }} missing or wrong owner"
+        success_msg: "File {{ item.item.dest }} exists with correct owner"
+      loop: "{{ config_files_stat.results }}"
+      loop_control:
+        label: "{{ item.item.dest }}"
+
+    - name: 'Assert that configuration files have correct permissions'
+      ansible.builtin.assert:
+        that:
+          - "item.stat.mode | int == item.item.mode | int"
+        fail_msg: "File {{ item.item.dest }} has mode {{ item.stat.mode }} (expected {{ item.item.mode }})"
+        success_msg: "File {{ item.item.dest }} has correct mode"
+      loop: "{{ config_files_stat.results }}"
+      loop_control:
+        label: "{{ item.item.dest }}"
+      when: item.item.mode is defined
+
+    ################################################################################
+    # Dotfiles verification
+    ################################################################################
+    - name: 'Verify if dotfiles exist'
+      ansible.builtin.stat:
+        path: "/home/{{ configure_system_user_name }}/{{ item }}"
+      register: dotfiles_stat
+      loop:
+        - '.gitconfig'
+        - '.gitignore'
+        - '.vimrc'
+        - '.bashrc'
+
+    - name: 'Assert that dotfiles exist'
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - "item.stat.pw_name == configure_system_user_name"
+          - "item.stat.mode == '0600'"
+        fail_msg: "Dotfile {{ item.item }} missing, wrong owner, or wrong permissions"
+        success_msg: "Dotfile {{ item.item }} exists with correct ownership and permissions"
+      loop: "{{ dotfiles_stat.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+    ################################################################################
+    # Dotfiles content verification - .gitconfig
+    ################################################################################
+    - name: 'Assert that .gitconfig has user.name'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        regexp: '^\s*name\s*=\s*{{ dotfiles_git_config.user.name | regex_escape }}\s*$'
+        state: 'present'
+      check_mode: true
+      register: gitconfig_name
+      failed_when: gitconfig_name.changed
+
+    - name: 'Assert that .gitconfig has user.signingkey'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        regexp: '^\s*signingkey\s*=\s*{{ dotfiles_git_config.user.signingkey }}\s*$'
+        state: 'present'
+      check_mode: true
+      register: gitconfig_signingkey
+      failed_when: gitconfig_signingkey.changed
+
+    - name: 'Assert that .gitconfig has commit.gpgsign'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        regexp: '^\s*gpgsign\s*=\s*{{ dotfiles_git_config.commit.gpgsign }}\s*$'
+        state: 'present'
+      check_mode: true
+      register: gitconfig_gpgsign
+      failed_when: gitconfig_gpgsign.changed
+
+    - name: 'Asserrt that .gitconfig has core.editor'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        regexp: '^\s*editor\s*=\s*{{ dotfiles_git_config.core.editor }}\s*$'
+        state: 'present'
+      check_mode: true
+      register: gitconfig_editor
+      failed_when: gitconfig_editor.changed
+
+    - name: 'Assert that .gitconfig has core.pager (delta)'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        regexp: '^\s*pager\s*=\s*{{ dotfiles_git_config.core.pager }}\s*$'
+        state: 'present'
+      check_mode: true
+      register: gitconfig_pager
+      failed_when: gitconfig_pager.changed
+
+    ################################################################################
+    # Dotfiles content verification - .vimrc
+    ################################################################################
+    - name: 'Assert that .vimrc has syntax highlighting enabled'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.vimrc"
+        regexp: '^syntax on'
+        state: 'present'
+      check_mode: true
+      register: vimrc_syntax
+      failed_when: vimrc_syntax.changed
+
+    - name: 'Assert that .vimrc has line numbers enabled'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.vimrc"
+        regexp: '^set number'
+        state: 'present'
+      check_mode: true
+      register: vimrc_numbers
+      failed_when: vimrc_numbers.changed
+
+    - name: 'Assert that .vimrc has expandtab (spaces not tabs)'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.vimrc"
+        regexp: '^set expandtab'
+        state: 'present'
+      check_mode: true
+      register: vimrc_expandtab
+      failed_when: vimrc_expandtab.changed
+
+    - name: 'Assert that .vimrc has tabstop=4'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.vimrc"
+        regexp: '^set tabstop=4'
+        state: 'present'
+      check_mode: true
+      register: vimrc_tabstop
+      failed_when: vimrc_tabstop.changed
+
+    ################################################################################
+    # Dotfiles content verification - .bashrc
+    ################################################################################
+    - name: 'Assert that .bashrc has HISTCONTROL set'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.bashrc"
+        regexp: '^HISTCONTROL=ignoreboth'
+        state: 'present'
+      check_mode: true
+      register: bashrc_histcontrol
+      failed_when: bashrc_histcontrol.changed
+
+    - name: 'Assert that .bashrc has histappend enabled'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.bashrc"
+        regexp: '^shopt -s histappend'
+        state: 'present'
+      check_mode: true
+      register: bashrc_histappend
+      failed_when: bashrc_histappend.changed
+
+    - name: 'Assert that .bashrc has ll alias'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.bashrc"
+        regexp: "^alias ll='ls -alF'"
+        state: 'present'
+      check_mode: true
+      register: bashrc_ll_alias
+      failed_when: bashrc_ll_alias.changed
+
+    - name: 'Assert that .bashrc has PATH extension'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.bashrc"
+        regexp: '^export PATH=\$PATH:\$HOME/bin'
+        state: 'present'
+      check_mode: true
+      register: bashrc_path
+      failed_when: bashrc_path.changed
+
+    ################################################################################
+    # Dotfiles content verification - .gitignore
+    ################################################################################
+    - name: 'Assert that .gitignore has swp files'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.gitignore"
+        regexp: '^\*\.swp$'
+        state: 'present'
+      check_mode: true
+      register: gitignore_swp
+      failed_when: gitignore_swp.changed
+
+    - name: 'Assert that .gitignore has log files'
+      ansible.builtin.lineinfile:
+        path: "/home/{{ configure_system_user_name }}/.gitignore"
+        regexp: '^\*\.log$'
+        state: 'present'
+      check_mode: true
+      register: gitignore_log
+      failed_when: gitignore_log.changed
+
+    ################################################################################
+    # Docker user verification
+    ################################################################################
+    - name: "Verify that docker is functional for user {{ configure_system_user_name }}"
+      ansible.builtin.command: 'docker ps'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      changed_when: false
+      register: docker_ps_check
+
+    - name: 'Assert that docker command succeeded'
+      ansible.builtin.assert:
+        that:
+          - "docker_ps_check.rc == 0"
+        fail_msg: "User {{ configure_system_user_name }} cannot run docker commands"
+        success_msg: "User {{ configure_system_user_name }} can run docker commands"
+
+    ################################################################################
+    # GNOME settings verification (best effort)
+    ################################################################################
+    - name: 'Verify if dbus is available'
+      ansible.builtin.command: 'which dbus-launch'
+      changed_when: false
+      register: dbus_check
+
+    - name: 'Verify GNOME settings (if dbus available)'
+      when: "dbus_check.rc == 0"
+      block:
+        - name: 'Get regular GNOME settings'
+          # Transforms: /org/gnome/desktop/interface/gtk-theme
+          # To command: gsettings get org.gnome.desktop.interface gtk-theme
+          ansible.builtin.shell: |
+            {% set parts = item.key.strip('/').split('/') %}
+            gsettings get {{ parts[:-1] | join('.') }} {{ parts[-1] }}
+          become: true
+          become_user: "{{ configure_system_user_name }}"
+          changed_when: false
+          failed_when: false
+          register: gnome_regular_settings_check
+          loop: "{{ gsettings_defaults }}"
+          when: "'custom-keybindings/custom' not in item.key"
+          environment:
+            DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ user_info.ansible_facts.getent_passwd[configure_system_user_name][1] }}/bus"
+
+        - name: 'Get relocatable GNOME settings (custom-keybindings)'
+          # Transforms: /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding
+          # To command: gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding
+          # Note: Relocatable schemas require the full path with colon notation and singular schema name
+          ansible.builtin.shell: |
+            {% set parts = item.key.strip('/').split('/') %}
+            {% set schema_parts = parts[:-3] %}
+            {% set schema = schema_parts | join('.') ~ '.custom-keybinding' %}
+            {% set path = '/' ~ '/'.join(parts[:-1]) ~ '/' %}
+            gsettings get {{ schema }}:{{ path }} {{ parts[-1] }}
+          become: true
+          become_user: "{{ configure_system_user_name }}"
+          changed_when: false
+          failed_when: false
+          register: gnome_relocatable_settings_check
+          loop: "{{ gsettings_defaults }}"
+          when: "'custom-keybindings/custom' in item.key"
+          environment:
+            DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ user_info.ansible_facts.getent_passwd[configure_system_user_name][1] }}/bus"
+
+        - name: 'Assert that regular GNOME settings match expected values'
+          # gsettings returns GVariant format (Python-like syntax with single quotes)
+          # Ansible's shell module auto-parses this inconsistently
+          # Normalize both sides: convert to string, replace quotes, remove spaces
+          # Example: ['value'] vs ["value"] both become ["value"]
+          ansible.builtin.assert:
+            that:
+              - "actual_normalized == expected_normalized"
+            fail_msg: "GNOME setting {{ item.item.key }} has value {{ item.stdout }} (expected {{ item.item.value }})"
+            success_msg: "GNOME setting {{ item.item.key }} has correct value"
+          vars:
+            actual_normalized: "{{ (item.stdout | string).replace(\"'\", '\"').replace(' ', '') }}"
+            expected_normalized: "{{ (item.item.value | string).replace(\"'\", '\"').replace(' ', '') }}"
+          loop: "{{ gnome_regular_settings_check.results }}"
+          loop_control:
+            label: "{{ item.item.key }}"
+          when: "not item.skipped | default(false) and item.rc == 0"
+
+        - name: 'Assert that relocatable GNOME settings match expected values'
+          # Same normalization as regular settings (see above)
+          ansible.builtin.assert:
+            that:
+              - "actual_normalized == expected_normalized"
+            fail_msg: "GNOME setting {{ item.item.key }} has value {{ item.stdout }} (expected {{ item.item.value }})"
+            success_msg: "GNOME setting {{ item.item.key }} has correct value"
+          vars:
+            actual_normalized: "{{ (item.stdout | string).replace(\"'\", '\"').replace(' ', '') }}"
+            expected_normalized: "{{ (item.item.value | string).replace(\"'\", '\"').replace(' ', '') }}"
+          loop: "{{ gnome_relocatable_settings_check.results | rejectattr('skipped', 'defined') | selectattr('rc', 'defined') | selectattr('rc', 'equalto', 0) | list }}"
+          loop_control:
+            label: "{{ item.item.key }}"
