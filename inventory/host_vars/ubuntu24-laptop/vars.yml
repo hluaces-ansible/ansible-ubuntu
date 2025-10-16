@@ -47,13 +47,6 @@ extra_packages_deb822_repositories:
     suites: 'stable'
     components: 'main'
     signed_by: 'https://cli.github.com/packages/githubcli-archive-keyring.gpg'
-  - name: 'tailscale'
-    types: 'deb'
-    architectures: 'amd64'
-    uris: 'https://pkgs.tailscale.com/stable/ubuntu'
-    suites: 'noble'
-    components: 'main'
-    signed_by: 'https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg'
 
 # [deprecated] Legacy packages and keys. These utilities write their own
 # `*.list` files, which would cause the system to fail if they were to be
@@ -70,26 +63,6 @@ extra_packages_repositories:
 # Extra APT packages to install
 # See "extra_packages" role
 extra_packages_list:
-  # Jumpcloud agent
-  - apt-rdepends
-  - apt-show-versions
-  - coreutils
-  - grep
-  - hostname
-  - libc-bin
-  - libnss3
-  - libnss3-tools
-  - lsb-release
-  - lsof
-  - mawk
-  - npm
-  - openssl
-  - passwd
-  - procps
-  - sudo
-  - sysvinit-utils
-  - tar
-
   # Everyday apps
   - 'gnome-calendar'
   - 'google-chrome-stable'
