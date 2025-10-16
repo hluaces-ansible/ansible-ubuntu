@@ -16,24 +16,30 @@
   tags: ['skip_ansible_lint']
 
 - name: 'JetBrains Toolbox | Convert returned data to a variable'
-  set_fact:
-    _jetbrains_data: "{{ _jetbrains_data.content|from_json }}"
+  ansible.builtin.set_fact:
+    _jetbrains_data: "{{ _jetbrains_data.content | from_json }}"
 
 - name: "JetBrains Toolbox | Download build {{ _jetbrains_data.TBA[0].build }}"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ _jetbrains_data.TBA[0].downloads.linux.link }}"
     force: true
     dest: "/tmp/jetbrains-toolbox.tar.gz"
+    mode: "0644"
 
 - name: 'JetBrains Toolbox | Create destination dir'
-  file: path="~/bin" state='directory'
+  ansible.builtin.file:
+    path: "~/bin"
+    state: 'directory'
+    mode: "0750"
 
 - name: 'JetBrains Toolbox | Extract package to destination dir'
-  unarchive:
+  ansible.builtin.unarchive:
     extra_opts: ['--strip-components=1']
     remote_src: true
     src: "/tmp/jetbrains-toolbox.tar.gz"
     dest: "~/bin"
 
 - name: 'JetBrains Toolbox | Remove temp file'
-  file: path="/tmp/jetbrains-toolbox.tar.gz" state='absent'
+  ansible.builtin.file:
+    path: "/tmp/jetbrains-toolbox.tar.gz"
+    state: 'absent'

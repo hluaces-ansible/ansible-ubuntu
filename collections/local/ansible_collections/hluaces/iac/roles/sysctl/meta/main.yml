@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Héctor Luaces <hector@luaces-novo.es>
-  role_name: hluaces.iac.sysctl
+  role_name: sysctl
   namespace: hluaces
   description: Configures sysctl settings for a system
   license: MIT

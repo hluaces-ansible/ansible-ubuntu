@@ -1,7 +1,7 @@
 ---
 
-aws_vault_artifact_url:
-    "https://github.com/99designs/aws-vault/releases/download/v{{ aws_vault_version }}/aws-vault-linux-amd64"
+awscli_aws_vault_artifact_url:
+    "https://github.com/ByteNess/aws-vault/releases/download/v{{ awscli_aws_vault_version }}/aws-vault-linux-amd64"
 
 awscli_config_directory: '~/.aws'
 

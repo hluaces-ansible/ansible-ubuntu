@@ -4,7 +4,7 @@
   roles:
     - role: dotfiles
       vars:
-        git_config:
+        dotfiles_git_config:
           core:
             chu: 1
             cha: 2

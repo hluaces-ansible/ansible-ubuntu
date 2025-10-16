@@ -22,8 +22,8 @@
     dest: "{{ dropbox_tmp_deb_file }}"
     force: true
     mode: "0600"
-  register: _get_dropbox
-  until: not _get_dropbox.failed
+  register: dropbox_get_dropbox
+  until: not dropbox_get_dropbox.failed
   retries: 5
   delay: 20
 

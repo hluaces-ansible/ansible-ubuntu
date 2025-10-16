@@ -51,7 +51,7 @@
   hosts: 'ubuntu_group'
   remote_user: "{{ remote_user | default(omit) }}"
   become: true
-  become_user: "{{ configure_user_name }}"
+  become_user: "{{ configure_system_user_name }}"
   roles:
     - role: 'hluaces.iac.pip'
       tags: ['role-pip']
@@ -60,7 +60,7 @@
     - role: 'hluaces.iac.configuration_files'
       tags: ['role-configuration_files']
       vars:
-        configuration_files: "{{ configuration_files_user }}"
+        configuration_files_list: "{{ configuration_files_user }}"
     - role: 'hluaces.gnome.gsettings'
       tags: ['role-gsettings']
     - role: 'hluaces.gnome.tilix'

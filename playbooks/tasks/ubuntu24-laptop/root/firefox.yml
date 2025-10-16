@@ -25,6 +25,6 @@
 - name: 'Install firefox from apt'
   ansible.builtin.apt:
     name: 'firefox'
-    state: 'latest'
+    state: 'latest' # noqa package-latest
     update_cache: true
     allow_downgrade: true

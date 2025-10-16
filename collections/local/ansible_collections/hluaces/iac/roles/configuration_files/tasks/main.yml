@@ -2,4 +2,4 @@
 
 - name: 'Manage configuration files'
   ansible.builtin.include_tasks: "configure_{{ item['type'] }}.yml"
-  loop: "{{ configuration_files }}"
+  loop: "{{ configuration_files_list }}"

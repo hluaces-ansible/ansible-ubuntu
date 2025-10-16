@@ -17,10 +17,10 @@ awscli_do_configure: "{{ awscli_default_action }}"
 awscli_install_method: 'apt'
 
 # Version of aws-vault to install
-aws_vault_version: '7.2.0'
+awscli_aws_vault_version: '7.7.4'
 
 # Installation directory for the binary file of aws-vault
-aws_vault_install_dir: '/usr/local/bin/aws-vault'
+awscli_aws_vault_install_dir: '/usr/local/bin/aws-vault'
 
 # String with the configuration that will be established on '~/aws/config'
 # awscli_configuration: |

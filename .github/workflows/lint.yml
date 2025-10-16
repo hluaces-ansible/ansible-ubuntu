@@ -1,7 +1,7 @@
 ---
 name: Lint
 run-name: Lint for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }})
-'on':
+"on":
   push:
     branches: main
   pull_request:
@@ -37,7 +37,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Set up APT dependencies
         run: sudo apt update && sudo apt install -y make
@@ -52,7 +52,7 @@ jobs:
       # Linting
       ################
       - name: Lint (ansible-lint)
-        run: ansible-lint -vv .
+        run: ansible-lint
 
       - name: Lint (yamllint)
         run: yamllint -s .

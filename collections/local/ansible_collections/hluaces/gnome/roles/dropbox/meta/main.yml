@@ -2,7 +2,7 @@
 galaxy_info:
   author: Héctor Luaces
   namespace: hluaces
-  role_name: hluaces.gnome.dropbox
+  role_name: dropbox
   description: A role that install the Dropbox desktop app.
   company: hluaces-ansible
   license: MIT

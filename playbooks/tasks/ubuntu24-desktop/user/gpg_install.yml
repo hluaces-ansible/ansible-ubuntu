@@ -1,13 +1,13 @@
 ---
 
 - name: 'Create directory to store the gpg keys'
-  file:
+  ansible.builtin.file:
     path: '~/.gpg'
     mode: '0700'
     state: 'directory'
 
 - name: 'Copy GPG keys'
-  copy:
+  ansible.builtin.copy:
     src: "{{ _gpg.src }}"
     dest: "{{ _gpg.dest }}"
     mode: '0600'

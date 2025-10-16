@@ -3,7 +3,7 @@
 - name: 'Install and upgrade APT utilities for Ansible'
   ansible.builtin.apt:
     name: ['ca-certificates', 'apt-transport-https']
-    state: 'latest'
+    state: 'latest' # noqa package-latest
     update_cache: true
 
 - name: '[DEPRECATED] Manage extra APT-keys from keyservers'
@@ -67,4 +67,4 @@
 - name: 'Install packages'
   ansible.builtin.apt:
     name: "{{ extra_packages_list }}"
-  notify: 'enable apt_lock_holders'
+  notify: 'enable extra_packages_apt_lock_holders'
