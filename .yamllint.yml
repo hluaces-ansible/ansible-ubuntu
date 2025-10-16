@@ -1,8 +1,21 @@
 ---
 extends: default
 
+# Rules marked with "AL" are required by ansible-lint
+# See https://ansible.readthedocs.io/projects/lint/rules/yaml/#yamllint-configuration
 rules:
-  line-length: disable
+  comments:
+    min-spaces-from-content: 1 # AL
+  comments-indentation: false  # AL
+  document-start: disable      # AL
+  line-length:
+    max: 200                   # AL
+  braces:
+    min-spaces-inside: 0       # AL
+    max-spaces-inside: 1       # AL
+  octal-values:
+    forbid-implicit-octal: true # AL
+    forbid-explicit-octal: true # AL
 
 ignore: |
   vault_*.yml
@@ -10,3 +23,4 @@ ignore: |
   roles/vendors
   .github/
   .ansible/
+  venv/
