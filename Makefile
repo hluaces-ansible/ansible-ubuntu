@@ -1,5 +1,5 @@
 ANSIBLE_ARGS=
-MOLECULE_ARGS=--all
+SCENARIO=default
 VAGRANT_BOX="ubuntu24-desktop"
 # Required for https://github.com/ansible-community/molecule-plugins/issues/301
 # See https://github.com/ansible-community/molecule-plugins/issues/301#issuecomment-3184082904
@@ -21,8 +21,9 @@ dependencies:
 
 clean:
 	rm -rf roles/vendors/* collections/vendors/*
-	molecule destroy
+	molecule cleanup --all
+	molecule destroy --all
 
 test:
 	export _MOLECULE_VAGRANT_PLUGIN_DIR="$(MOLECULE_VAGRANT_PLUGIN_DIR)" && \
-	molecule test $(MOLECULE_ARGS)
+	molecule test $(TEST_ARGS)
