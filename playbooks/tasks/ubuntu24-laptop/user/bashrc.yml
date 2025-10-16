@@ -6,3 +6,10 @@
     block: |
       source /usr/share/doc/fzf/examples/key-bindings.bash
       source /usr/share/bash-completion/completions/fzf
+
+- name: 'Add zoxide configuration to bashrc'
+  ansible.builtin.blockinfile:
+    path: "~/.bashrc"
+    marker_begin: "# {mark} zoxide configuration for Ubuntu"
+    block: |
+      eval "$(zoxide init bash)"
