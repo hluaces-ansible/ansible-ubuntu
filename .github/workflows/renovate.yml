@@ -4,7 +4,7 @@ run-name: Renovate for ${{ github.event_name }}:${{ github.ref }} (${{ github.sh
 
 on:
   schedule:
-    - cron: "0 23 * * 0-4"
+    - cron: "12 */5 * * *"
 
   workflow_dispatch:
     inputs:
