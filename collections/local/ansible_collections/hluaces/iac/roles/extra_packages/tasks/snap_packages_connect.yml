@@ -1,6 +1,6 @@
 ---
 
-- name: "Connect snap {{ item.name }} to plug {{ plug }}"
+- name: "Connect snap {{ item.name }} to plugs"
   ansible.builtin.command:
     cmd: "snap connect {{ item.name }}:{{ plug }}"
   become: true
