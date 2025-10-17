@@ -85,7 +85,6 @@ extra_packages_list:
   - 'sublime-text'
 
   # Linting
-  - 'ansible-lint'
   - 'clang-format'
   - 'cppcheck'
   - 'lua-check'
@@ -94,7 +93,6 @@ extra_packages_list:
   - 'yamllint'
 
   # Ansible
-  - 'ansible'
   - 'python3-docker'
   - 'vagrant'
   - 'virtualbox'
@@ -166,6 +164,21 @@ extra_packages_list:
 
   # Laptop-specific
   - 'ecryptfs-utils'
+
+# Pipx utilities
+pip_pipx_packages:
+  - name: 'ansible'
+    user: "{{ configure_system_user_name }}"
+  - name: 'ansible-core'
+    user: "{{ configure_system_user_name }}"
+  - name: 'ansible-builder'
+    user: "{{ configure_system_user_name }}"
+  - name: 'ansible-navigator'
+    user: "{{ configure_system_user_name }}"
+  - name: 'ansible-lint'
+    user: "{{ configure_system_user_name }}"
+  - name: 'molecule'
+    user: "{{ configure_system_user_name }}"
 
 # Snap packages to install
 extra_packages_snaps:

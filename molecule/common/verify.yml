@@ -50,6 +50,25 @@
         success_msg: "Package {{ item }} installed"
       loop: "{{ extra_packages_list }}"
 
+    - name: 'Gather installed pipx packages'
+      ansible.builtin.command: 'pipx list'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      changed_when: false
+      register: pipx_check
+
+    - name: 'Assert requested pipx packages are installed'
+      ansible.builtin.assert:
+        that:
+          - item.name in pipx_check.stdout
+        fail_msg: "Pipx package {{ item.name }} not installed"
+        success_msg: "Pipx package {{ item.name }} is installed"
+      changed_when: false
+      loop: "{{ pip_pipx_packages }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: item.state | default('present') == 'present'
+
     - name: 'Verify snap packages'
       ansible.builtin.command: "snap list {{ item.name }}"
       changed_when: false

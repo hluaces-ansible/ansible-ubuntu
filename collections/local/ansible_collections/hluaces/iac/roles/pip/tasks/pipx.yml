@@ -1,6 +1,11 @@
 ---
 
-- name: 'Configure PIPx packages'
+- name: 'Find out pipx version'
+  ansible.builtin.command: 'pipx --version'
+  changed_when: false
+  register: pip_pipx_version
+
+- name: 'Configure PIPx packages (pipx >= 1.7.0)'
   community.general.pipx:
     name: "{{ item.name }}"
     state: "{{ item.state | default('present') }}"
@@ -19,4 +24,37 @@
     spec_metadata: "{{ item.spec_metadata | default(omit) }}"
     suffix: "{{ item.suffix | default(omit) }}"
     system_site_packages: "{{ item.system_site_packages | default(omit) }}"
+  become: "{{ item.user is defined }}"
+  become_user: "{{ item.user | default(omit) }}"
   loop: "{{ pip_pipx_packages }}"
+  when: pip_pipx_version.stdout is version('1.7.0', '>=', 'strict')
+
+- name: 'Install PIPx packages (pipx < 1.7.0)'
+  ansible.builtin.command: "pipx install {{ item.name }}"
+  loop: "{{ pip_pipx_packages }}"
+  register: pip_pipx_install
+  changed_when: "'already seems to be installed' not in pip_pipx_install.stdout"
+  when:
+    - pip_pipx_version.stdout is version('1.7.0', '<', 'strict')
+    - item.state | default('present') == 'present'
+
+- name: 'Uninstall PIPx packages (pipx < 1.7.0)'
+  ansible.builtin.command: "pipx uninstall {{ item.name }}"
+  become: "{{ item.user is defined }}"
+  become_user: "{{ item.user | default(omit) }}"
+  register: pip_pipx_uninstall
+  changed_when: "'Nothing to uninstall' not in pip_pipx_uninstall.stdout"
+  loop: "{{ pip_pipx_packages }}"
+  when:
+    - pip_pipx_version.stdout is version('1.7.0', '<', 'strict')
+    - item.state | default('present') == 'absent'
+
+- name: 'Ensure pipx is in the PATH'
+  ansible.builtin.command: 'pipx ensurepath'
+  become: true
+  become_user: "{{ item }}"
+  register: pip_pipx_ensurepath
+  changed_when: "'already in PATH' not in pip_pipx_ensurepath.stdout"
+  loop: "{{ pip_pipx_packages | map(attribute='user', default=None) | select('ne', None) | unique | list }}"
+  when:
+    - pip_pipx_ensurepath | default(false)
