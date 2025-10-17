@@ -48,7 +48,7 @@ jobs:
           RENOVATE_CACHE_DIR: /tmp/renovate/cache
           RENOVATE_PLATFORM: github
           RENOVATE_ENDPOINT: https://api.github.com
-          RENOVATE_ONBOARDING: true
+          RENOVATE_ONBOARDING: false
           RENOVATE_REQUIRE_CONFIG: required
           LOG_LEVEL: ${{ inputs.log_level || 'info' }}
           RENOVATE_LOG_FILE: renovate.log
