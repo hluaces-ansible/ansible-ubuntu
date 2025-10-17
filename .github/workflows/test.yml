@@ -3,6 +3,12 @@ name: Test
 run-name: Test for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }})
 "on":
   pull_request:
+    paths-ignore:
+      - "renovate.json"
+      - ".github/workflows/renovate.yml"
+      - ".github/workflows/validate-renovate.yml"
+      - ".github/dependabot.yml"
+      - "README.md"
   schedule:
     - cron: "0 3 * * 1"
 
