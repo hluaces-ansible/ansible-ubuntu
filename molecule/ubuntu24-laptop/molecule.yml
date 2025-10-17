@@ -4,7 +4,7 @@ prerun: false
 driver:
   name: vagrant
 platforms:
-  - name: ubuntu24-laptop
+  - name: "${MOLECULE_SCENARIO_NAME}"
     box: hluaces/ubuntu-gnome
     box_version: 24.04.06
     memory: 4096
@@ -19,31 +19,8 @@ provisioner:
       group_vars: ../../inventory/group_vars
       host_vars: ../../inventory/host_vars
   env:
-    ANSIBLE_ROLES_PATH: "${MOLECULE_PROJECT_DIRECTORY}/roles/vendors:${MOLECULE_PROJECT_DIRECTORY}/roles/local:${MOLECULE_PROJECT_DIRECTORY}/roles/profiles"
-    ANSIBLE_COLLECTIONS_PATH: "${MOLECULE_PROJECT_DIRECTORY}/collections/vendors:${MOLECULE_PROJECT_DIRECTORY}/collections/local:~/.ansible/collections:/usr/share/ansible/collections"
-  config_options:
-    defaults:
-      pipelining: true
-      force_color: 1
-      stdout_callback: 'anstomlog'
-      callbacks_enabled: 'profile_tasks,profile_roles,timer'
-      vault_password_file: '~/.ansible/default.vault'
-      action_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/action:~/.ansible/plugins/action_plugins/:/usr/share/ansible_plugins/action_plugins"
-      callback_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/callback:~/.ansible/plugins/callback_plugins/:/usr/share/ansible_plugins/callback_plugins"
-      connection_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/connection:~/.ansible/plugins/connection_plugins/:/usr/share/ansible_plugins/connection_plugins"
-      filter_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/filter:~/.ansible/plugins/filter_plugins/:/usr/share/ansible_plugins/filter_plugins"
-      lookup_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/lookup:~/.ansible/plugins/lookup_plugins/:/usr/share/ansible_plugins/lookup_plugins"
-      vars_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/vars:~/.ansible/plugins/vars_plugins/:/usr/share/ansible_plugins/vars_plugins"
-      strategy_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/strategy:~/.ansible/plugins/strategy_plugins/:/usr/share/ansible_plugins/strategy_plugins"
-      cache_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/cache:~/.ansible/plugins/cache:/usr/share/ansible/plugins/cache"
-      cliconf_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/cliconf:~/.ansible/plugins/cliconf:/usr/share/ansible/plugins/cliconf"
-      httpapi_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/httpapi:~/.ansible/plugins/httpapi:/usr/share/ansible/plugins/httpapi"
-      inventory_plugins: "${MOLECULE_PROJECT_DIRECTORY}/plugins/inventory:~/.ansible/plugins/inventory:/usr/share/ansible/plugins/inventory"
-      library: "${MOLECULE_PROJECT_DIRECTORY}/plugins/modules:/usr/share/ansible:${_MOLECULE_VAGRANT_PLUGIN_DIR}"
-    inventory_plugins:
-      any_unparsed_is_failed: true
+    ANSIBLE_CONFIG: "${MOLECULE_PROJECT_DIRECTORY}/ansible.cfg"
 scenario:
-  name: ubuntu24-laptop
   test_sequence:
     - dependency
     # - cleanup
