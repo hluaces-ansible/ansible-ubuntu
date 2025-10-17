@@ -46,9 +46,6 @@ jobs:
           echo "DEFAULT_VAULT_PASSWORD_FILE="${DEFAULT_VAULT_PASSWORD_FILE}"" >> $GITHUB_ENV
           echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${DEFAULT_VAULT_PASSWORD_FILE}"
 
-          # Workaround for https://github.com/ansible-community/molecule-plugins/issues/301
-          echo "_MOLECULE_VAGRANT_PLUGIN_DIR="$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/molecule_plugins/vagrant"" >> $GITHUB_ENV
-
       - name: Set up dependencies
         run: make dependencies
 
