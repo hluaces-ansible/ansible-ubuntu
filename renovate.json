@@ -127,6 +127,20 @@
         "major"
       ],
       "automerge": false
+    },
+    {
+      "description": "Container images in workflows: no auto-merge, label: release:patch",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchFileNames": [
+        ".github/workflows/**"
+      ],
+      "groupName": "Workflow container images",
+      "automerge": false,
+      "addLabels": [
+        "release:patch"
+      ]
     }
   ],
   "prConcurrentLimit": 10,
