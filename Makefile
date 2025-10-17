@@ -29,3 +29,9 @@ clean:
 test:
 	export _MOLECULE_VAGRANT_PLUGIN_DIR="$(MOLECULE_VAGRANT_PLUGIN_DIR)" && \
 	molecule test $(TEST_ARGS)
+
+provision:
+	./provision.sh
+
+provision-check:
+	./provision.sh --check
