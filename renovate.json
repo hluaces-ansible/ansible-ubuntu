@@ -6,25 +6,34 @@
     ":semanticCommits",
     ":separateMajorReleases"
   ],
-  "schedule": ["before 1am every weekday"],
+  "schedule": [
+    "before 1am every weekday"
+  ],
   "timezone": "Europe/Berlin",
-  "labels": ["dependencies", "renovate"],
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
   "enabledManagers": [
     "pip_requirements",
     "ansible-galaxy",
     "github-actions"
   ],
   "pip_requirements": {
-    "fileMatch": ["(^|/)requirements\\.txt$"]
+    "managerFilePatterns": [
+      "/(^|/)requirements\\.txt$/"
+    ]
   },
   "ansible-galaxy": {
-    "fileMatch": [
-      "roles/requirements\\.yml$",
-      "collections/requirements\\.yml$"
+    "managerFilePatterns": [
+      "/roles/requirements\\.yml$/",
+      "/collections/requirements\\.yml$/"
     ]
   },
   "github-actions": {
-    "fileMatch": ["\\.github/workflows/.*\\.ya?ml$"],
+    "managerFilePatterns": [
+      "/\\.github/workflows/.*\\.ya?ml$/"
+    ],
     "pinDigests": true,
     "digest": {
       "enabled": true
@@ -33,63 +42,90 @@
   "packageRules": [
     {
       "description": "Linting tools: auto-merge, label: norelease",
-      "matchPackageNames": ["ansible-lint", "yamllint"],
+      "matchPackageNames": [
+        "ansible-lint",
+        "yamllint"
+      ],
       "groupName": "Linting tools",
       "automerge": true,
       "automergeType": "pr",
       "platformAutomerge": true,
       "ignoreTests": false,
-      "addLabels": ["norelease"]
+      "addLabels": [
+        "norelease"
+      ]
     },
     {
       "description": "Molecule: no auto-merge, label: norelease",
-      "matchPackagePatterns": ["^molecule"],
       "groupName": "Molecule testing tools",
       "automerge": false,
-      "addLabels": ["norelease"]
+      "addLabels": [
+        "norelease"
+      ],
+      "matchPackageNames": [
+        "/^molecule/"
+      ]
     },
     {
       "description": "Ansible core: no auto-merge, label: release:minor",
-      "matchPackageNames": ["ansible"],
+      "matchPackageNames": [
+        "ansible"
+      ],
       "groupName": "Ansible core",
       "automerge": false,
-      "addLabels": ["release:minor"]
+      "addLabels": [
+        "release:minor"
+      ]
     },
     {
       "description": "Ansible Galaxy: auto-merge, label: norelease",
-      "matchManagers": ["ansible-galaxy"],
+      "matchManagers": [
+        "ansible-galaxy"
+      ],
       "groupName": "Ansible Galaxy dependencies",
       "automerge": true,
       "automergeType": "pr",
       "platformAutomerge": true,
       "ignoreTests": false,
-      "addLabels": ["norelease"]
+      "addLabels": [
+        "norelease"
+      ]
     },
     {
       "description": "GitHub Actions: no auto-merge, label: release:patch",
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "groupName": "GitHub Actions",
       "automerge": false,
       "pinDigests": true,
-      "addLabels": ["release:patch"]
+      "addLabels": [
+        "release:patch"
+      ]
     },
     {
       "description": "Other Python deps: no auto-merge, label: release:patch",
-      "matchManagers": ["pip_requirements"],
-      "excludePackageNames": [
-        "ansible",
-        "ansible-lint",
-        "yamllint",
-        "molecule",
-        "molecule-plugins"
+      "matchManagers": [
+        "pip_requirements"
       ],
       "groupName": "Other Python dependencies",
       "automerge": false,
-      "addLabels": ["release:patch"]
+      "addLabels": [
+        "release:patch"
+      ],
+      "matchPackageNames": [
+        "!ansible",
+        "!ansible-lint",
+        "!yamllint",
+        "!molecule",
+        "!molecule-plugins"
+      ]
     },
     {
       "description": "Never auto-merge major updates",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "automerge": false
     }
   ],
@@ -99,11 +135,16 @@
   "rebaseWhen": "behind-base-branch",
   "dependencyDashboardTitle": "📦 Ansible Ubuntu - Dependency Dashboard",
   "dependencyDashboardHeader": "This dashboard shows all pending Renovate updates. Check boxes to create PRs immediately.",
-  "dependencyDashboardLabels": ["dependencies", "renovate"],
+  "dependencyDashboardLabels": [
+    "dependencies",
+    "renovate"
+  ],
   "dependencyDashboardAutoclose": true,
   "vulnerabilityAlerts": {
     "enabled": true,
-    "labels": ["security"]
+    "labels": [
+      "security"
+    ]
   },
   "commitMessagePrefix": "chore(deps):",
   "commitMessageAction": "update",
