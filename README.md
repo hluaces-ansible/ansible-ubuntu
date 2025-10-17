@@ -89,13 +89,15 @@ If you also want to run tests locally, you'll need `vagrant`.
 
 ## Quick Start
 
-You'll need `git` and `ansible` installed for this to work. Also, this is used to provision an Ubuntu machine from the ones defined in the inventory files. You are supposed to install it first if you want to provision a live environment.
+You'll need `git` and `python3` (3.10+) installed for this to work.
+
+**Note:** If you have an older Python version (e.g., Python 3.8 on Ubuntu 20.04), you can downgrade Ansible in `requirements.txt` to a compatible version (e.g., `ansible==8.0.0` supports Python 3.9+).
 
 After this:
 
 - Clone this repo
 - Delete the `./inventory/group_vars/all/vault_secrets.yml` file and create yours
-- Add or tweak and inventory entry in `./inventory/prod.ini` or `./inventory/dev.ini`
+- Add or tweak an inventory entry in `./inventory/prod.ini` or `./inventory/dev.ini`
 - Add or tweak the `./inventory/host_vars` of the host you want to provision
 - If you want to run extra tasks save them either inside the `playbooks/tasks/root` directory or inside `playbooks/tasks/user`. They will be loaded automatically
 
@@ -109,10 +111,34 @@ After this:
 
 ## Run the playbook against your local machine (production)
 
-You'll need to run this as a sudoer.
-
+**Simple method:**
+```bash
+./provision.sh
 ```
-ansible-playbook -kK -v -i inventory/prod.ini playbooks/ubuntu-install.yml -l laptop
+
+Or using make:
+```bash
+make provision
+```
+
+To run in check mode without making changes:
+```bash
+make provision-check
+```
+
+**Manual method** (if you need more control):
+```bash
+# Create virtualenv
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+ansible-galaxy role install -r roles/requirements.yml -p roles/vendors
+ansible-galaxy collection install -r collections/requirements.yml -p collections/vendors
+
+# Run playbook
+ansible-playbook -i inventory/prod.ini playbooks/ubuntu-install.yml --ask-become-pass
 ```
 
 ## License
