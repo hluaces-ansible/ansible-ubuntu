@@ -15,7 +15,12 @@ pip_packages: []
 
 # Pipx packages to configure
 # See the community.general.pipx module for attributes
+# The "user" attribute specifies to which user the pipx packages will be installed to
 pip_pipx_packages: []
 # - name:
 #   global:
 #   state:
+#   user:
+
+# Whether to run 'pipx ensurepath' or not
+pip_pipx_ensurepath: true
