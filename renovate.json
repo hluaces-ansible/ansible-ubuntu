@@ -20,13 +20,20 @@
     "github-actions"
   ],
   "pip_requirements": {
-    "fileMatch": ["(^|/)requirements\\.txt$"]
+    "managerFilePatterns": [
+      "/(^|/)requirements\\.txt$/"
+    ]
   },
   "ansible-galaxy": {
-    "fileMatch": ["roles/requirements\\.yml$", "collections/requirements\\.yml$"]
+    "managerFilePatterns": [
+      "/roles/requirements\\.yml$/",
+      "/collections/requirements\\.yml$/"
+    ]
   },
   "github-actions": {
-    "fileMatch": ["\\.github/workflows/.*\\.ya?ml$"],
+    "managerFilePatterns": [
+      "/\\.github/workflows/.*\\.ya?ml$/"
+    ],
     "pinDigests": true,
     "digest": {
       "enabled": true
