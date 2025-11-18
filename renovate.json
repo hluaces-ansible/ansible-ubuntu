@@ -17,7 +17,19 @@
   "enabledManagers": [
     "pip_requirements",
     "ansible-galaxy",
-    "github-actions"
+    "github-actions",
+    "custom.regex"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.github/workflows/validate-renovate\\.yml$/"],
+      "matchStrings": [
+        "npm install -g renovate@(?<currentValue>\\d+)"
+      ],
+      "datasourceTemplate": "npm",
+      "depNameTemplate": "renovate"
+    }
   ],
   "pip_requirements": {
     "managerFilePatterns": [
