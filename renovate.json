@@ -7,7 +7,7 @@
     ":separateMajorReleases"
   ],
   "schedule": [
-    "before 1am every weekday"
+    "every weekday"
   ],
   "timezone": "Europe/Berlin",
   "labels": [
