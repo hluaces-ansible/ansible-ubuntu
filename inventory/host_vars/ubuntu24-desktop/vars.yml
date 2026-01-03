@@ -108,6 +108,8 @@ extra_packages_list:
   - 'yamllint'
 
   # Ansible
+  - 'libvirt-clients'
+  - 'libvirt-daemon'
   - 'python3-docker'
   - 'vagrant'
   - 'virtualbox'
@@ -141,6 +143,7 @@ extra_packages_list:
   - 'unzip'
   - 'vim'
   - 'whois'
+  - 'yq'
 
   # Modern CLI tools
   - 'bat'
@@ -160,6 +163,7 @@ extra_packages_list:
   # System utils
   - 'default-jdk'
   - 'etckeeper'
+  - 'gnome-shell-extensions'
   - 'gnutls-bin'
   - 'gparted'
   - 'libfuse2t64'
@@ -200,7 +204,6 @@ extra_packages_snaps:
 
   # Everyday apps
   - name: 'discord'
-  - name: 'dbeaver-ce'
   - name: 'spotify'
   - name: 'telegram-desktop'
     channel: 'latest/beta'
