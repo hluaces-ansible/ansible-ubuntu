@@ -20,13 +20,13 @@ jobs:
       # Caches
       ################
       - name: Cache Ansible Galaxy roles
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
+        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
         with:
           path: roles/vendors
           key: ansible-galaxy-roles-${{ hashFiles('roles/requirements.yml') }}
 
       - name: Cache Ansible Galaxy collections
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
+        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
         with:
           path: collections/vendors
           key: ansible-galaxy-collections-${{ hashFiles('collections/requirements.yml') }}
