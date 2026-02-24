@@ -1,4 +1,4 @@
-ansible==13.3.0  # requires Python 3.10+
+ansible==13.4.0  # requires Python 3.10+
 ansible-lint==26.1.1
 yamllint==1.38.0
 molecule==25.12.0
