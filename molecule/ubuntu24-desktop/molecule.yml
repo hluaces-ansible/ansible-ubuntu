@@ -1,35 +1,24 @@
 ---
-prerun: false
-driver:
-  name: vagrant
-platforms:
-  - name: "${MOLECULE_SCENARIO_NAME}"
-    box: hluaces/ubuntu-gnome
-    box_version: 24.04.06
-    memory: 4096
-    cpus: 4
-    groups: ['ubuntu_group']
-    config_options:
-      vm.boot_timeout: 300
-provisioner:
-  name: ansible
-  inventory:
-    links:
-      group_vars: ../../inventory/group_vars
-      host_vars: ../../inventory/host_vars
-  env:
-    ANSIBLE_CONFIG: "${MOLECULE_PROJECT_DIRECTORY}/ansible.cfg"
+dependency:
+  name: galaxy
+  options:
+    requirements-file: ${MOLECULE_PROJECT_DIRECTORY}/collections/requirements.yml
+
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --diff
+        - --inventory=${MOLECULE_SCENARIO_DIRECTORY}/inventory/
+
 scenario:
+  name: ubuntu24-desktop
   test_sequence:
     - dependency
-    # - cleanup
     - destroy
-    - syntax
     - create
     - prepare
     - converge
-    # - idempotence
-    - side_effect
     - verify
-    # - cleanup
     - destroy
