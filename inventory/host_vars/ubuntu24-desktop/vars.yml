@@ -111,8 +111,6 @@ extra_packages_list:
   - 'libvirt-clients'
   - 'libvirt-daemon'
   - 'python3-docker'
-  - 'vagrant'
-  - 'virtualbox'
 
   # Infra stuff
   - 'terraform'
