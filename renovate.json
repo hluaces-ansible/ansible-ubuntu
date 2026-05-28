@@ -129,8 +129,7 @@
         "!ansible",
         "!ansible-lint",
         "!yamllint",
-        "!molecule",
-        "!molecule-plugins"
+        "!molecule"
       ]
     },
     {

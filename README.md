@@ -35,7 +35,7 @@ That's the reason as to why some of these roles seem pretty basic: they indeed a
 
 A Python `requirements.txt` file is provided. It includes the versiones of Ansible, related tools and libraries required to run the playbook.
 
-If you also want to run tests locally, you'll need `vagrant`.
+If you also want to run tests locally, you'll need libvirt/KVM and the `hluaces.molecule` collection (vendored under `collections/vendors/`).
 
 ## File structure
 
@@ -58,7 +58,7 @@ If you also want to run tests locally, you'll need `vagrant`.
 ├── host_vars                             # Host vars directory
 ├── inventory                             # Inventory directory
 │   ├── default.ini -> dev.ini            # Default inventory to use
-│   ├── dev.ini                           # Dev inventory (vagrant)
+│   ├── dev.ini                           # Dev inventory
 │   └── prod.ini                          # Production inventory (localhost)
 ├── molecule                              # Used by the tests
 ├── playbooks                             # Playbook directory
@@ -103,10 +103,11 @@ After this:
 
 ## Run tests
 
-- Install Vagrant and Virtualbox
+Tests run via Molecule in executor mode, provisioning libvirt/KVM VMs using the vendored `hluaces.molecule` collection (cloud image + cloud-init). The runner must have libvirt/KVM available.
+
 - Install all dependencies with `make dependencies`
-- Run tests with `make test` (runs all scenarios)
-- Run specific scenario with `make test MOLECULE_ARGS="-s ubuntu24-laptop"`
+- Run all scenarios with `make test`
+- Run a specific scenario with `make test TEST_ARGS="-s ubuntu24-desktop"` or `make test TEST_ARGS="-s ubuntu24-laptop"`
 - Use `make clean` when you are done to clean up the environment
 
 ## Run the playbook against your local machine (production)
