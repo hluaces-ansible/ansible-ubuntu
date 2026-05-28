@@ -18,12 +18,3 @@ collections/vendors/*
 
 # Venv
 venv/
-
-# Vagrant state and artifacts
-vagrant/.vagrant
-vagrant/.vagrant/*
-vagrant/ubuntu.vm
-
-# Workaround for molecule and its vagrant driver failing
-# see https://github.com/ansible-community/molecule-plugins/issues/301#issuecomment-3184082904
-plugins/modules/vagrant
