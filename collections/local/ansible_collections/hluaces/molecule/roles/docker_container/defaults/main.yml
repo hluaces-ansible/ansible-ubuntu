@@ -1,0 +1,63 @@
+---
+hluaces_molecule_docker_state: present
+
+# Container image (required per host — no default)
+# hluaces_molecule_docker_image: "geerlingguy/docker-debian12-ansible:latest"
+
+# Systemd-in-container defaults (geerlingguy-compatible). These have concrete
+# defaults because they must be set for systemd to boot at all.
+hluaces_molecule_docker_privileged: true
+hluaces_molecule_docker_cgroupns_mode: host
+hluaces_molecule_docker_volumes:
+  - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+hluaces_molecule_docker_tmpfs:
+  - /run
+  - /run/lock
+
+# The following are NOT given a role-level default on purpose. If set per host
+# in hostvars, they are passed through to docker_container; otherwise the
+# create task uses Ansible's `omit` sentinel so the module skips the param:
+#   hluaces_molecule_docker_command         (image's CMD runs)
+#   hluaces_molecule_docker_hostname        (container name is used by default)
+#   hluaces_molecule_docker_env
+#   hluaces_molecule_docker_capabilities
+#   hluaces_molecule_docker_security_opts
+#   hluaces_molecule_docker_etc_hosts
+#   hluaces_molecule_docker_dns_servers
+#   hluaces_molecule_docker_networks        (list of dicts; same shape as
+#                                          community.docker.docker_container's
+#                                          `networks` param. Each unique name
+#                                          referenced across hostvars is auto-
+#                                          created before any container starts
+#                                          and torn down with the containers.)
+#   hluaces_molecule_docker_published_ports (list of strings; same shape as the
+#                                          module's `published_ports`. Use when
+#                                          a container needs to be reachable
+#                                          from the molecule controller.)
+# (Do not define them here as "{{ omit }}" — that string-literal gets stringified
+#  at role-default evaluation and does NOT behave as the omit sentinel when
+#  referenced through `default()` in the task file.)
+
+# Skip the post-create `wait_for_connection` + `ping` step for this host.
+# Use when the container image has no Python (e.g. upstream service images
+# such as postgres, zabbix-server, zabbix-web). The container is still
+# created and started; only the readiness probe is bypassed.
+hluaces_molecule_docker_skip_verify: false
+
+# Image pull policy
+hluaces_molecule_docker_pull: true
+
+# Daemon connection. Not given a role default — defaults to the local daemon
+# via the docker SDK's own resolution (DOCKER_HOST env or /var/run/docker.sock).
+# Set in host_vars / play vars to target a remote daemon.
+#   hluaces_molecule_docker_daemon_host: "tcp://10.0.0.5:2375"
+
+# Which inventory group contains containers to manage
+hluaces_molecule_docker_container_group: all
+
+# Post-create readiness wait (docker exec is near-instant, but systemd boot is not)
+hluaces_molecule_docker_wait_timeout: >-
+  {{ lookup('env', 'MOLECULE_DOCKER_WAIT_TIMEOUT') | default(60, true) }}
+
+# Destroy behavior: always force-remove running containers
+hluaces_molecule_docker_force_destroy: true

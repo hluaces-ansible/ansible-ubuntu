@@ -1,0 +1,13 @@
+<pool type='logical'>
+  <name>{{ hluaces_molecule_libvirt_pool_name }}</name>
+  <source>
+{% for device in hluaces_molecule_libvirt_pool_devices %}
+    <device path='{{ device }}'/>
+{% endfor %}
+    <name>{{ hluaces_molecule_libvirt_pool_vg_name | default(hluaces_molecule_libvirt_pool_name) }}</name>
+    <format type='lvm2'/>
+  </source>
+  <target>
+    <path>/dev/{{ hluaces_molecule_libvirt_pool_vg_name | default(hluaces_molecule_libvirt_pool_name) }}</path>
+  </target>
+</pool>

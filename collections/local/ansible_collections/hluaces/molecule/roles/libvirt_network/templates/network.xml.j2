@@ -1,0 +1,16 @@
+<network>
+  <name>{{ hluaces_molecule_libvirt_network_name }}</name>
+{% if hluaces_molecule_libvirt_network_forward_mode != 'none' %}
+  <forward mode='{{ hluaces_molecule_libvirt_network_forward_mode }}'/>
+{% endif %}
+  <bridge name='{{ hluaces_molecule_libvirt_network_bridge }}' stp='on' delay='0'/>
+  <ip address='{{ _hluaces_molecule_libvirt_network_gateway }}' netmask='{{ _hluaces_molecule_libvirt_network_netmask }}'>
+    <dhcp>
+      <range start='{{ _hluaces_molecule_libvirt_network_dhcp_start }}' end='{{ _hluaces_molecule_libvirt_network_dhcp_end }}'/>
+{% for vm_name in _hluaces_molecule_libvirt_vms | default([]) %}
+{% set vm_info = _hluaces_molecule_libvirt_vm_network_info[vm_name] %}
+      <host mac='{{ vm_info.mac }}' name='{{ vm_name }}' ip='{{ vm_info.ip }}'/>
+{% endfor %}
+    </dhcp>
+  </ip>
+</network>

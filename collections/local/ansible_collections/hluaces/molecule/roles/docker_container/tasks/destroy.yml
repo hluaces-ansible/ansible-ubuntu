@@ -1,0 +1,40 @@
+---
+- name: Build container list
+  ansible.builtin.set_fact:
+    _hluaces_molecule_docker_containers: >-
+      {{ groups[hluaces_molecule_docker_container_group]
+         | default([])
+         | difference(['localhost']) }}
+
+- name: Collect declared docker networks across all containers
+  ansible.builtin.set_fact:
+    _hluaces_molecule_docker_networks_to_manage: >-
+      {{ _hluaces_molecule_docker_networks_to_manage | default([])
+         + (hostvars[item].hluaces_molecule_docker_networks | default([])
+            | map(attribute='name') | list) }}
+  loop: "{{ _hluaces_molecule_docker_containers }}"
+
+- name: Deduplicate network list
+  ansible.builtin.set_fact:
+    _hluaces_molecule_docker_networks_to_manage: >-
+      {{ (_hluaces_molecule_docker_networks_to_manage | default([]))
+         | unique | list }}
+
+- name: Remove containers
+  community.docker.docker_container:
+    name: "{{ item }}"
+    state: absent
+    force_kill: "{{ hluaces_molecule_docker_force_destroy }}"
+    keep_volumes: false
+    docker_host: "{{ hluaces_molecule_docker_daemon_host | default(omit) }}"
+  loop: "{{ _hluaces_molecule_docker_containers }}"
+  failed_when: false
+
+- name: Remove declared docker networks
+  community.docker.docker_network:
+    name: "{{ item }}"
+    state: absent
+    force: true
+    docker_host: "{{ hluaces_molecule_docker_daemon_host | default(omit) }}"
+  loop: "{{ _hluaces_molecule_docker_networks_to_manage }}"
+  failed_when: false

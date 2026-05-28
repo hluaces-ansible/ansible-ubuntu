@@ -1,0 +1,12 @@
+---
+- name: Destroy libvirt molecule infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    hluaces_molecule_libvirt_state: absent
+  roles:
+    - hluaces.molecule.libvirt_vm
+    - hluaces.molecule.libvirt_network
+    - hluaces.molecule.libvirt_pool
+    - hluaces.molecule.libvirt_keys

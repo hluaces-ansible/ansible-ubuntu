@@ -1,0 +1,34 @@
+---
+- name: Create docker molecule infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    hluaces_molecule_docker_state: present
+  roles:
+    - hluaces.molecule.docker_container
+
+- name: Verify container connectivity
+  hosts: "{{ hluaces_molecule_docker_container_group | default('all') }}:!localhost"
+  gather_facts: false
+  tasks:
+    # `.raw` works around some issues in `wait_for_connection` for systemd cts
+    - name: Wait for the container to finish booting
+      ansible.builtin.raw: >-
+        if [ -d /run/systemd/system ]; then systemctl is-system-running || true;
+        else echo running; fi
+      register: _hluaces_molecule_ready
+      until: >-
+        _hluaces_molecule_ready.stdout_lines | last | trim
+        in ['running', 'degraded']
+      retries: >-
+        {{ ((lookup('env', 'MOLECULE_DOCKER_WAIT_TIMEOUT')
+             | default(60, true) | int) / 2) | int }}
+      delay: 2
+      changed_when: false
+      failed_when: false
+      when: not (hluaces_molecule_docker_skip_verify | default(false) | bool)
+
+    - name: Verify module execution works
+      ansible.builtin.ping:
+      when: not (hluaces_molecule_docker_skip_verify | default(false) | bool)

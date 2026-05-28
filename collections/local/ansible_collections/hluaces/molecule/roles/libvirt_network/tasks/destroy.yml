@@ -1,0 +1,30 @@
+---
+# virt_net list_nets only returns active networks. Use virsh directly to catch
+# defined-but-inactive networks so destroy is thorough.
+- name: List all libvirt networks (active and inactive)
+  ansible.builtin.command:
+    argv:
+      - virsh
+      - -c
+      - "{{ hluaces_molecule_libvirt_uri }}"
+      - net-list
+      - --all
+      - --name
+  register: _hluaces_molecule_libvirt_net_list
+  changed_when: false
+
+- name: Destroy libvirt network
+  community.libvirt.virt_net:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ hluaces_molecule_libvirt_network_name }}"
+    command: destroy
+  when: hluaces_molecule_libvirt_network_name in _hluaces_molecule_libvirt_net_list.stdout_lines
+  failed_when: false
+
+- name: Undefine libvirt network
+  community.libvirt.virt_net:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ hluaces_molecule_libvirt_network_name }}"
+    command: undefine
+  when: hluaces_molecule_libvirt_network_name in _hluaces_molecule_libvirt_net_list.stdout_lines
+  failed_when: false

@@ -1,0 +1,8 @@
+---
+- name: Create SSH keypair
+  ansible.builtin.include_tasks: create.yml
+  when: hluaces_molecule_libvirt_state == 'present'
+
+- name: Destroy SSH keypair
+  ansible.builtin.include_tasks: destroy.yml
+  when: hluaces_molecule_libvirt_state == 'absent'

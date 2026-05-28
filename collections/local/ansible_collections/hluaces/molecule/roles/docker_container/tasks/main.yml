@@ -1,0 +1,8 @@
+---
+- name: Create containers
+  ansible.builtin.include_tasks: create.yml
+  when: hluaces_molecule_docker_state == 'present'
+
+- name: Destroy containers
+  ansible.builtin.include_tasks: destroy.yml
+  when: hluaces_molecule_docker_state == 'absent'

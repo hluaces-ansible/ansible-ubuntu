@@ -1,0 +1,38 @@
+<domain type='kvm'>
+  <name>{{ _vm_name }}</name>
+  <memory unit='MiB'>{{ hostvars[_vm_name].hluaces_molecule_libvirt_vm_memory_mb
+                         | default(hluaces_molecule_libvirt_vm_memory_mb) }}</memory>
+  <vcpu>{{ hostvars[_vm_name].hluaces_molecule_libvirt_vm_vcpus
+           | default(hluaces_molecule_libvirt_vm_vcpus) }}</vcpu>
+  <os>
+    <type arch='{{ hostvars[_vm_name].hluaces_molecule_libvirt_vm_arch
+                   | default(hluaces_molecule_libvirt_vm_arch) }}'>{{ hluaces_molecule_libvirt_vm_os_type }}</type>
+    <boot dev='{{ hluaces_molecule_libvirt_vm_boot_dev }}'/>
+  </os>
+  <cpu mode='{{ hostvars[_vm_name].hluaces_molecule_libvirt_vm_cpu_mode
+                | default(hluaces_molecule_libvirt_vm_cpu_mode) }}'/>
+  <clock offset='utc'/>
+  <on_reboot>restart</on_reboot>
+  <devices>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2'/>
+      <source file='{{ hluaces_molecule_libvirt_pool_path }}/{{ _vm_name }}.qcow2'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <disk type='file' device='cdrom'>
+      <source file='{{ hluaces_molecule_libvirt_pool_path }}/{{ _vm_name }}-cidata.iso'/>
+      <target dev='sda' bus='sata'/>
+      <readonly/>
+    </disk>
+    <interface type='network'>
+      <source network='{{ hluaces_molecule_libvirt_network_name }}'/>
+      <mac address='{{ _hluaces_molecule_libvirt_vm_network_info[_vm_name].mac }}'/>
+      <model type='virtio'/>
+    </interface>
+    <serial type='pty'/>
+    <console type='pty'/>
+    <channel type='unix'>
+      <target type='virtio' name='org.qemu.guest_agent.0'/>
+    </channel>
+  </devices>
+</domain>

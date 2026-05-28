@@ -1,0 +1,9 @@
+---
+- name: Destroy docker molecule infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    hluaces_molecule_docker_state: absent
+  roles:
+    - hluaces.molecule.docker_container
