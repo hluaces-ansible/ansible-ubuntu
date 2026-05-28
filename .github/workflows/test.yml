@@ -50,18 +50,16 @@ jobs:
         run: make dependencies
 
       - name: Set up Ansible homedir and show tools versions
-        run: ansible --version && vagrant --version && VBoxManage --help
+        run: ansible --version && virsh --version
 
-      - name: Provision Vagrant box
+      - name: Run molecule test
         run: retry -t 1 -d 60 make test TEST_ARGS="-s ${{ matrix.host }}"
 
       ################
       # Artifacts
       ################
       - name: Find logs
-        run: |
-          find . -iname 'vagrant.err'
-          find . -iname 'ansible.log'
+        run: find . -iname 'ansible.log'
 
       - name: Clean up molecule resources
         if: always()
@@ -74,9 +72,3 @@ jobs:
           name: ansible-${{ matrix.host }}.log
           path: config/tmp/ansible.log
 
-      - name: Upload vagrant logs
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
-        if: always()
-        with:
-          name: vagrant-${{ matrix.host }}.log
-          path: ${{ env.MOLECULE_EPHEMERAL_DIRECTORY }}/vagrant.err
