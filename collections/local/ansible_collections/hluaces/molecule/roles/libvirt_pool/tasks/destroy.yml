@@ -1,0 +1,36 @@
+---
+# virt_pool list_pools only returns active pools. Use virsh directly to catch
+# defined-but-inactive pools so destroy is thorough.
+- name: List all storage pools (active and inactive)
+  ansible.builtin.command:
+    argv:
+      - virsh
+      - -c
+      - "{{ hluaces_molecule_libvirt_uri }}"
+      - pool-list
+      - --all
+      - --name
+  register: _hluaces_molecule_libvirt_pool_list
+  changed_when: false
+
+- name: Destroy storage pool
+  community.libvirt.virt_pool:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ hluaces_molecule_libvirt_pool_name }}"
+    state: inactive
+  when: hluaces_molecule_libvirt_pool_name in _hluaces_molecule_libvirt_pool_list.stdout_lines
+  failed_when: false
+
+- name: Undefine storage pool
+  community.libvirt.virt_pool:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ hluaces_molecule_libvirt_pool_name }}"
+    state: undefined
+  when: hluaces_molecule_libvirt_pool_name in _hluaces_molecule_libvirt_pool_list.stdout_lines
+  failed_when: false
+
+- name: Remove pool directory
+  ansible.builtin.file:
+    path: "{{ hluaces_molecule_libvirt_pool_path }}"
+    state: absent
+  when: hluaces_molecule_libvirt_pool_type == 'dir'

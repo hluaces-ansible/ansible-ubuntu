@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: libvirt_keys
+  author: |
+    Héctor Luaces <hector@luaces-novo.es>
+  description: Generate and manage ephemeral SSH keypairs for molecule VMs
+  license: GPL-2.0-or-later
+  min_ansible_version: "2.17"
+  platforms:
+    - name: Debian
+      versions: [bookworm, trixie]
+    - name: Ubuntu
+      versions: [jammy, noble]
+dependencies: []

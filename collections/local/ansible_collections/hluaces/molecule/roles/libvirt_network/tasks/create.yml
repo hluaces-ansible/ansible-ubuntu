@@ -1,0 +1,116 @@
+---
+- name: Validate bridge name length
+  ansible.builtin.assert:
+    that:
+      - hluaces_molecule_libvirt_network_bridge | length <= 15
+    fail_msg: >-
+      Bridge name '{{ hluaces_molecule_libvirt_network_bridge }}' exceeds
+      Linux 15-character limit (IFNAMSIZ - 1)
+    quiet: true
+
+- name: Compute network parameters
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_network_gateway: >-
+      {{ hluaces_molecule_libvirt_network_gateway
+         | default(hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(1), true) }}
+    _hluaces_molecule_libvirt_network_netmask: >-
+      {{ hluaces_molecule_libvirt_network_netmask
+         | default(hluaces_molecule_libvirt_network_cidr | ansible.utils.ipaddr('netmask'), true) }}
+    _hluaces_molecule_libvirt_network_dhcp_start: >-
+      {{ hluaces_molecule_libvirt_network_dhcp_start
+         | default(hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(100), true) }}
+    _hluaces_molecule_libvirt_network_dhcp_end: >-
+      {{ hluaces_molecule_libvirt_network_dhcp_end
+         | default(hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(200), true) }}
+
+- name: Build VM list for DHCP reservations
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_vms: >-
+      {{ groups[hluaces_molecule_libvirt_vm_group]
+         | default([])
+         | difference(['localhost']) }}
+
+- name: Validate VM count for MAC auto-generation
+  ansible.builtin.assert:
+    that:
+      - _hluaces_molecule_libvirt_vms | length <= 255
+    fail_msg: >-
+      VM count ({{ _hluaces_molecule_libvirt_vms | length }}) exceeds 255.
+      Auto-generated MAC addresses only support up to 255 VMs.
+    quiet: true
+
+- name: Compute per-VM IP and MAC addresses
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_vm_network_info: >-
+      {{ _hluaces_molecule_libvirt_vm_network_info | default({}) | combine({
+        item: {
+          'ip': hostvars[item].hluaces_molecule_libvirt_vm_ip
+                | default(hluaces_molecule_libvirt_network_cidr
+                          | ansible.utils.nthhost(hluaces_molecule_libvirt_vm_ip_offset + idx + 1)),
+          'mac': hostvars[item].hluaces_molecule_libvirt_vm_mac
+                 | default('52:54:00:00:01:%02x' | format(idx + 1))
+        }
+      }) }}
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  loop_control:
+    index_var: idx
+
+- name: Check if network is active
+  community.libvirt.virt_net:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    command: list_nets
+  register: _hluaces_molecule_libvirt_active_nets
+
+# virt_net list_nets only returns active networks. Shell out to virsh to see
+# defined-but-inactive entries so we can detect stale definitions (e.g. CIDR
+# or bridge name changed since the last run) and rebuild them.
+- name: List all libvirt networks (active and inactive)
+  ansible.builtin.command:
+    argv:
+      - virsh
+      - -c
+      - "{{ hluaces_molecule_libvirt_uri }}"
+      - net-list
+      - --all
+      - --name
+  register: _hluaces_molecule_libvirt_all_nets
+  changed_when: false
+
+- name: Undefine stale network (defined but not active)
+  when:
+    - hluaces_molecule_libvirt_network_name in _hluaces_molecule_libvirt_all_nets.stdout_lines
+    - hluaces_molecule_libvirt_network_name not in _hluaces_molecule_libvirt_active_nets.list_nets
+  block:
+    - name: Attempt to destroy stale network
+      community.libvirt.virt_net:
+        uri: "{{ hluaces_molecule_libvirt_uri }}"
+        name: "{{ hluaces_molecule_libvirt_network_name }}"
+        command: destroy
+      failed_when: false
+
+    - name: Undefine stale network
+      community.libvirt.virt_net:
+        uri: "{{ hluaces_molecule_libvirt_uri }}"
+        name: "{{ hluaces_molecule_libvirt_network_name }}"
+        command: undefine
+      failed_when: false
+
+- name: Define libvirt network
+  community.libvirt.virt_net:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ hluaces_molecule_libvirt_network_name }}"
+    command: define
+    xml: "{{ lookup('template', 'network.xml.j2') }}"
+  when: hluaces_molecule_libvirt_network_name not in _hluaces_molecule_libvirt_active_nets.list_nets
+
+- name: Start libvirt network
+  community.libvirt.virt_net:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ hluaces_molecule_libvirt_network_name }}"
+    state: active
+
+- name: Set network autostart
+  community.libvirt.virt_net:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ hluaces_molecule_libvirt_network_name }}"
+    autostart: "{{ hluaces_molecule_libvirt_network_autostart }}"

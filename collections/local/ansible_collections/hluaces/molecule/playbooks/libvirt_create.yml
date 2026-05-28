@@ -1,0 +1,23 @@
+---
+- name: Create libvirt molecule infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    hluaces_molecule_libvirt_state: present
+  roles:
+    - hluaces.molecule.libvirt_keys
+    - hluaces.molecule.libvirt_pool
+    - hluaces.molecule.libvirt_network
+    - hluaces.molecule.libvirt_vm
+
+- name: Verify VM connectivity
+  hosts: "{{ hluaces_molecule_libvirt_vm_group | default('all') }}:!localhost"
+  gather_facts: false
+  tasks:
+    - name: Wait for system to be reachable
+      ansible.builtin.wait_for_connection:
+        timeout: "{{ hluaces_molecule_libvirt_vm_ssh_wait_timeout | default(120) }}"
+
+    - name: Verify SSH connectivity
+      ansible.builtin.ping:

@@ -1,0 +1,9 @@
+---
+hluaces_molecule_libvirt_state: present
+
+hluaces_molecule_libvirt_ssh_key_path: >-
+  {{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY')
+     | default('/var/tmp/molecule-libvirt', true) }}/ssh_key
+hluaces_molecule_libvirt_ssh_key_type: ed25519
+hluaces_molecule_libvirt_ssh_key_comment: molecule
+hluaces_molecule_libvirt_ssh_user: molecule

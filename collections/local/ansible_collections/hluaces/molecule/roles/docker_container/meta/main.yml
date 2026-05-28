@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: docker_container
+  author: |
+    Héctor Luaces <hector@igalia.com>
+  description: Manage Docker containers with systemd for molecule testing
+  license: GPL-2.0-or-later
+  min_ansible_version: "2.17"
+  platforms:
+    - name: Debian
+      versions: [bookworm, trixie]
+    - name: Ubuntu
+      versions: [jammy, noble]
+dependencies: []

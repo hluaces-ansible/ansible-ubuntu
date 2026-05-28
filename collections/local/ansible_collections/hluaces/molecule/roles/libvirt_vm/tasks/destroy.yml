@@ -1,0 +1,63 @@
+---
+- name: Build VM list
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_vms: >-
+      {{ groups[hluaces_molecule_libvirt_vm_group]
+         | default([])
+         | difference(['localhost']) }}
+
+- name: List defined VMs
+  community.libvirt.virt:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    command: list_vms
+  register: _hluaces_molecule_libvirt_vm_list
+
+- name: Destroy running VMs
+  community.libvirt.virt:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ item }}"
+    command: destroy
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  when: item in _hluaces_molecule_libvirt_vm_list.list_vms
+  failed_when: false
+
+- name: Undefine VMs
+  community.libvirt.virt:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ item }}"
+    command: undefine
+    force: "{{ hluaces_molecule_libvirt_vm_force_destroy }}"
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  when: item in _hluaces_molecule_libvirt_vm_list.list_vms
+  failed_when: false
+
+# community.libvirt.virt_volume has no delete command — fall back to virsh.
+- name: Delete VM disk volumes
+  ansible.builtin.command:
+    argv:
+      - virsh
+      - -c
+      - "{{ hluaces_molecule_libvirt_uri }}"
+      - vol-delete
+      - --pool
+      - "{{ hluaces_molecule_libvirt_pool_name }}"
+      - "{{ item }}.qcow2"
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  register: _hluaces_molecule_libvirt_vol_delete
+  changed_when: _hluaces_molecule_libvirt_vol_delete.rc == 0
+  failed_when: false
+
+- name: Delete VM cloud-init ISOs
+  ansible.builtin.command:
+    argv:
+      - virsh
+      - -c
+      - "{{ hluaces_molecule_libvirt_uri }}"
+      - vol-delete
+      - --pool
+      - "{{ hluaces_molecule_libvirt_pool_name }}"
+      - "{{ item }}-cidata.iso"
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  register: _hluaces_molecule_libvirt_iso_delete
+  changed_when: _hluaces_molecule_libvirt_iso_delete.rc == 0
+  failed_when: false

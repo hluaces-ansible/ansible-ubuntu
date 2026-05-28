@@ -1,0 +1,8 @@
+---
+- name: Remove SSH keypair
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ hluaces_molecule_libvirt_ssh_key_path }}"
+    - "{{ hluaces_molecule_libvirt_ssh_key_path }}.pub"

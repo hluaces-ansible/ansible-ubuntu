@@ -1,0 +1,6 @@
+<pool type='zfs'>
+  <name>{{ hluaces_molecule_libvirt_pool_name }}</name>
+  <source>
+    <name>{{ hluaces_molecule_libvirt_pool_zfs_name | default(hluaces_molecule_libvirt_pool_name) }}</name>
+  </source>
+</pool>

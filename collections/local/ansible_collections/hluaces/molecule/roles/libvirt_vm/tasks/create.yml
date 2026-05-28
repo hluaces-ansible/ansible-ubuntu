@@ -1,0 +1,154 @@
+---
+- name: Build VM list
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_vms: >-
+      {{ groups[hluaces_molecule_libvirt_vm_group]
+         | default([])
+         | difference(['localhost']) }}
+
+- name: Compute network gateway (fallback if network role did not run)
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_network_gateway: >-
+      {{ _hluaces_molecule_libvirt_network_gateway
+         | default(hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(1)) }}
+  when: _hluaces_molecule_libvirt_network_gateway is not defined
+
+- name: Compute VM network info (fallback if network role did not run)
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_vm_network_info: >-
+      {{ _hluaces_molecule_libvirt_vm_network_info | default({}) | combine({
+        item: {
+          'ip': hostvars[item].hluaces_molecule_libvirt_vm_ip
+                | default(hluaces_molecule_libvirt_network_cidr
+                          | ansible.utils.nthhost(hluaces_molecule_libvirt_vm_ip_offset | default(10) + idx + 1)),
+          'mac': hostvars[item].hluaces_molecule_libvirt_vm_mac
+                 | default('52:54:00:00:01:%02x' | format(idx + 1))
+        }
+      }) }}
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  loop_control:
+    index_var: idx
+  when: _hluaces_molecule_libvirt_vm_network_info is not defined
+
+- name: Derive base image name (fallback if pool role did not run)
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_base_image_name: >-
+      {{ hluaces_molecule_libvirt_base_image_name
+         | default(hluaces_molecule_libvirt_base_image_url | basename, true) }}
+  when: _hluaces_molecule_libvirt_base_image_name is not defined
+
+# community.libvirt.virt_volume has no list command — fall back to virsh.
+- name: List existing volumes in pool
+  ansible.builtin.command:
+    argv:
+      - virsh
+      - -c
+      - "{{ hluaces_molecule_libvirt_uri }}"
+      - vol-list
+      - "{{ hluaces_molecule_libvirt_pool_name }}"
+  register: _hluaces_molecule_libvirt_existing_volumes
+  changed_when: false
+
+- name: Create thin disk clones
+  community.libvirt.virt_volume:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    pool: "{{ hluaces_molecule_libvirt_pool_name }}"
+    command: create
+    clone_source: "{{ _hluaces_molecule_libvirt_base_image_name }}"
+    xml: |
+      <volume type='file'>
+        <name>{{ item }}.qcow2</name>
+        <capacity unit='G'>{{ hostvars[item].hluaces_molecule_libvirt_vm_disk_gb
+                               | default(hluaces_molecule_libvirt_vm_disk_gb) }}</capacity>
+        <target>
+          <format type='qcow2'/>
+        </target>
+      </volume>
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  when: (item + '.qcow2') not in _hluaces_molecule_libvirt_existing_volumes.stdout
+
+# community.libvirt.virt_volume has no delete command — fall back to virsh.
+- name: Delete existing cloud-init ISOs for recreation
+  ansible.builtin.command:
+    argv:
+      - virsh
+      - -c
+      - "{{ hluaces_molecule_libvirt_uri }}"
+      - vol-delete
+      - --pool
+      - "{{ hluaces_molecule_libvirt_pool_name }}"
+      - "{{ item }}-cidata.iso"
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  register: _hluaces_molecule_libvirt_cidata_delete
+  when: (item + '-cidata.iso') in _hluaces_molecule_libvirt_existing_volumes.stdout
+  changed_when: _hluaces_molecule_libvirt_cidata_delete.rc == 0
+  failed_when: false
+
+- name: Create cloud-init ISOs
+  community.libvirt.virt_volume:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    pool: "{{ hluaces_molecule_libvirt_pool_name }}"
+    command: create_cidata_cdrom
+    name: "{{ item }}-cidata.iso"
+    cloudinit_config:
+      NETWORK_CONFIG:
+        version: 2
+        ethernets:
+          default:
+            match:
+              name: "en*"
+            addresses:
+              - >-
+                {{ _hluaces_molecule_libvirt_vm_network_info[item].ip }}/{{
+                   hluaces_molecule_libvirt_network_cidr
+                   | ansible.utils.ipaddr('prefix') }}
+            routes:
+              - to: default
+                via: "{{ _hluaces_molecule_libvirt_network_gateway }}"
+            nameservers:
+              addresses:
+                - "{{ _hluaces_molecule_libvirt_network_gateway }}"
+      USERDATA:
+        hostname: "{{ item }}"
+        fqdn: "{{ item }}.molecule.local"
+        manage_etc_hosts: true
+        users:
+          - name: "{{ hluaces_molecule_libvirt_ssh_user }}"
+            sudo: "ALL=(ALL) NOPASSWD:ALL"
+            groups: sudo
+            shell: /bin/bash
+            ssh_authorized_keys:
+              - "{{ hluaces_molecule_libvirt_ssh_public_key }}"
+        package_update: false
+        packages: "{{ hluaces_molecule_libvirt_vm_cloudinit_packages }}"
+        runcmd:
+          - systemctl enable qemu-guest-agent
+          - systemctl start qemu-guest-agent
+      METADATA:
+        instance_id: "{{ item }}"
+        local_hostname: "{{ item }}"
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+
+- name: Define VMs
+  community.libvirt.virt:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    command: define
+    xml: "{{ lookup('template', 'domain.xml.j2') }}"
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+  loop_control:
+    loop_var: _vm_name
+
+- name: Start VMs
+  community.libvirt.virt:
+    uri: "{{ hluaces_molecule_libvirt_uri }}"
+    name: "{{ item }}"
+    state: running
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"
+
+- name: Wait for SSH connectivity
+  ansible.builtin.wait_for:
+    host: "{{ _hluaces_molecule_libvirt_vm_network_info[item].ip }}"
+    port: 22
+    timeout: "{{ hluaces_molecule_libvirt_vm_ssh_wait_timeout }}"
+    state: started
+  loop: "{{ _hluaces_molecule_libvirt_vms }}"

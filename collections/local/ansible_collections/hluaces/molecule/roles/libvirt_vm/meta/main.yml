@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: libvirt_vm
+  author: |
+    Héctor Luaces <hector@igalia.com>
+  description: Manage libvirt VMs with cloud-init for molecule testing
+  license: GPL-2.0-or-later
+  min_ansible_version: "2.17"
+  platforms:
+    - name: Debian
+      versions: [bookworm, trixie]
+    - name: Ubuntu
+      versions: [jammy, noble]
+dependencies: []

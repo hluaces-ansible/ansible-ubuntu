@@ -1,0 +1,77 @@
+---
+- name: Build container list
+  ansible.builtin.set_fact:
+    _hluaces_molecule_docker_containers: >-
+      {{ groups[hluaces_molecule_docker_container_group]
+         | default([])
+         | difference(['localhost']) }}
+
+- name: Assert every container declares an image
+  ansible.builtin.assert:
+    that:
+      - hostvars[item].hluaces_molecule_docker_image is defined
+    fail_msg: >-
+      Host '{{ item }}' has no hluaces_molecule_docker_image set.
+      Set it in inventory host_vars.
+    quiet: true
+  loop: "{{ _hluaces_molecule_docker_containers }}"
+
+- name: Pull container images
+  community.docker.docker_image:
+    name: "{{ hostvars[item].hluaces_molecule_docker_image }}"
+    source: pull
+    docker_host: "{{ hluaces_molecule_docker_daemon_host | default(omit) }}"
+  loop: "{{ _hluaces_molecule_docker_containers }}"
+  when: hluaces_molecule_docker_pull | bool
+
+- name: Collect declared docker networks across all containers
+  ansible.builtin.set_fact:
+    _hluaces_molecule_docker_networks_to_manage: >-
+      {{ _hluaces_molecule_docker_networks_to_manage | default([])
+         + (hostvars[item].hluaces_molecule_docker_networks | default([])
+            | map(attribute='name') | list) }}
+  loop: "{{ _hluaces_molecule_docker_containers }}"
+
+- name: Deduplicate network list
+  ansible.builtin.set_fact:
+    _hluaces_molecule_docker_networks_to_manage: >-
+      {{ (_hluaces_molecule_docker_networks_to_manage | default([]))
+         | unique | list }}
+
+- name: Create declared docker networks
+  community.docker.docker_network:
+    name: "{{ item }}"
+    state: present
+    docker_host: "{{ hluaces_molecule_docker_daemon_host | default(omit) }}"
+  loop: "{{ _hluaces_molecule_docker_networks_to_manage }}"
+
+- name: Create and start containers
+  community.docker.docker_container:
+    name: "{{ item }}"
+    image: "{{ hostvars[item].hluaces_molecule_docker_image }}"
+    state: started
+    pull: never
+    recreate: false
+    docker_host: "{{ hluaces_molecule_docker_daemon_host | default(omit) }}"
+    command: "{{ hostvars[item].hluaces_molecule_docker_command | default(omit) }}"
+    hostname: "{{ hostvars[item].hluaces_molecule_docker_hostname | default(item) }}"
+    privileged: >-
+      {{ hostvars[item].hluaces_molecule_docker_privileged
+         | default(hluaces_molecule_docker_privileged) }}
+    cgroupns_mode: >-
+      {{ hostvars[item].hluaces_molecule_docker_cgroupns_mode
+         | default(hluaces_molecule_docker_cgroupns_mode) }}
+    volumes: >-
+      {{ hostvars[item].hluaces_molecule_docker_volumes
+         | default(hluaces_molecule_docker_volumes) }}
+    tmpfs: >-
+      {{ hostvars[item].hluaces_molecule_docker_tmpfs
+         | default(hluaces_molecule_docker_tmpfs) }}
+    env: "{{ hostvars[item].hluaces_molecule_docker_env | default(omit) }}"
+    capabilities: "{{ hostvars[item].hluaces_molecule_docker_capabilities | default(omit) }}"
+    security_opts: "{{ hostvars[item].hluaces_molecule_docker_security_opts | default(omit) }}"
+    etc_hosts: "{{ hostvars[item].hluaces_molecule_docker_etc_hosts | default(omit) }}"
+    dns_servers: "{{ hostvars[item].hluaces_molecule_docker_dns_servers | default(omit) }}"
+    networks: "{{ hostvars[item].hluaces_molecule_docker_networks | default(omit) }}"
+    published_ports: "{{ hostvars[item].hluaces_molecule_docker_published_ports | default(omit) }}"
+  loop: "{{ _hluaces_molecule_docker_containers }}"

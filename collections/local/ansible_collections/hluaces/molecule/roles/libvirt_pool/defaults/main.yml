@@ -1,0 +1,24 @@
+---
+hluaces_molecule_libvirt_state: present
+hluaces_molecule_libvirt_uri: "qemu:///system"
+
+hluaces_molecule_libvirt_pool_name: molecule
+hluaces_molecule_libvirt_pool_type: dir
+hluaces_molecule_libvirt_pool_path: "/var/tmp/molecule-libvirt/{{ hluaces_molecule_libvirt_pool_name }}"
+hluaces_molecule_libvirt_pool_mode: "0755"
+hluaces_molecule_libvirt_pool_autostart: true
+
+# LVM-specific
+hluaces_molecule_libvirt_pool_devices: []
+hluaces_molecule_libvirt_pool_vg_name: null
+# ZFS-specific
+hluaces_molecule_libvirt_pool_zfs_name: null
+
+# Libvirt ownership — override for non-Debian systems (RHEL uses qemu/qemu)
+hluaces_molecule_libvirt_user: libvirt-qemu
+hluaces_molecule_libvirt_group: kvm
+
+# Base image
+hluaces_molecule_libvirt_base_image_url: >-
+  https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2
+hluaces_molecule_libvirt_base_image_name: null

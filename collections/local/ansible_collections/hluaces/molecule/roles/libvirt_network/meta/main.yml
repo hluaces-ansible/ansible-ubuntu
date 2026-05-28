@@ -1,0 +1,13 @@
+---
+galaxy_info:
+  role_name: libvirt_network
+  author: Héctor Luaces
+  description: Manage NAT networks with DHCP for molecule libvirt VMs
+  license: GPL-2.0-or-later
+  min_ansible_version: "2.17"
+  platforms:
+    - name: Debian
+      versions: [bookworm, trixie]
+    - name: Ubuntu
+      versions: [jammy, noble]
+dependencies: []
