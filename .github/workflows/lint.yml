@@ -40,7 +40,7 @@ jobs:
           python-version: "3.12"
 
       - name: Set up APT dependencies
-        run: sudo apt update && sudo apt install -y make
+        run: sudo apt update && sudo apt install -y make libvirt-dev pkg-config
 
       - name: Set up Ansible dependencies
         run: make dependencies
