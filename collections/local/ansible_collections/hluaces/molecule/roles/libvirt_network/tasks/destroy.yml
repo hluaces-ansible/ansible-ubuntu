@@ -1,7 +1,7 @@
 ---
 # virt_net list_nets only returns active networks. Use virsh directly to catch
 # defined-but-inactive networks so destroy is thorough.
-- name: List all libvirt networks (active and inactive)
+- name: List all libvirt networks (active and inactive)  # noqa: var-naming[no-role-prefix]
   ansible.builtin.command:
     argv:
       - virsh

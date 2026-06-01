@@ -8,7 +8,7 @@
       Linux 15-character limit (IFNAMSIZ - 1)
     quiet: true
 
-- name: Compute network parameters
+- name: Compute network parameters  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_network_gateway: >-
       {{ hluaces_molecule_libvirt_network_gateway
@@ -23,7 +23,7 @@
       {{ hluaces_molecule_libvirt_network_dhcp_end
          | default(hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(200), true) }}
 
-- name: Build VM list for DHCP reservations
+- name: Build VM list for DHCP reservations  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_vms: >-
       {{ groups[hluaces_molecule_libvirt_vm_group]
@@ -39,7 +39,7 @@
       Auto-generated MAC addresses only support up to 255 VMs.
     quiet: true
 
-- name: Compute per-VM IP and MAC addresses
+- name: Compute per-VM IP and MAC addresses  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_vm_network_info: >-
       {{ _hluaces_molecule_libvirt_vm_network_info | default({}) | combine({
@@ -55,7 +55,7 @@
   loop_control:
     index_var: idx
 
-- name: Check if network is active
+- name: Check if network is active  # noqa: var-naming[no-role-prefix]
   community.libvirt.virt_net:
     uri: "{{ hluaces_molecule_libvirt_uri }}"
     command: list_nets
@@ -64,7 +64,7 @@
 # virt_net list_nets only returns active networks. Shell out to virsh to see
 # defined-but-inactive entries so we can detect stale definitions (e.g. CIDR
 # or bridge name changed since the last run) and rebuild them.
-- name: List all libvirt networks (active and inactive)
+- name: List all libvirt networks (active and inactive)  # noqa: var-naming[no-role-prefix]
   ansible.builtin.command:
     argv:
       - virsh

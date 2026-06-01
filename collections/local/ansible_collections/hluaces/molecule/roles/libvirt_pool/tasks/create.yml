@@ -1,5 +1,5 @@
 ---
-- name: Derive base image name from URL
+- name: Derive base image name from URL  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_base_image_name: >-
       {{ hluaces_molecule_libvirt_base_image_name
@@ -12,7 +12,7 @@
     mode: "{{ hluaces_molecule_libvirt_pool_mode }}"
   when: hluaces_molecule_libvirt_pool_type == 'dir'
 
-- name: Check if pool is active
+- name: Check if pool is active  # noqa: var-naming[no-role-prefix]
   community.libvirt.virt_pool:
     uri: "{{ hluaces_molecule_libvirt_uri }}"
     command: list_pools
@@ -21,7 +21,7 @@
 # virt_pool list_pools only returns active pools. Shell out to virsh to see
 # defined-but-inactive entries so stale pools (e.g. path changed) can be
 # cleaned up before redefining.
-- name: List all pools (active and inactive)
+- name: List all pools (active and inactive)  # noqa: var-naming[no-role-prefix]
   ansible.builtin.command:
     argv:
       - virsh
@@ -73,7 +73,7 @@
     name: "{{ hluaces_molecule_libvirt_pool_name }}"
     autostart: "{{ hluaces_molecule_libvirt_pool_autostart }}"
 
-- name: Download base image
+- name: Download base image  # noqa: var-naming[no-role-prefix]
   ansible.builtin.get_url:
     url: "{{ hluaces_molecule_libvirt_base_image_url }}"
     dest: "{{ hluaces_molecule_libvirt_pool_path }}/{{ _hluaces_molecule_libvirt_base_image_name }}"
@@ -88,7 +88,7 @@
 # below is attempted, and libvirt returns VIR_ERR_OPERATION_INVALID
 # ("asynchronous jobs running") immediately. Retry until the async job
 # drains.
-- name: Refresh storage pool
+- name: Refresh storage pool  # noqa: var-naming[no-role-prefix]
   community.libvirt.virt_pool:
     uri: "{{ hluaces_molecule_libvirt_uri }}"
     name: "{{ hluaces_molecule_libvirt_pool_name }}"

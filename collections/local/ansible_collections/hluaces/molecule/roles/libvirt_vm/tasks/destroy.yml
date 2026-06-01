@@ -1,12 +1,12 @@
 ---
-- name: Build VM list
+- name: Build VM list  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_vms: >-
       {{ groups[hluaces_molecule_libvirt_vm_group]
          | default([])
          | difference(['localhost']) }}
 
-- name: List defined VMs
+- name: List defined VMs  # noqa: var-naming[no-role-prefix]
   community.libvirt.virt:
     uri: "{{ hluaces_molecule_libvirt_uri }}"
     command: list_vms
@@ -32,7 +32,7 @@
   failed_when: false
 
 # community.libvirt.virt_volume has no delete command — fall back to virsh.
-- name: Delete VM disk volumes
+- name: Delete VM disk volumes  # noqa: var-naming[no-role-prefix]
   ansible.builtin.command:
     argv:
       - virsh
@@ -47,7 +47,7 @@
   changed_when: _hluaces_molecule_libvirt_vol_delete.rc == 0
   failed_when: false
 
-- name: Delete VM cloud-init ISOs
+- name: Delete VM cloud-init ISOs  # noqa: var-naming[no-role-prefix]
   ansible.builtin.command:
     argv:
       - virsh

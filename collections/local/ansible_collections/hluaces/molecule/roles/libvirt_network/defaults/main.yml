@@ -1,21 +1,21 @@
 ---
-hluaces_molecule_libvirt_state: present
-hluaces_molecule_libvirt_uri: "qemu:///system"
+hluaces_molecule_libvirt_state: present  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_uri: "qemu:///system"  # noqa: var-naming[no-role-prefix]
 
-hluaces_molecule_libvirt_network_name: molecule
-hluaces_molecule_libvirt_network_cidr: "192.168.123.0/24"
-hluaces_molecule_libvirt_network_bridge: virbr-mol
-hluaces_molecule_libvirt_network_forward_mode: nat
-hluaces_molecule_libvirt_network_autostart: true
+hluaces_molecule_libvirt_network_name: molecule  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_network_cidr: "192.168.123.0/24"  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_network_bridge: virbr-mol  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_network_forward_mode: nat  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_network_autostart: true  # noqa: var-naming[no-role-prefix]
 
 # Auto-computed from CIDR if not set
-hluaces_molecule_libvirt_network_gateway: null
-hluaces_molecule_libvirt_network_netmask: null
-hluaces_molecule_libvirt_network_dhcp_start: null
-hluaces_molecule_libvirt_network_dhcp_end: null
+hluaces_molecule_libvirt_network_gateway: null  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_network_netmask: null  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_network_dhcp_start: null  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_network_dhcp_end: null  # noqa: var-naming[no-role-prefix]
 
 # VM group for DHCP static reservations
-hluaces_molecule_libvirt_vm_group: all
+hluaces_molecule_libvirt_vm_group: all  # noqa: var-naming[no-role-prefix]
 
 # IP/MAC auto-generation
-hluaces_molecule_libvirt_vm_ip_offset: 10
+hluaces_molecule_libvirt_vm_ip_offset: 10  # noqa: var-naming[no-role-prefix]

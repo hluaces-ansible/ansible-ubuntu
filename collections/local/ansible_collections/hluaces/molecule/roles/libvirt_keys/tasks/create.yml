@@ -5,7 +5,7 @@
     state: directory
     mode: "0700"
 
-- name: Generate ephemeral SSH keypair
+- name: Generate ephemeral SSH keypair  # noqa: var-naming[no-role-prefix]
   community.crypto.openssh_keypair:
     path: "{{ hluaces_molecule_libvirt_ssh_key_path }}"
     type: "{{ hluaces_molecule_libvirt_ssh_key_type }}"
@@ -13,12 +13,12 @@
     regenerate: never
   register: _hluaces_molecule_libvirt_ssh_keypair
 
-- name: Read SSH public key
+- name: Read SSH public key  # noqa: var-naming[no-role-prefix]
   ansible.builtin.slurp:
     src: "{{ hluaces_molecule_libvirt_ssh_key_path }}.pub"
   register: _hluaces_molecule_libvirt_ssh_pubkey_raw
 
-- name: Set SSH key facts
+- name: Set SSH key facts  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     hluaces_molecule_libvirt_ssh_public_key: >-
       {{ _hluaces_molecule_libvirt_ssh_pubkey_raw.content | b64decode | trim }}

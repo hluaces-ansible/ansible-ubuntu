@@ -1,19 +1,19 @@
 ---
-- name: Build VM list
+- name: Build VM list  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_vms: >-
       {{ groups[hluaces_molecule_libvirt_vm_group]
          | default([])
          | difference(['localhost']) }}
 
-- name: Compute network gateway (fallback if network role did not run)
+- name: Compute network gateway (fallback if network role did not run)  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_network_gateway: >-
       {{ _hluaces_molecule_libvirt_network_gateway
          | default(hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(1)) }}
   when: _hluaces_molecule_libvirt_network_gateway is not defined
 
-- name: Compute VM network info (fallback if network role did not run)
+- name: Compute VM network info (fallback if network role did not run)  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_vm_network_info: >-
       {{ _hluaces_molecule_libvirt_vm_network_info | default({}) | combine({
@@ -30,7 +30,7 @@
     index_var: idx
   when: _hluaces_molecule_libvirt_vm_network_info is not defined
 
-- name: Derive base image name (fallback if pool role did not run)
+- name: Derive base image name (fallback if pool role did not run)  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_libvirt_base_image_name: >-
       {{ hluaces_molecule_libvirt_base_image_name
@@ -38,7 +38,7 @@
   when: _hluaces_molecule_libvirt_base_image_name is not defined
 
 # community.libvirt.virt_volume has no list command — fall back to virsh.
-- name: List existing volumes in pool
+- name: List existing volumes in pool  # noqa: var-naming[no-role-prefix]
   ansible.builtin.command:
     argv:
       - virsh
@@ -68,7 +68,7 @@
   when: (item + '.qcow2') not in _hluaces_molecule_libvirt_existing_volumes.stdout
 
 # community.libvirt.virt_volume has no delete command — fall back to virsh.
-- name: Delete existing cloud-init ISOs for recreation
+- name: Delete existing cloud-init ISOs for recreation  # noqa: var-naming[no-role-prefix]
   ansible.builtin.command:
     argv:
       - virsh

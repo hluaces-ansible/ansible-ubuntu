@@ -1,9 +1,9 @@
 ---
-hluaces_molecule_libvirt_state: present
+hluaces_molecule_libvirt_state: present  # noqa: var-naming[no-role-prefix]
 
-hluaces_molecule_libvirt_ssh_key_path: >-
+hluaces_molecule_libvirt_ssh_key_path: >-  # noqa: var-naming[no-role-prefix]
   {{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY')
      | default('/var/tmp/molecule-libvirt', true) }}/ssh_key
-hluaces_molecule_libvirt_ssh_key_type: ed25519
-hluaces_molecule_libvirt_ssh_key_comment: molecule
-hluaces_molecule_libvirt_ssh_user: molecule
+hluaces_molecule_libvirt_ssh_key_type: ed25519  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_ssh_key_comment: molecule  # noqa: var-naming[no-role-prefix]
+hluaces_molecule_libvirt_ssh_user: molecule  # noqa: var-naming[no-role-prefix]
