@@ -1,7 +1,0 @@
----
-- name: 'Execute sysctl role'
-  hosts: all
-  remote_user: root
-  become: true
-  roles:
-    - sysctl
