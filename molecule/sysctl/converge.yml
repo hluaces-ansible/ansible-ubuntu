@@ -1,0 +1,11 @@
+---
+- name: 'Converge'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: true
+  vars:
+    sysctl_extra_configuration:
+      'net.ipv4.ip_forward':
+        value: 1
+  roles:
+    - 'hluaces.iac.sysctl'

@@ -1,0 +1,35 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: false
+  tasks:
+    - name: 'Stat the templated dotfiles'
+      ansible.builtin.stat:
+        path: "~/{{ item }}"
+      register: dotfiles_stat
+      loop:
+        - '.gitconfig'
+        - '.gitignore'
+        - '.vimrc'
+        - '.bashrc'
+
+    - name: 'Assert dotfiles exist with mode 0600'
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - "item.stat.mode == '0600'"
+        fail_msg: "Dotfile {{ item.item }} missing or wrong mode"
+        success_msg: "Dotfile {{ item.item }} present with mode 0600"
+      loop: "{{ dotfiles_stat.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+    - name: 'Assert .gitconfig rendered the supplied user.name'
+      ansible.builtin.lineinfile:
+        path: '~/.gitconfig'
+        regexp: '^\s*name\s*=\s*Molecule Test\s*$'
+        state: 'present'
+      check_mode: true
+      register: gitconfig_name
+      failed_when: gitconfig_name.changed
