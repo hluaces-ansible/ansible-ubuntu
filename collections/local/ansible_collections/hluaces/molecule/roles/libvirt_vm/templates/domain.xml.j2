@@ -9,6 +9,10 @@
                    | default(hluaces_molecule_libvirt_vm_arch) }}'>{{ hluaces_molecule_libvirt_vm_os_type }}</type>
     <boot dev='{{ hluaces_molecule_libvirt_vm_boot_dev }}'/>
   </os>
+  <features>
+    <acpi/>
+    <apic/>
+  </features>
   <cpu mode='{{ hostvars[_vm_name].hluaces_molecule_libvirt_vm_cpu_mode
                 | default(hluaces_molecule_libvirt_vm_cpu_mode) }}'/>
   <clock offset='utc'/>
