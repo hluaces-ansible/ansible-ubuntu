@@ -1,0 +1,7 @@
+---
+- name: 'Converge'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: true
+  roles:
+    - 'hluaces.gnome.dropbox'

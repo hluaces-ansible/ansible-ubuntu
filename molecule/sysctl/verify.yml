@@ -1,0 +1,22 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: false
+  tasks:
+    - name: 'Read applied sysctl values'
+      ansible.builtin.command:
+        cmd: "sysctl -n {{ item }}"
+      changed_when: false
+      register: sysctl_values
+      loop:
+        - 'fs.inotify.max_user_watches'
+        - 'net.ipv4.ip_forward'
+
+    - name: 'Assert sysctl values were applied'
+      ansible.builtin.assert:
+        that:
+          - "sysctl_values.results[0].stdout | int == 524288"
+          - "sysctl_values.results[1].stdout | int == 1"
+        fail_msg: 'sysctl values not applied as expected'
+        success_msg: 'sysctl default + extra configuration applied correctly'

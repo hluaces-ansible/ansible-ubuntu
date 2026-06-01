@@ -1,0 +1,36 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: false
+  tasks:
+    - name: 'Gather package facts'
+      ansible.builtin.package_facts:
+        manager: 'auto'
+
+    - name: 'Assert the ulauncher package is installed'
+      ansible.builtin.assert:
+        that:
+          - "'ulauncher' in ansible_facts.packages"
+        fail_msg: 'ulauncher package not installed'
+        success_msg: 'ulauncher package installed'
+
+    - name: 'Stat the ulauncher configuration files'
+      ansible.builtin.stat:
+        path: "~/.config/ulauncher/{{ item }}"
+      register: ulauncher_config_stat
+      loop:
+        - 'extensions.json'
+        - 'settings.json'
+        - 'shortcuts.json'
+
+    - name: 'Assert the ulauncher configuration files exist with mode 0600'
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - "item.stat.mode == '0600'"
+        fail_msg: "ulauncher config {{ item.item }} missing or wrong mode"
+        success_msg: "ulauncher config {{ item.item }} present with mode 0600"
+      loop: "{{ ulauncher_config_stat.results }}"
+      loop_control:
+        label: "{{ item.item }}"

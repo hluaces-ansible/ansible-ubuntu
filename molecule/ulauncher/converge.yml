@@ -1,0 +1,20 @@
+---
+- name: 'Converge - install ulauncher (root, no GNOME session)'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: true
+  roles:
+    - role: 'hluaces.gnome.ulauncher'
+      vars:
+        ulauncher_default_action: false
+        ulauncher_do_install: true
+
+- name: 'Converge - configure ulauncher for the user'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: false
+  roles:
+    - role: 'hluaces.gnome.ulauncher'
+      vars:
+        ulauncher_default_action: false
+        ulauncher_do_configure: true

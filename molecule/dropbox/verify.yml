@@ -1,0 +1,28 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: false
+  tasks:
+    - name: 'Gather package facts'
+      ansible.builtin.package_facts:
+        manager: 'auto'
+
+    - name: 'Assert the dropbox package is installed'
+      ansible.builtin.assert:
+        that:
+          - "'dropbox' in ansible_facts.packages"
+        fail_msg: 'dropbox package not installed'
+        success_msg: 'dropbox package installed'
+
+    - name: 'Verify the dropbox launcher binary exists'
+      ansible.builtin.stat:
+        path: '/usr/bin/dropbox'
+      register: dropbox_bin
+
+    - name: 'Assert the dropbox launcher binary exists'
+      ansible.builtin.assert:
+        that:
+          - dropbox_bin.stat.exists
+        fail_msg: '/usr/bin/dropbox missing'
+        success_msg: '/usr/bin/dropbox present'
