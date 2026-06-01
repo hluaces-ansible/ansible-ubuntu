@@ -8,7 +8,7 @@ clean:
 	molecule destroy --all
 
 test:
-	ANSIBLE_CONFIG=$(CURDIR)/ansible.cfg molecule test $(TEST_ARGS)
+	molecule test $(TEST_ARGS)
 
 provision:
 	./provision.sh

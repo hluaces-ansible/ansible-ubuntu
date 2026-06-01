@@ -1,13 +1,20 @@
 ---
-- name: 'Prepare desktop test VM'
+- name: 'Prepare laptop test VM'
   hosts: 'ubuntu_group'
   become: true
   gather_facts: true
   tasks:
+    - name: 'Wait for cloud-init to finish (releases the first-boot dpkg lock)'
+      ansible.builtin.command:
+        cmd: 'cloud-init status --wait'
+      changed_when: false
+      failed_when: false
+
     - name: 'Update apt cache'
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 3600
+        lock_timeout: 300
 
     - name: 'Install GNOME desktop packages'
       ansible.builtin.apt:
@@ -16,6 +23,23 @@
           - 'gnome-shell-extensions'
           - 'dbus-x11'
         state: 'present'
+        lock_timeout: 300
+
+    - name: 'Pin the netplan renderer to systemd-networkd'
+      ansible.builtin.copy:
+        dest: '/etc/netplan/00-networkd-renderer.yaml'
+        content: |
+          network:
+            version: 2
+            renderer: networkd
+        owner: 'root'
+        group: 'root'
+        mode: '0600'
+
+    - name: 'Regenerate the netplan backend so networkd keeps the static IP across the converge upgrade'
+      ansible.builtin.command:
+        cmd: 'netplan generate'
+      changed_when: true
 
     - name: 'Ensure converge user exists (so lingering can target it)'
       ansible.builtin.user:

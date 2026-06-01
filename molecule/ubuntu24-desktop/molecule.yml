@@ -5,6 +5,12 @@ dependency:
     requirements-file: ${MOLECULE_PROJECT_DIRECTORY}/collections/requirements.yml
 
 ansible:
+  env:
+    ANSIBLE_COLLECTIONS_PATH: >-
+      ${MOLECULE_PROJECT_DIRECTORY}/collections/vendors:${MOLECULE_PROJECT_DIRECTORY}/collections/local:${HOME}/.ansible/collections
+    ANSIBLE_ROLES_PATH: >-
+      ${MOLECULE_PROJECT_DIRECTORY}/roles/vendors:${MOLECULE_PROJECT_DIRECTORY}/roles/local:${MOLECULE_PROJECT_DIRECTORY}/roles/profiles
+    ANSIBLE_VAULT_PASSWORD_FILE: ${HOME}/.ansible/default.vault
   executor:
     backend: ansible-playbook
     args:
