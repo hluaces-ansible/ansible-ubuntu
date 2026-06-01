@@ -1,6 +1,0 @@
----
-- name: 'Test dropbox role'
-  hosts: 'all'
-  remote_user: 'root'
-  roles:
-    - 'dropbox'
