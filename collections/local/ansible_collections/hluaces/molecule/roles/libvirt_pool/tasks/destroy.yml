@@ -1,7 +1,7 @@
 ---
 # virt_pool list_pools only returns active pools. Use virsh directly to catch
 # defined-but-inactive pools so destroy is thorough.
-- name: List all storage pools (active and inactive)
+- name: List all storage pools (active and inactive)  # noqa: var-naming[no-role-prefix]
   ansible.builtin.command:
     argv:
       - virsh

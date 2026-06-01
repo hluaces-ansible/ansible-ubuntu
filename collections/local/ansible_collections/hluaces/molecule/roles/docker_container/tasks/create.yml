@@ -1,5 +1,5 @@
 ---
-- name: Build container list
+- name: Build container list  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_docker_containers: >-
       {{ groups[hluaces_molecule_docker_container_group]
@@ -24,7 +24,7 @@
   loop: "{{ _hluaces_molecule_docker_containers }}"
   when: hluaces_molecule_docker_pull | bool
 
-- name: Collect declared docker networks across all containers
+- name: Collect declared docker networks across all containers  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_docker_networks_to_manage: >-
       {{ _hluaces_molecule_docker_networks_to_manage | default([])
@@ -32,7 +32,7 @@
             | map(attribute='name') | list) }}
   loop: "{{ _hluaces_molecule_docker_containers }}"
 
-- name: Deduplicate network list
+- name: Deduplicate network list  # noqa: var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     _hluaces_molecule_docker_networks_to_manage: >-
       {{ (_hluaces_molecule_docker_networks_to_manage | default([]))
