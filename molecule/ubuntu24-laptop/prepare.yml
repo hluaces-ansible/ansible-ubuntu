@@ -16,15 +16,10 @@
         cache_valid_time: 3600
         lock_timeout: 300
 
-    - name: 'Install GNOME desktop packages'
-      ansible.builtin.apt:
-        name:
-          - 'ubuntu-desktop-minimal'
-          - 'gnome-shell-extensions'
-          - 'dbus-x11'
-        state: 'present'
-        lock_timeout: 300
-
+    # ubuntu-desktop-minimal pulls in NetworkManager, which seizes the primary
+    # interface and drops the cloud-init static IP mid-install ("No route to
+    # host"). Pin netplan to networkd *before* the install so the interface
+    # stays NetworkManager-unmanaged and the static IP survives.
     - name: 'Pin the netplan renderer to systemd-networkd'
       ansible.builtin.copy:
         dest: '/etc/netplan/00-networkd-renderer.yaml'
@@ -36,10 +31,19 @@
         group: 'root'
         mode: '0600'
 
-    - name: 'Regenerate the netplan backend so networkd keeps the static IP across the converge upgrade'
+    - name: 'Regenerate the netplan backend so networkd keeps the static IP'
       ansible.builtin.command:
         cmd: 'netplan generate'
       changed_when: true
+
+    - name: 'Install GNOME desktop packages'
+      ansible.builtin.apt:
+        name:
+          - 'ubuntu-desktop-minimal'
+          - 'gnome-shell-extensions'
+          - 'dbus-x11'
+        state: 'present'
+        lock_timeout: 300
 
     - name: 'Ensure converge user exists (so lingering can target it)'
       ansible.builtin.user:
