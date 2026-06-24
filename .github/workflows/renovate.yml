@@ -28,7 +28,7 @@ jobs:
     name: Renovate
     runs-on: self-hosted
     container:
-      image: renovate/renovate:43@sha256:087bab575172b1926bbc57124d988015d899b0a82d45028514377b10a392f69d
+      image: renovate/renovate:43@sha256:5159fecda22d7bd50d4ebcdc7896ddb65e649e3a1ad55ec00d8194562a3be8c4
       volumes:
         - /home/github/.cache/renovate:/tmp/renovate/cache
       options: >-
