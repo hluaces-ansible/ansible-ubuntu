@@ -6,6 +6,6 @@ passlib==1.7.4
 
 # hluaces.molecule libvirt scenario runtime deps
 libvirt-python>=10.0
-lxml>=5.0,<6.0
+lxml>=6.1,<6.2
 netaddr>=1.0,<2.0
 pycdlib>=1.14,<2.0
