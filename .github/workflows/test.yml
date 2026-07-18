@@ -101,6 +101,17 @@ jobs:
             exit 1
           fi
 
+      - name: Enable APT cache proxy when available
+        if: steps.filter.outputs.run_molecule != 'false'
+        run: |
+          # VMs reach the same daemon via their libvirt gateway IP.
+          if curl -sf --max-time 3 http://localhost:3142/acng-report.html > /dev/null; then
+            echo "MOLECULE_APT_PROXY=1" >> "${GITHUB_ENV}"
+            echo "apt-cacher-ng detected, enabling VM apt proxy"
+          else
+            echo "apt-cacher-ng not reachable, VMs will download directly"
+          fi
+
       - name: Set up dependencies
         if: steps.filter.outputs.run_molecule != 'false'
         run: make dependencies

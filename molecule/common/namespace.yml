@@ -20,3 +20,8 @@ hluaces_molecule_libvirt_vm_name_suffix: "-r{{ hluaces_molecule_runner_slot }}"
 hluaces_molecule_libvirt_vm_ip: "{{ hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(11) }}"
 
 hluaces_molecule_libvirt_vm_mac: "{{ '52:54:00:%02x:%02x:0b' | format(hluaces_molecule_runner_slot | int, hluaces_molecule_scenario_index) }}"
+
+hluaces_molecule_libvirt_apt_proxy: >-
+  {{ 'http://' ~ (hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(1)) ~ ':3142'
+     if lookup('env', 'MOLECULE_APT_PROXY') | default('', true) == '1'
+     else '' }}
