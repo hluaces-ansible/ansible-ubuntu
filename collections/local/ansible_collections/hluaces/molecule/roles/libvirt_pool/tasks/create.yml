@@ -35,7 +35,7 @@
 
 - name: Undefine stale pool (exists but not active)
   when:
-    - hluaces_molecule_libvirt_pool_name in _hluaces_molecule_libvirt_all_pools.stdout_lines
+    - hluaces_molecule_libvirt_pool_name in (_hluaces_molecule_libvirt_all_pools.stdout_lines | map('trim'))
     - hluaces_molecule_libvirt_pool_name not in _hluaces_molecule_libvirt_active_pools.list_pools
   block:
     - name: Attempt to deactivate stale pool

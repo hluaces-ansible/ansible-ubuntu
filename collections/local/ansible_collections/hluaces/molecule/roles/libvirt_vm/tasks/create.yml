@@ -141,7 +141,7 @@
 - name: Start VMs
   community.libvirt.virt:
     uri: "{{ hluaces_molecule_libvirt_uri }}"
-    name: "{{ item }}"
+    name: "{{ item }}{{ hluaces_molecule_libvirt_vm_name_suffix }}"
     state: running
   loop: "{{ _hluaces_molecule_libvirt_vms }}"
 

@@ -1,5 +1,5 @@
 <domain type='kvm'>
-  <name>{{ _vm_name }}</name>
+  <name>{{ _vm_name }}{{ hluaces_molecule_libvirt_vm_name_suffix }}</name>
   <memory unit='MiB'>{{ hostvars[_vm_name].hluaces_molecule_libvirt_vm_memory_mb
                          | default(hluaces_molecule_libvirt_vm_memory_mb) }}</memory>
   <vcpu>{{ hostvars[_vm_name].hluaces_molecule_libvirt_vm_vcpus

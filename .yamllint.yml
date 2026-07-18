@@ -24,3 +24,4 @@ ignore: |
   .github/
   .ansible/
   venv/
+  .worktrees/

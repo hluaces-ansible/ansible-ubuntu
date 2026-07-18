@@ -7,13 +7,16 @@ kinds:
   - galaxy: "**/folder/galaxy.yml"
   - tasks: "**/tasks/*.yml"
   - vars: "**/vars/*.yml"
+  - vars: "**/molecule/common/namespace.yml"
   - meta: "**/meta/main.yml"
 
 exclude_paths:
   - ".cache/"
   - ".ansible/"
   - ".github/"
+  - ".worktrees/"
   - "**/molecule/**/collections.yml"
   - "**/molecule/**/requirements.yml"
+  - "**/molecule/common/namespace.yml"
   - "roles/vendors"
   - "collections/vendors"

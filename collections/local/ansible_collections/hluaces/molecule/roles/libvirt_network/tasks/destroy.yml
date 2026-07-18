@@ -18,7 +18,7 @@
     uri: "{{ hluaces_molecule_libvirt_uri }}"
     name: "{{ hluaces_molecule_libvirt_network_name }}"
     command: destroy
-  when: hluaces_molecule_libvirt_network_name in _hluaces_molecule_libvirt_net_list.stdout_lines
+  when: hluaces_molecule_libvirt_network_name in (_hluaces_molecule_libvirt_net_list.stdout_lines | map('trim'))
   failed_when: false
 
 - name: Undefine libvirt network
@@ -26,5 +26,5 @@
     uri: "{{ hluaces_molecule_libvirt_uri }}"
     name: "{{ hluaces_molecule_libvirt_network_name }}"
     command: undefine
-  when: hluaces_molecule_libvirt_network_name in _hluaces_molecule_libvirt_net_list.stdout_lines
+  when: hluaces_molecule_libvirt_network_name in (_hluaces_molecule_libvirt_net_list.stdout_lines | map('trim'))
   failed_when: false
