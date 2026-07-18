@@ -3,6 +3,8 @@ name: Test
 run-name: Test for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }})
 "on":
   pull_request:
+  push:
+    branches: main
   schedule:
     - cron: "0 3 * * 1"
 
@@ -27,17 +29,31 @@ jobs:
     steps:
       - name: Check whether molecule-relevant files changed
         id: filter
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_FILES_URL: >-
-            https://api.github.com/repos/${{ github.repository }}/pulls/${{
-            github.event.pull_request.number }}/files?per_page=100
+          EVENT_NAME: ${{ github.event_name }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.event.after }}
         run: |
+          if [ "${EVENT_NAME}" = "pull_request" ]; then
+            url="https://api.github.com/repos/${REPO}/pulls/${PR_NUMBER}/files?per_page=100"
+            jq_expr='.[].filename'
+          elif [ "${PUSH_BEFORE}" = "0000000000000000000000000000000000000000" ]; then
+            # Branch-creation push has no comparable range: run everything.
+            echo "run_molecule=true" >> "${GITHUB_OUTPUT}"
+            exit 0
+          else
+            url="https://api.github.com/repos/${REPO}/compare/${PUSH_BEFORE}...${PUSH_AFTER}"
+            jq_expr='.files[].filename'
+          fi
+
           files=$(curl -sf --retry 3 \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
-            "${PR_FILES_URL}" | jq -r '.[].filename')
+            "${url}" | jq -r "${jq_expr}")
 
           relevant=$(printf '%s\n' "${files}" \
             | grep -vE '^(\.github/|README\.md$|renovate\.json$|LICENSE$|\.gitignore$)' \
