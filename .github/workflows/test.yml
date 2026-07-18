@@ -13,6 +13,7 @@ concurrency:
 jobs:
   Test:
     runs-on: self-hosted
+    timeout-minutes: 75
     strategy:
       fail-fast: false
       matrix:
@@ -94,7 +95,7 @@ jobs:
 
       - name: Run molecule test
         if: steps.filter.outputs.run_molecule != 'false'
-        run: retry -t 1 -d 60 make test TEST_ARGS="-s ${{ matrix.host }}"
+        run: make test TEST_ARGS="-s ${{ matrix.host }}"
 
       ################
       # Artifacts

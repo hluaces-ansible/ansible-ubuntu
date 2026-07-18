@@ -2,3 +2,8 @@ ControlMaster auto
 ControlPersist 30m
 UserKnownHostsFile config/known_hosts
 HashKnownHosts no
+
+# Fail fast when a VM dies: bounded connects, dead-session detection
+ConnectTimeout 10
+ServerAliveInterval 30
+ServerAliveCountMax 3
