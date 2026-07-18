@@ -1,0 +1,22 @@
+---
+# Single source of truth for the per-runner libvirt namespace, symlinked into
+# every scenario inventory as group_vars/all/namespace.yml. Derives all
+# libvirt resource names from the runner slot (MOLECULE_RUNNER_SLOT env var,
+# 0 = local development, 1-4 = CI runners) and two per-scenario facts set in
+# hosts.yml: hluaces_molecule_scenario_index and hluaces_molecule_scenario_code.
+# Scheme: docs/superpowers/specs/2026-07-18-libvirt-runner-namespacing-design.md
+hluaces_molecule_runner_slot: "{{ lookup('env', 'MOLECULE_RUNNER_SLOT') | default('0', true) | int }}"
+
+hluaces_molecule_libvirt_network_cidr: "10.71.{{ (hluaces_molecule_runner_slot | int) * 10 + hluaces_molecule_scenario_index }}.0/24"
+
+hluaces_molecule_libvirt_pool_name: "mol-{{ hluaces_molecule_scenario_code }}-r{{ hluaces_molecule_runner_slot }}"
+
+hluaces_molecule_libvirt_network_name: "mol-{{ hluaces_molecule_scenario_code }}-r{{ hluaces_molecule_runner_slot }}"
+
+hluaces_molecule_libvirt_network_bridge: "vbr-m{{ hluaces_molecule_scenario_code }}{{ hluaces_molecule_runner_slot }}"
+
+hluaces_molecule_libvirt_vm_name_suffix: "-r{{ hluaces_molecule_runner_slot }}"
+
+hluaces_molecule_libvirt_vm_ip: "{{ hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(11) }}"
+
+hluaces_molecule_libvirt_vm_mac: "{{ '52:54:00:%02x:%02x:0b' | format(hluaces_molecule_runner_slot | int, hluaces_molecule_scenario_index) }}"

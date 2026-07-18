@@ -78,7 +78,7 @@
 
 - name: Undefine stale network (defined but not active)
   when:
-    - hluaces_molecule_libvirt_network_name in _hluaces_molecule_libvirt_all_nets.stdout_lines
+    - hluaces_molecule_libvirt_network_name in (_hluaces_molecule_libvirt_all_nets.stdout_lines | map('trim'))
     - hluaces_molecule_libvirt_network_name not in _hluaces_molecule_libvirt_active_nets.list_nets
   block:
     - name: Attempt to destroy stale network

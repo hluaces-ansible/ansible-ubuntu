@@ -15,20 +15,20 @@
 - name: Destroy running VMs
   community.libvirt.virt:
     uri: "{{ hluaces_molecule_libvirt_uri }}"
-    name: "{{ item }}"
+    name: "{{ item }}{{ hluaces_molecule_libvirt_vm_name_suffix }}"
     command: destroy
   loop: "{{ _hluaces_molecule_libvirt_vms }}"
-  when: item in _hluaces_molecule_libvirt_vm_list.list_vms
+  when: (item + hluaces_molecule_libvirt_vm_name_suffix) in _hluaces_molecule_libvirt_vm_list.list_vms
   failed_when: false
 
 - name: Undefine VMs
   community.libvirt.virt:
     uri: "{{ hluaces_molecule_libvirt_uri }}"
-    name: "{{ item }}"
+    name: "{{ item }}{{ hluaces_molecule_libvirt_vm_name_suffix }}"
     command: undefine
     force: "{{ hluaces_molecule_libvirt_vm_force_destroy }}"
   loop: "{{ _hluaces_molecule_libvirt_vms }}"
-  when: item in _hluaces_molecule_libvirt_vm_list.list_vms
+  when: (item + hluaces_molecule_libvirt_vm_name_suffix) in _hluaces_molecule_libvirt_vm_list.list_vms
   failed_when: false
 
 # community.libvirt.virt_volume has no delete command — fall back to virsh.

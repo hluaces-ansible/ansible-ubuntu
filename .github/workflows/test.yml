@@ -75,6 +75,15 @@ jobs:
           echo "DEFAULT_VAULT_PASSWORD_FILE="${DEFAULT_VAULT_PASSWORD_FILE}"" >> $GITHUB_ENV
           echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${DEFAULT_VAULT_PASSWORD_FILE}"
 
+          # Runner slot drives the libvirt namespace; an unparseable name must fail
+          # loudly, not fall back to a shared default slot.
+          if [[ "${RUNNER_NAME}" =~ ^runner-([0-9]+)- ]]; then
+            echo "MOLECULE_RUNNER_SLOT=${BASH_REMATCH[1]}" >> "${GITHUB_ENV}"
+          else
+            echo "::error::Cannot derive runner slot from RUNNER_NAME='${RUNNER_NAME}'"
+            exit 1
+          fi
+
       - name: Set up dependencies
         if: steps.filter.outputs.run_molecule != 'false'
         run: make dependencies
