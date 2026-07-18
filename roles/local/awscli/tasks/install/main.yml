@@ -15,6 +15,10 @@
     repo: 'ppa:yubico/stable'
     state: 'present'
     filename: 'yubico'
+  register: awscli_yubico_apt_repository
+  until: awscli_yubico_apt_repository is succeeded
+  retries: 5
+  delay: 20
 
 - name: 'Install yubikey-manager'
   ansible.builtin.apt:

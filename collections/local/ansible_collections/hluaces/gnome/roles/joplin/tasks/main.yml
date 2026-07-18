@@ -3,4 +3,8 @@
   ansible.builtin.shell: "wget -O - {{ joplin_install_script }} | bash"
   environment:
     TERM: 'xterm-256color'
+  register: joplin_install_result
+  until: joplin_install_result is succeeded
+  retries: 3
+  delay: 15
   tags: ['skip_ansible_lint']

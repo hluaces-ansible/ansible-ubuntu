@@ -7,6 +7,11 @@
     classic: "{{ item.classic | default(false) }}"
     state: "{{ item.state | default('present') }}"
   loop: "{{ extra_packages_snaps }}"
+  # community.general#12375
+  register: extra_packages_snap_result
+  until: extra_packages_snap_result is succeeded
+  retries: 3
+  delay: 10
 
 - name: 'Connect SNAP packages'
   ansible.builtin.include_tasks: "snap_packages_connect.yml"
