@@ -68,15 +68,18 @@
       ]
     },
     {
-      "description": "Molecule: no auto-merge, label: norelease",
+      "description": "Molecule: auto-merge, label: norelease",
       "groupName": "Molecule testing tools",
-      "automerge": false,
+      "automerge": true,
       "addLabels": [
         "norelease"
       ],
       "matchPackageNames": [
         "/^molecule/"
-      ]
+      ],
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "ignoreTests": false
     },
     {
       "description": "Ansible core: no auto-merge, label: release:minor",
@@ -104,24 +107,27 @@
       ]
     },
     {
-      "description": "GitHub Actions: no auto-merge, label: release:patch",
+      "description": "GitHub Actions: auto-merge, label: release:patch",
       "matchManagers": [
         "github-actions"
       ],
       "groupName": "GitHub Actions",
-      "automerge": false,
+      "automerge": true,
       "pinDigests": true,
       "addLabels": [
         "release:patch"
-      ]
+      ],
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "ignoreTests": false
     },
     {
-      "description": "Other Python deps: no auto-merge, label: release:patch",
+      "description": "Other Python deps: auto-merge, label: release:patch",
       "matchManagers": [
         "pip_requirements"
       ],
       "groupName": "Other Python dependencies",
-      "automerge": false,
+      "automerge": true,
       "addLabels": [
         "release:patch"
       ],
@@ -130,7 +136,10 @@
         "!ansible-lint",
         "!yamllint",
         "!molecule"
-      ]
+      ],
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "ignoreTests": false
     },
     {
       "description": "Never auto-merge major updates",
@@ -154,11 +163,11 @@
       ]
     }
   ],
-  "prConcurrentLimit": 10,
+  "prConcurrentLimit": 3,
   "prHourlyLimit": 0,
   "prCreation": "immediate",
-  "rebaseWhen": "behind-base-branch",
-  "dependencyDashboardTitle": "📦 Ansible Ubuntu - Dependency Dashboard",
+  "rebaseWhen": "conflicted",
+  "dependencyDashboardTitle": "\ud83d\udce6 Ansible Ubuntu - Dependency Dashboard",
   "dependencyDashboardHeader": "This dashboard shows all pending Renovate updates. Check boxes to create PRs immediately.",
   "dependencyDashboardLabels": [
     "dependencies",
