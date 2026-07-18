@@ -84,6 +84,18 @@
   changed_when: _hluaces_molecule_libvirt_cidata_delete.rc == 0
   failed_when: false
 
+# cloud-init treats `apt: {}` as a no-op, so an empty dict is safe when no
+# proxy is configured (`omit` cannot be used inside nested module params).
+# https_proxy DIRECT: apt's unified http method reuses the http proxy for
+# https URLs (CONNECT), which apt-cacher-ng denies by default — and TLS
+# tunnels are uncacheable anyway, so https repos must bypass the proxy.
+- name: Compose cloud-init apt config  # noqa: var-naming[no-role-prefix]
+  ansible.builtin.set_fact:
+    _hluaces_molecule_libvirt_userdata_apt: >-
+      {{ {'proxy': hluaces_molecule_libvirt_apt_proxy, 'https_proxy': 'DIRECT'}
+         if hluaces_molecule_libvirt_apt_proxy | default('') | length > 0
+         else {} }}
+
 - name: Create cloud-init ISOs
   community.libvirt.virt_volume:
     uri: "{{ hluaces_molecule_libvirt_uri }}"
@@ -109,6 +121,7 @@
               addresses:
                 - "{{ _hluaces_molecule_libvirt_network_gateway }}"
       USERDATA:
+        apt: "{{ _hluaces_molecule_libvirt_userdata_apt }}"
         hostname: "{{ item }}"
         fqdn: "{{ item }}.molecule.local"
         manage_etc_hosts: true

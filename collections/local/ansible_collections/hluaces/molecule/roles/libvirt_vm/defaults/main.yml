@@ -16,6 +16,9 @@ hluaces_molecule_libvirt_vm_ssh_wait_timeout: >-  # noqa: var-naming[no-role-pre
   {{ lookup('env', 'MOLECULE_LIBVIRT_SSH_TIMEOUT') | default(120, true) }}
 hluaces_molecule_libvirt_ssh_user: molecule  # noqa: var-naming[no-role-prefix]
 
+# APT proxy URL injected into cloud-init (empty = no proxy)
+hluaces_molecule_libvirt_apt_proxy: ''  # noqa: var-naming[no-role-prefix]
+
 # Appended to the libvirt domain name (not to hostnames or volume names) so
 # multiple runners on one libvirt host can hold the same inventory host.
 hluaces_molecule_libvirt_vm_name_suffix: ''  # noqa: var-naming[no-role-prefix]
