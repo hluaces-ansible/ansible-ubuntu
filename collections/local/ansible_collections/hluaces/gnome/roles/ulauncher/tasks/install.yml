@@ -4,6 +4,10 @@
   ansible.builtin.apt_repository:
     filename: 'ulauncher'
     repo: 'ppa:agornostal/ulauncher'
+  register: ulauncher_apt_repository
+  until: ulauncher_apt_repository is succeeded
+  retries: 5
+  delay: 20
 
 - name: 'Install Ulauncher'
   ansible.builtin.apt:
