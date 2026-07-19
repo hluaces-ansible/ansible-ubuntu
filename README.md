@@ -1,6 +1,6 @@
 # Ubuntu-dev desktop
 
-This is my Ubuntu 18/19/20 workstation playbook.
+This is my Ubuntu workstation playbook.
 
 Its purposes are:
 
@@ -25,11 +25,9 @@ Basically it does this:
 
 ## How does it do it?
 
-A single configuration file in `config/config.yml` keeps track of all the packages and configurations that will be done.
+Each machine is described by its inventory entry: per-host configuration (package lists, dotfiles, GNOME settings…) lives in `inventory/host_vars/<host>/vars.yml`, secrets live in Ansible Vault files (`inventory/group_vars/all/vault_vars.yml` plus per-host `vault_vars.yml` files), and host-specific extras that don't fit a role can be dropped into `playbooks/tasks/<host>/{root,user}/`, where the main playbook picks them up automatically.
 
-As you can see, every role on this repository is pretty minimalistic as the main idea behind this aproach is to have my settings saved on a single `.yml` file that could be fed to the roles without changing its programming at all. If I were to need a change on my setup a simple modification on the configuration file would do the trick.
-
-That's the reason as to why some of these roles seem pretty basic: they indeed are, but are coded in a way that allow me to declare on a yaml file my requirements.
+The roles themselves are intentionally small and data-driven: they read those host_vars and apply them without hardcoding machine specifics.
 
 ## What does it require?
 
@@ -39,52 +37,43 @@ If you also want to run tests locally, you'll need libvirt/KVM and the `hluaces.
 
 ## File structure
 
-```
+```text
 .
 ├── LICENSE
 ├── README.md                             # This file
+├── Makefile                              # dependencies / test / provision targets
+├── provision.sh                          # Bootstrap + run the playbook
+├── requirements.txt                      # Python deps (ansible, molecule, lint)
+├── renovate.json                         # Renovate bot configuration
 ├── ansible.cfg -> config/ansible.cfg     # Ansible.cfg file being used
-├── requirements.txt                      # Contains Python and Ansible
-├── config                                # Configuration directory
+├── config
 │   ├── ansible.cfg                       # Ansible configuration
-│   ├── known_hosts                       # Custom known_hosts file
 │   ├── ssh_config                        # SSH configuration
-│   ├── tmp                               # Temporary files
-│   └── vault_secrets.yml                 # Vaulted variables crypted file
-├── group_vars                            # Group vars directory
-│   └── all/
-|       └── vault_vars.yml                # Common secrets used by all hosts
-│   └── all.yml                           # Common variables to all hosts
-├── host_vars                             # Host vars directory
-├── inventory                             # Inventory directory
-│   ├── default.ini -> dev.ini            # Default inventory to use
-│   ├── dev.ini                           # Dev inventory
-│   └── prod.ini                          # Production inventory (localhost)
-├── molecule                              # Used by the tests
-├── playbooks                             # Playbook directory
+│   └── tmp                               # Runtime scratch (logs, retries)
+├── inventory
+│   ├── dev.ini                           # Scratch inventory for experiments
+│   ├── prod.ini                          # Real machines (default)
+│   ├── group_vars
+│   │   ├── all.yml                       # Common variables to all hosts
+│   │   └── all/vault_vars.yml            # Common secrets used by all hosts
+│   └── host_vars/<host>/                 # Per-host config (vars.yml, vault_vars.yml)
+├── molecule                              # Test scenarios (libvirt VMs)
+├── playbooks
 │   ├── files                             # Files used by the playbook
-│   ├── tasks                             # Extra tasks ran by the playbook
-│   │   ├── <host1>                       # Extra tasks for Host1
-│   │   │   ├── user                      # Unprivileged tasks for host1
-│   │   │   └── root                      # Privileged taks for host1
-│   │   ├── <...>                         # Extra tasks for other hosts
-│   │   └── <hostN>                       # Extra tasks for other hosts
+│   ├── tasks/<host>/{root,user}/         # Per-host extra tasks (auto-loaded)
 │   ├── templates                         # Templates used by the playbook
-│   ├── 0_local_requirements.yaml         # Internal playbook.
 │   └── ubuntu-install.yml                # The main playbook to use
-├── plugins                               # Plugin directory
-│   ├── action                            # Action plugins
-│   ├── callback                          # Callback plugins
-│   ├── connection                        # Connection plugins
-│   ├── filter                            # Filter plugins
-│   ├── lookup                            # Lookup plugins
-│   ├── modules                           # Modules plugins
-│   └── vars                              # Vars plugins
-└── roles                                 # Roles directory
-    ├── local                             # Locale roles
-    ├── profiles                          # Profile roles
-    ├── requirements.yml                  # Vendor roles list
-    └── vendors                           # Vendor roles
+├── plugins
+│   └── callback                          # Custom stdout callback (anstomlog)
+├── collections
+│   ├── requirements.yml                  # External collections list
+│   ├── local                             # Own collections (hluaces.iac/gnome/molecule)
+│   └── vendors                           # Installed external collections (gitignored)
+└── roles
+    ├── requirements.yml                  # External roles list
+    ├── local                             # Own standalone roles
+    ├── profiles                          # Profile roles (empty placeholder)
+    └── vendors                           # Installed external roles (gitignored)
 ```
 
 ## Quick Start
@@ -96,10 +85,12 @@ You'll need `git` and `python3` (3.10+) installed for this to work.
 After this:
 
 - Clone this repo
-- Delete the `./inventory/group_vars/all/vault_secrets.yml` file and create yours
+- Replace `./inventory/group_vars/all/vault_vars.yml` with your own vaulted
+  file (`ansible-vault create`), and make sure `vault_password_file` in
+  `config/ansible.cfg` points at your vault password file
 - Add or tweak an inventory entry in `./inventory/prod.ini` or `./inventory/dev.ini`
 - Add or tweak the `./inventory/host_vars` of the host you want to provision
-- If you want to run extra tasks save them either inside the `playbooks/tasks/root` directory or inside `playbooks/tasks/user`. They will be loaded automatically
+- If you want to run extra tasks save them inside `playbooks/tasks/<your-host>/root` or `playbooks/tasks/<your-host>/user`. They will be loaded automatically
 
 ## Run tests
 
