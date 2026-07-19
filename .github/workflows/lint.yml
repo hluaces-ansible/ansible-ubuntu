@@ -8,9 +8,14 @@ run-name: Lint for ${{ github.event_name }}:${{ github.ref }} (${{ github.sha }}
   schedule:
     - cron: "0 7 * * 1"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Check out code
@@ -34,19 +39,14 @@ jobs:
       ################
       # Bootstrapping
       ################
-      - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
-        with:
-          python-version: "3.12"
-
       - name: Set up APT dependencies
         run: sudo apt update && sudo apt install -y make libvirt-dev pkg-config
 
-      - name: Set up Ansible dependencies
-        run: make dependencies
-
-      - name: Set up Ansible Vault
-        run: echo "hello world" > ~/.ansible/default.vault && chmod 600 ~/.ansible/default.vault
+      - name: Bootstrap environment
+        uses: ./.github/actions/bootstrap
+        with:
+          vault-password: "hello world"
+          vault-file: "~/.ansible/default.vault"
 
       ################
       # Linting
@@ -56,3 +56,13 @@ jobs:
 
       - name: Lint (yamllint)
         run: yamllint -s .
+
+  Actionlint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Run actionlint
+        uses: raven-actions/actionlint@3d39aea434753780c3b3d4a1a31c854b4dbf49d7 # v2.2.0

@@ -1,0 +1,39 @@
+---
+name: Bootstrap Ansible environment
+description: Set up Python, install dependencies, write the vault password file
+
+inputs:
+  python-version:
+    description: Python version to set up
+    required: false
+    default: "3.12"
+  vault-password:
+    description: Ansible Vault password to write
+    required: true
+  vault-file:
+    description: Path of the vault password file to create
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install dependencies
+      shell: bash
+      run: make dependencies
+
+    - name: Write vault password file
+      shell: bash
+      env:
+        VAULT_PASSWORD: ${{ inputs.vault-password }}
+        VAULT_FILE: ${{ inputs.vault-file }}
+      run: |
+        # "with:" values never shell-expand; allow callers to pass ~ paths
+        VAULT_FILE="${VAULT_FILE/#\~/${HOME}}"
+        mkdir -p "$(dirname "${VAULT_FILE}")"
+        printf '%s\n' "${VAULT_PASSWORD}" > "${VAULT_FILE}"
+        chmod 600 "${VAULT_FILE}"

@@ -74,23 +74,16 @@ jobs:
       ################
       # Bootstrapping
       ################
-      - name: Set up Python
-        if: steps.filter.outputs.run_molecule != 'false'
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
-        with:
-          python-version: "3.12"
-
       - name: Init variables
         if: steps.filter.outputs.run_molecule != 'false'
         run: |
           # Ephemeral storage
-          export MOLECULE_EPHEMERAL_DIRECTORY="${GITHUB_WORKSPACE}/.molecule_ephemeral/${{ matrix.host }}"
-          echo "MOLECULE_EPHEMERAL_DIRECTORY="${MOLECULE_EPHEMERAL_DIRECTORY}"" >> $GITHUB_ENV
+          MOLECULE_EPHEMERAL_DIRECTORY="${GITHUB_WORKSPACE}/.molecule_ephemeral/${{ matrix.host }}"
+          echo "MOLECULE_EPHEMERAL_DIRECTORY=${MOLECULE_EPHEMERAL_DIRECTORY}" >> "${GITHUB_ENV}"
           mkdir -p "${MOLECULE_EPHEMERAL_DIRECTORY}"
 
-          export DEFAULT_VAULT_PASSWORD_FILE="${MOLECULE_EPHEMERAL_DIRECTORY}/.default.vault"
-          echo "DEFAULT_VAULT_PASSWORD_FILE="${DEFAULT_VAULT_PASSWORD_FILE}"" >> $GITHUB_ENV
-          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > "${DEFAULT_VAULT_PASSWORD_FILE}"
+          DEFAULT_VAULT_PASSWORD_FILE="${MOLECULE_EPHEMERAL_DIRECTORY}/.default.vault"
+          echo "DEFAULT_VAULT_PASSWORD_FILE=${DEFAULT_VAULT_PASSWORD_FILE}" >> "${GITHUB_ENV}"
 
           # Runner slot drives the libvirt namespace; an unparseable name must fail
           # loudly, not fall back to a shared default slot.
@@ -112,9 +105,12 @@ jobs:
             echo "apt-cacher-ng not reachable, VMs will download directly"
           fi
 
-      - name: Set up dependencies
+      - name: Bootstrap environment
         if: steps.filter.outputs.run_molecule != 'false'
-        run: make dependencies
+        uses: ./.github/actions/bootstrap
+        with:
+          vault-password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          vault-file: ${{ env.DEFAULT_VAULT_PASSWORD_FILE }}
 
       - name: Set up Ansible homedir and show tools versions
         if: steps.filter.outputs.run_molecule != 'false'
@@ -127,10 +123,6 @@ jobs:
       ################
       # Artifacts
       ################
-      - name: Find logs
-        if: steps.filter.outputs.run_molecule != 'false'
-        run: find . -iname 'ansible.log'
-
       - name: Clean up molecule resources
         if: always() && steps.filter.outputs.run_molecule != 'false'
         run: molecule destroy -s "${{ matrix.host }}"
@@ -141,4 +133,6 @@ jobs:
         with:
           name: ansible-${{ matrix.host }}.log
           path: config/tmp/ansible.log
+          retention-days: 14
+          if-no-files-found: error
 
