@@ -253,7 +253,7 @@
       register: gitconfig_gpgsign
       failed_when: gitconfig_gpgsign.changed
 
-    - name: 'Asserrt that .gitconfig has core.editor'
+    - name: 'Assert that .gitconfig has core.editor'
       ansible.builtin.lineinfile:
         path: "/home/{{ configure_system_user_name }}/.gitconfig"
         regexp: '^\s*editor\s*=\s*{{ dotfiles_git_config.core.editor }}\s*$'

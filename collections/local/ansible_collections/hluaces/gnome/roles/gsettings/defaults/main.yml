@@ -95,5 +95,5 @@ gsettings_defaults:
 
 gsettings_extra: []
 
-# Enables or not the "Privacy -> Conectivity check" option
-gsettings_conectivty_check: false
+# Enables or not the "Privacy -> Connectivity check" option
+gsettings_connectivity_check: false
