@@ -388,6 +388,88 @@
         success_msg: "User {{ configure_system_user_name }} can run docker commands"
 
     ################################################################################
+    # Tilix verification
+    ################################################################################
+    - name: 'Assert that tilix package is installed'
+      ansible.builtin.assert:
+        that:
+          - "'tilix' in ansible_facts.packages"
+        fail_msg: 'Tilix not installed'
+        success_msg: 'Tilix installed'
+
+    - name: 'Get default x-terminal-emulator alternative'
+      ansible.builtin.command: 'update-alternatives --query x-terminal-emulator'
+      changed_when: false
+      register: terminal_alternative
+
+    - name: 'Assert that tilix is the default terminal emulator'
+      ansible.builtin.assert:
+        that:
+          - "'Value: /usr/bin/tilix.wrapper' in terminal_alternative.stdout"
+        fail_msg: 'Tilix is not the default terminal emulator'
+        success_msg: 'Tilix is the default terminal emulator'
+
+    ################################################################################
+    # Joplin verification
+    ################################################################################
+    - name: 'Check Joplin AppImage'
+      ansible.builtin.stat:
+        path: "/home/{{ configure_system_user_name }}/.joplin/Joplin.AppImage"
+      register: joplin_appimage
+
+    - name: 'Assert that Joplin is installed'
+      ansible.builtin.assert:
+        that:
+          - joplin_appimage.stat.exists
+          - joplin_appimage.stat.executable
+        fail_msg: 'Joplin AppImage missing or not executable'
+        success_msg: 'Joplin installed'
+
+    ################################################################################
+    # awscli / aws-vault verification
+    ################################################################################
+    - name: 'Check aws-cli snap'
+      ansible.builtin.command: 'snap list aws-cli'
+      changed_when: false
+      failed_when: false
+      register: awscli_snap_check
+
+    - name: 'Assert that aws-cli snap is installed'
+      ansible.builtin.assert:
+        that:
+          - "awscli_snap_check.rc == 0"
+        fail_msg: 'aws-cli snap not installed'
+        success_msg: 'aws-cli snap installed'
+
+    - name: 'Check aws-vault binary'
+      ansible.builtin.stat:
+        path: '/usr/local/bin/aws-vault'
+      register: aws_vault_binary
+
+    - name: 'Assert that aws-vault is installed'
+      ansible.builtin.assert:
+        that:
+          - aws_vault_binary.stat.exists
+          - aws_vault_binary.stat.executable
+        fail_msg: 'aws-vault missing or not executable'
+        success_msg: 'aws-vault installed'
+
+    ################################################################################
+    # Hadolint verification
+    ################################################################################
+    - name: 'Run hadolint --version'
+      ansible.builtin.command: 'hadolint --version'
+      changed_when: false
+      register: hadolint_version_check
+
+    - name: 'Assert that hadolint runs'
+      ansible.builtin.assert:
+        that:
+          - "hadolint_version_check.rc == 0"
+        fail_msg: 'hadolint not runnable'
+        success_msg: "hadolint present: {{ hadolint_version_check.stdout }}"
+
+    ################################################################################
     # GNOME settings verification (best effort)
     ################################################################################
     - name: 'Verify if dbus is available'
