@@ -9,6 +9,7 @@ jobs:
   scaleway:
     name: Clean up self-hosted runners
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7

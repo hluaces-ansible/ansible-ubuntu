@@ -27,6 +27,7 @@ jobs:
   renovate:
     name: Renovate
     runs-on: self-hosted
+    timeout-minutes: 60
     container:
       image: renovate/renovate:43@sha256:9f9a0b9a4b5da3d9634493635e9fc4bcc196a9fcd45299af68d015ddd3f3987f
       volumes:
