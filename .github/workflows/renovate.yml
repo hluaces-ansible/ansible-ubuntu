@@ -29,7 +29,7 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 60
     container:
-      image: renovate/renovate:43@sha256:1a360697dfa230671fc2f110e1184f09ce43a57911c397bd4667276c72ed0ad1
+      image: renovate/renovate:43@sha256:04d242dbd09e08e55687c17eda8956eb03a464ace0d6ca199fced49755fbfb0a
       volumes:
         - /home/github/.cache/renovate:/tmp/renovate/cache
       options: >-
