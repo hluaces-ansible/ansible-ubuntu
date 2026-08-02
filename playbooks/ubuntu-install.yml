@@ -70,6 +70,8 @@
       become: true
       become_user: "{{ configure_system_user_name }}"
       tags: ['role-tilix']
+    - role: 'hluaces.ubuntu.ghostty'
+      tags: ['role-ghostty']
     - role: 'hluaces.gnome.joplin'
       become: true
       become_user: "{{ configure_system_user_name }}"

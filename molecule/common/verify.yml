@@ -402,12 +402,23 @@
       changed_when: false
       register: terminal_alternative
 
-    - name: 'Assert that tilix is the default terminal emulator'
+    - name: 'Assert the configured default terminal is selected'
       ansible.builtin.assert:
         that:
-          - "'Value: /usr/bin/tilix.wrapper' in terminal_alternative.stdout"
-        fail_msg: 'Tilix is not the default terminal emulator'
-        success_msg: 'Tilix is the default terminal emulator'
+          - "('Value: ' + expected_terminal_path) in terminal_alternative.stdout"
+        fail_msg: "x-terminal-emulator is not {{ expected_terminal_path }}"
+        success_msg: "x-terminal-emulator is {{ expected_terminal_path }}"
+      vars:
+        expected_terminal_path: >-
+          {{ '/snap/bin/ghostty'
+             if (ghostty_set_default | default(false))
+             else '/usr/bin/tilix.wrapper' }}
+
+    - name: 'Assert that ghostty snap binary is installed'
+      ansible.builtin.stat:
+        path: '/snap/bin/ghostty'
+      register: ghostty_binary
+      failed_when: not ghostty_binary.stat.exists
 
     ################################################################################
     # Joplin verification

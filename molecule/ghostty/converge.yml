@@ -1,0 +1,10 @@
+---
+- name: 'Converge'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: true
+  vars:
+    configure_system_user_name: 'molecule'
+    ghostty_set_default: true
+  roles:
+    - 'hluaces.ubuntu.ghostty'

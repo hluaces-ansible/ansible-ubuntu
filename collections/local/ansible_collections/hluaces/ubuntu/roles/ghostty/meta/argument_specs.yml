@@ -1,0 +1,34 @@
+---
+argument_specs:
+  main:
+    short_description: 'Install and configure the ghostty terminal emulator'
+    description:
+      - 'Installs ghostty from snap, deploys its configuration for the
+        provisioned user (C(configure_system_user_name)) and, when
+        C(ghostty_set_default) is enabled, registers it as the default
+        x-terminal-emulator alternative.'
+    options:
+      ghostty_snap_channel:
+        type: 'str'
+        default: 'latest/stable'
+        description: 'Snap channel to track.'
+      ghostty_set_default:
+        type: 'bool'
+        default: false
+        description: 'Register ghostty as the default x-terminal-emulator alternative.'
+      ghostty_alternative_priority:
+        type: 'int'
+        default: 60
+        description: 'Priority for the x-terminal-emulator alternative.'
+      ghostty_default_config:
+        type: 'str'
+        description: 'Base ghostty configuration content.'
+      ghostty_extra_config:
+        type: 'str'
+        default: ''
+        description: 'Extra configuration appended to the base content.'
+      ghostty_config:
+        type: 'str'
+        description:
+          - 'Effective configuration written to ~/.config/ghostty/config.
+            Defaults to base plus extra; override wholesale to fully replace.'

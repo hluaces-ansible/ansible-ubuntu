@@ -1,0 +1,4 @@
+---
+
+# Terminal role that registers itself as the default x-terminal-emulator
+ghostty_set_default: true

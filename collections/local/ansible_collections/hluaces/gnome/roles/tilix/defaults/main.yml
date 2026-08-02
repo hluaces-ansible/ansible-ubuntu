@@ -1,1 +1,4 @@
 ---
+
+# Register Tilix as the default x-terminal-emulator alternative
+tilix_set_default: false

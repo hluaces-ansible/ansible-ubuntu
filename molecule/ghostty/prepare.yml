@@ -1,0 +1,16 @@
+---
+- name: 'Prepare ghostty test VM'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: false
+  tasks:
+    - name: 'Wait for cloud-init to finish (releases the first-boot dpkg lock)'
+      ansible.builtin.command:
+        cmd: 'cloud-init status --wait'
+      changed_when: false
+      failed_when: false
+
+    - name: 'Wait for snapd seeding to finish'
+      ansible.builtin.command:
+        cmd: 'snap wait system seed.loaded'
+      changed_when: false

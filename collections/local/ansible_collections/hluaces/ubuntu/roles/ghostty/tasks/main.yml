@@ -1,0 +1,38 @@
+---
+
+- name: 'Install ghostty'
+  become: true
+  community.general.snap:
+    name: 'ghostty'
+    classic: true
+    channel: "{{ ghostty_snap_channel }}"
+  register: ghostty_snap_result
+  retries: 3
+  delay: 10
+  until: ghostty_snap_result is not failed
+
+- name: 'Create ghostty configuration directory'
+  become: true
+  become_user: "{{ configure_system_user_name }}"
+  ansible.builtin.file:
+    path: '~/.config/ghostty'
+    state: 'directory'
+    mode: '0755'
+
+- name: 'Deploy ghostty configuration'
+  become: true
+  become_user: "{{ configure_system_user_name }}"
+  ansible.builtin.template:
+    src: 'config.j2'
+    dest: '~/.config/ghostty/config'
+    mode: '0600'
+
+- name: 'Set ghostty as default terminal emulator'
+  become: true
+  community.general.alternatives:
+    name: 'x-terminal-emulator'
+    link: '/usr/bin/x-terminal-emulator'
+    path: '/snap/bin/ghostty'
+    priority: "{{ ghostty_alternative_priority }}"
+    state: 'selected'
+  when: 'ghostty_set_default'
