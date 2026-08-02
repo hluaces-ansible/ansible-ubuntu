@@ -1,0 +1,102 @@
+---
+
+# Snap channel to track
+ghostty_snap_channel: 'latest/stable'
+
+# Register ghostty as the default x-terminal-emulator alternative
+ghostty_set_default: false
+
+# Priority used when registering ghostty as an x-terminal-emulator alternative
+ghostty_alternative_priority: 60
+
+# Base configuration written to ~/.config/ghostty/config
+ghostty_default_config: |
+  font-family             = Fira Code Regular
+  font-family-bold        = Fira Code Bold
+  font-family-italic      = Fira Code light
+  font-family-bold-italic = Fira Code Bold
+  font-size               = 16
+
+  adjust-cursor-thickness = 20
+  cursor-color            = blue
+  # Nice themes (ghostty +list-themes)
+  # 0x96f                        - purple nice
+  # 3024 Night                   - chocolatey black
+  # Abernathy                    - magenta black
+  # Adwaita Dark                 - darker magenta black
+  # Atom                         - more nuanced magenta black
+  # Adventure                    - black with green
+  # Arthur                       - similar foresty vibe
+  # Monokai Classic
+  # Monokai Remastered
+  # Black Metal                  - black and some dark greys
+  # Black Metal (Bathory)        - death from above
+  # Black Metal (Immortal)       - colder than the coldest ravenfrost
+  # Black Metal (Burzum)         - this is war
+  # Black Metal (Dark Funeral)   - lighter than immortal
+  # Black Metal (Gorgoroth)      - Satan
+  # Black Metal (Khold)          - can't see shit
+  # Black Metal (Marduk)         - throne of rats
+  # Black Metal (Mayhem)         - brains all over the place
+  # Black Metal (Nile)           -
+  # Black Metal (Venom)          -
+  # Cyberdyne                    - Magenta and neon greens
+  # Dark modern                  - black and reds
+  # Symfonic
+  theme = Black Metal (Immortal)
+
+  # Selection
+  selection-clear-on-copy = true
+  scroll-to-bottom        = keystroke
+  scrollback-limit        = 209715200
+
+  # See actions at ghostty +list-actions
+  # modifiers: shift, ctrl/control, alt, opt, option, super
+  # ">" can be used to specify modifiers (control+k>s)
+  # action or action:param
+  # See: https://ghostty.org/docs/config/keybind/reference
+  keybind=performable:ctrl+c=copy_to_clipboard
+  keybind=ctrl+v=paste_from_clipboard
+  clipboard-read=allow
+  clipboard-write=allow
+  clipboard-trim-trailing-spaces=true
+  clipboard-paste-protection=true
+  copy-on-select=clipboard
+
+  bell-features = system,attention,title,border
+
+  keybind=ctrl+shift+v=paste_from_selection
+  keybind=control+0=reset_font_size
+  keybind=control+l=clear_screen
+  keybind=control+shift+a=select_all
+  keybind=control+home=scroll_to_top
+  keybind=control+end=scroll_to_bottom
+  keybind=shift+page_up=scroll_page_up
+  keybind=shift+page_down=scroll_page_down
+  keybind=control+n=new_window
+  keybind=control+t=new_tab
+  keybind=control+1=previous_tab
+  keybind=control+2=next_tab
+  keybind=control+shift+o=new_split:down
+  keybind=control+shift+e=new_split:right
+  keybind=control+up=toggle_split_zoom
+  keybind=control+tab=goto_split:next
+  keybind=control+shift+tab=goto_split:previous
+  keybind=control+shift++=equalize_splits
+  keybind=control+w=close_surface
+  keybind=control+shift+w=close_tab
+  keybind=super+up=toggle_maximize
+  keybind=super+down=reset_window_size
+  keybind=f11=toggle_fullscreen
+  keybind=super+v=toggle_visibility
+
+  shell-integration-features=cursor,sudo,ssh-env,ssh-terminfo
+  shell-integration=bash
+  term=xterm-256color
+
+# Per-host extra configuration appended to the base configuration.
+# When set, end it with a newline: the values are concatenated as-is.
+ghostty_extra_config: ''
+
+# Effective configuration; override wholesale to discard the defaults
+ghostty_config: "{{ ghostty_default_config + ghostty_extra_config }}"

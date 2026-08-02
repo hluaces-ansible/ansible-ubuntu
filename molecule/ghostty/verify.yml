@@ -1,0 +1,52 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: false
+  tasks:
+    - name: 'Stat the ghostty snap binary'
+      ansible.builtin.stat:
+        path: '/snap/bin/ghostty'
+      register: ghostty_binary
+
+    - name: 'Assert ghostty is installed'
+      ansible.builtin.assert:
+        that:
+          - ghostty_binary.stat.exists
+        fail_msg: 'ghostty snap binary missing'
+        success_msg: 'ghostty snap installed'
+
+    - name: 'Stat the ghostty configuration'
+      ansible.builtin.stat:
+        path: '~/.config/ghostty/config'
+      register: ghostty_config_file
+
+    - name: 'Assert configuration exists with mode 0600'
+      ansible.builtin.assert:
+        that:
+          - ghostty_config_file.stat.exists
+          - "ghostty_config_file.stat.mode == '0600'"
+        fail_msg: 'ghostty config missing or wrong mode'
+        success_msg: 'ghostty config present with mode 0600'
+
+    - name: 'Assert the configured theme rendered'
+      ansible.builtin.lineinfile:
+        path: '~/.config/ghostty/config'
+        regexp: '^theme = Black Metal \(Immortal\)$'
+        state: 'present'
+      check_mode: true
+      register: ghostty_theme
+      failed_when: ghostty_theme.changed
+
+    - name: 'Query the default terminal alternative'
+      ansible.builtin.command:
+        cmd: 'update-alternatives --query x-terminal-emulator'
+      changed_when: false
+      register: ghostty_alternative
+
+    - name: 'Assert ghostty is the default terminal'
+      ansible.builtin.assert:
+        that:
+          - "'Value: /snap/bin/ghostty' in ghostty_alternative.stdout"
+        fail_msg: 'x-terminal-emulator does not point to ghostty'
+        success_msg: 'ghostty is the default terminal'

@@ -31,6 +31,7 @@
   tags: ['skip_ansible_lint']
   become_user: root
   become: true
+  when: 'tilix_set_default'
 
 # https://gnunn1.github.io/tilix-web/manual/vteconfig/
 - name: 'Add VTE configuration for Tilix'

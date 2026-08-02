@@ -13,7 +13,7 @@ check() {
   fi
 }
 
-ALL='["dotfiles","dropbox","sysctl","ubuntu24-desktop","ubuntu24-laptop","ulauncher"]'
+ALL='["dotfiles","dropbox","ghostty","sysctl","ubuntu24-desktop","ubuntu24-laptop","ulauncher"]'
 FULL='["ubuntu24-desktop","ubuntu24-laptop"]'
 
 check "schedule runs all" "${ALL}" "$(./map_scenarios.sh schedule < /dev/null)"
@@ -24,6 +24,8 @@ check "push: CI-only change -> nothing" "[]" \
   "$(echo '.github/workflows/lint.yml' | ./map_scenarios.sh push)"
 check "PR: single role -> its scenario" '["dotfiles"]' \
   "$(echo 'collections/local/ansible_collections/hluaces/iac/roles/dotfiles/tasks/main.yml' | ./map_scenarios.sh pull_request)"
+check "PR: ubuntu collection role -> its scenario" '["ghostty"]' \
+  "$(echo 'collections/local/ansible_collections/hluaces/ubuntu/roles/ghostty/tasks/main.yml' | ./map_scenarios.sh pull_request)"
 check "PR: scenario dir -> that scenario" '["sysctl"]' \
   "$(echo 'molecule/sysctl/converge.yml' | ./map_scenarios.sh pull_request)"
 check "PR: playbook -> full" "${FULL}" \
