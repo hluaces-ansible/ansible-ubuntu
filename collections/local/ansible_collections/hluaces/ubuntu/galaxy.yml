@@ -1,0 +1,12 @@
+---
+namespace: 'hluaces'
+name: 'ubuntu'
+version: '0.1.0'
+readme: 'README.md'
+authors:
+  - 'Héctor Luaces'
+description: 'Provisioning roles for my Ubuntu workstations (laptop as code)'
+license:
+  - 'GPL-2.0-or-later'
+tags: ['ubuntu', 'workstation', 'linux']
+repository: 'https://github.com/hluaces-ansible/ansible-ubuntu'

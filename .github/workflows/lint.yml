@@ -57,6 +57,9 @@ jobs:
       - name: Lint (yamllint)
         run: yamllint -s .
 
+      - name: Test scenario mapping script
+        run: .github/scripts/map_scenarios_test.sh
+
   Actionlint:
     runs-on: ubuntu-latest
     timeout-minutes: 10
