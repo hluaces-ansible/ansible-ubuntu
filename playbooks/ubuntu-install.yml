@@ -1,30 +1,38 @@
 ---
 
-- name: 'Install Ubuntu Workstation (root configuration)'
+- name: 'Install Ubuntu Workstation'
   hosts: 'ubuntu_group'
   remote_user: "{{ remote_user | default(omit) }}"
-  become_user: 'root'
-  become: true
+  become: false
   roles:
+    # System configuration (root)
     - role: 'configure_system'
+      become: true
       tags: ['role-configure_system']
     - role: 'hluaces.iac.sysctl'
+      become: true
       tags: ['role-sysctl']
     - role: 'hluaces.iac.extra_packages'
+      become: true
       tags: ['role-extra_packages']
     - role: 'geerlingguy.docker'
+      become: true
       tags: ['role-geerlingguy.docker']
     - role: 'hluaces.gnome.dropbox'
+      become: true
       tags: ['role-dropbox']
     - role: 'hadolint'
+      become: true
       tags: ['role-hadolint']
 
     # Root dotfiles
     - role: 'hluaces.iac.dotfiles'
+      become: true
       tags: ['role-dotfiles']
 
     # Root only installs this, configuration is per-user
     - role: 'awscli'
+      become: true
       vars:
         awscli_default_action: false
         awscli_do_install: true
@@ -33,9 +41,54 @@
 
     # Only installation
     - role: 'hluaces.gnome.ulauncher'
+      become: true
       vars:
         ulauncher_default_action: false
         ulauncher_do_install: true
+      tags: ['role-ulauncher']
+
+    # User configuration (runs as the provisioned user)
+    - role: 'hluaces.iac.pip'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      tags: ['role-pip']
+    - role: 'hluaces.iac.dotfiles'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      tags: ['role-dotfiles']
+    - role: 'hluaces.iac.configuration_files'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      tags: ['role-configuration_files']
+      vars:
+        configuration_files_list: "{{ configuration_files_user }}"
+    - role: 'hluaces.gnome.gsettings'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      tags: ['role-gsettings']
+    - role: 'hluaces.gnome.tilix'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      tags: ['role-tilix']
+    - role: 'hluaces.gnome.joplin'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      tags: ['role-joplin']
+    # The user only configures this
+    - role: 'awscli'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      vars:
+        awscli_default_action: false
+        awscli_do_configure: true
+      tags: ['role-awscli']
+    # The user only configures this
+    - role: 'hluaces.gnome.ulauncher'
+      become: true
+      become_user: "{{ configure_system_user_name }}"
+      vars:
+        ulauncher_default_action: false
+        ulauncher_do_configure: true
       tags: ['role-ulauncher']
 
   post_tasks:
@@ -43,47 +96,17 @@
       ansible.builtin.include_tasks:
         file: "{{ item }}"
         apply:
+          become: true
           tags: ['privileged-extra-tasks']
       with_fileglob: "{{ playbook_dir }}/tasks/{{ inventory_hostname }}/root/*"
       tags: ['privileged-extra-tasks']
 
-- name: 'Install Ubuntu Workstation (non root configuration)'
-  hosts: 'ubuntu_group'
-  remote_user: "{{ remote_user | default(omit) }}"
-  become: true
-  become_user: "{{ configure_system_user_name }}"
-  roles:
-    - role: 'hluaces.iac.pip'
-      tags: ['role-pip']
-    - role: 'hluaces.iac.dotfiles'
-      tags: ['role-dotfiles']
-    - role: 'hluaces.iac.configuration_files'
-      tags: ['role-configuration_files']
-      vars:
-        configuration_files_list: "{{ configuration_files_user }}"
-    - role: 'hluaces.gnome.gsettings'
-      tags: ['role-gsettings']
-    - role: 'hluaces.gnome.tilix'
-      tags: ['role-tilix']
-    - role: 'hluaces.gnome.joplin'
-      tags: ['role-joplin']
-    # The user only configures this
-    - role: 'awscli'
-      vars:
-        awscli_default_action: false
-        awscli_do_configure: true
-      tags: ['role-awscli']
-    # The user only configures this
-    - role: 'hluaces.gnome.ulauncher'
-      vars:
-        ulauncher_default_action: false
-        ulauncher_do_configure: true
-      tags: ['role-ulauncher']
-  post_tasks:
     - name: 'Include extra tasks for non-privileged users'
       ansible.builtin.include_tasks:
         file: "{{ item }}"
         apply:
+          become: true
+          become_user: "{{ configure_system_user_name }}"
           tags: ['unprivileged-extra-tasks']
       with_fileglob: "{{ playbook_dir }}/tasks/{{ inventory_hostname }}/user/*"
       tags: ['unprivileged-extra-tasks']

@@ -13,23 +13,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Test:
-    runs-on: self-hosted
-    timeout-minutes: 75
-    strategy:
-      fail-fast: false
-      matrix:
-        host:
-          - "ubuntu24-laptop"
-          - "ubuntu24-desktop"
-          - "sysctl"
-          - "dotfiles"
-          - "dropbox"
-          - "ulauncher"
+  scenarios:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      scenarios: ${{ steps.map.outputs.scenarios }}
     steps:
-      - name: Check whether molecule-relevant files changed
-        id: filter
-        if: github.event_name == 'pull_request' || github.event_name == 'push'
+      - name: Check out code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Map changed files to scenarios
+        id: map
         env:
           GH_TOKEN: ${{ github.token }}
           EVENT_NAME: ${{ github.event_name }}
@@ -38,44 +32,55 @@ jobs:
           PUSH_BEFORE: ${{ github.event.before }}
           PUSH_AFTER: ${{ github.event.after }}
         run: |
-          if [ "${EVENT_NAME}" = "pull_request" ]; then
-            url="https://api.github.com/repos/${REPO}/pulls/${PR_NUMBER}/files?per_page=100"
-            jq_expr='.[].filename'
-          elif [ "${PUSH_BEFORE}" = "0000000000000000000000000000000000000000" ]; then
+          set -o pipefail
+          if [ "${EVENT_NAME}" = "schedule" ]; then
+            scenarios=$(.github/scripts/map_scenarios.sh schedule < /dev/null)
+          elif [ "${EVENT_NAME}" = "push" ] && [ "${PUSH_BEFORE}" = "0000000000000000000000000000000000000000" ]; then
             # Branch-creation push has no comparable range: run everything.
-            echo "run_molecule=true" >> "${GITHUB_OUTPUT}"
-            exit 0
+            scenarios=$(.github/scripts/map_scenarios.sh fallback < /dev/null)
           else
-            url="https://api.github.com/repos/${REPO}/compare/${PUSH_BEFORE}...${PUSH_AFTER}"
-            jq_expr='.files[].filename'
+            if [ "${EVENT_NAME}" = "pull_request" ]; then
+              url="https://api.github.com/repos/${REPO}/pulls/${PR_NUMBER}/files?per_page=100"
+              jq_expr='.[].filename'
+            else
+              url="https://api.github.com/repos/${REPO}/compare/${PUSH_BEFORE}...${PUSH_AFTER}"
+              jq_expr='.files[].filename'
+            fi
+
+            files=$(curl -sf --retry 3 \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "${url}" | jq -r "${jq_expr}")
+
+            if [ -z "${files}" ]; then
+              scenarios='[]'
+            elif [ "$(printf '%s\n' "${files}" | wc -l)" -ge 100 ]; then
+              # A 100-file page means the list may be truncated: run everything.
+              scenarios=$(.github/scripts/map_scenarios.sh fallback < /dev/null)
+            else
+              scenarios=$(printf '%s\n' "${files}" | .github/scripts/map_scenarios.sh "${EVENT_NAME}")
+            fi
           fi
+          echo "Selected scenarios: ${scenarios}"
+          echo "scenarios=${scenarios}" >> "${GITHUB_OUTPUT}"
 
-          files=$(curl -sf --retry 3 \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "${url}" | jq -r "${jq_expr}")
-
-          relevant=$(printf '%s\n' "${files}" \
-            | grep -vE '^(\.github/|README\.md$|renovate\.json$|LICENSE$|\.gitignore$)' \
-            || true)
-
-          # A 100-file page means the list may be truncated: run to be safe.
-          if [ -z "${relevant}" ] && [ "$(printf '%s\n' "${files}" | wc -l)" -lt 100 ]; then
-            echo "Only molecule-irrelevant files changed, skipping test steps"
-            echo "run_molecule=false" >> "${GITHUB_OUTPUT}"
-          else
-            echo "run_molecule=true" >> "${GITHUB_OUTPUT}"
-          fi
-
+  Test:
+    needs: scenarios
+    if: needs.scenarios.outputs.scenarios != '[]'
+    runs-on: self-hosted
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ${{ fromJSON(needs.scenarios.outputs.scenarios) }}
+    steps:
       - name: Check out code
-        if: steps.filter.outputs.run_molecule != 'false'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       ################
       # Bootstrapping
       ################
       - name: Init variables
-        if: steps.filter.outputs.run_molecule != 'false'
         run: |
           # Ephemeral storage
           MOLECULE_EPHEMERAL_DIRECTORY="${GITHUB_WORKSPACE}/.molecule_ephemeral/${{ matrix.host }}"
@@ -95,7 +100,6 @@ jobs:
           fi
 
       - name: Enable APT cache proxy when available
-        if: steps.filter.outputs.run_molecule != 'false'
         run: |
           # VMs reach the same daemon via their libvirt gateway IP.
           if curl -sf --max-time 3 http://localhost:3142/acng-report.html > /dev/null; then
@@ -106,33 +110,52 @@ jobs:
           fi
 
       - name: Bootstrap environment
-        if: steps.filter.outputs.run_molecule != 'false'
         uses: ./.github/actions/bootstrap
         with:
           vault-password: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           vault-file: ${{ env.DEFAULT_VAULT_PASSWORD_FILE }}
 
       - name: Set up Ansible homedir and show tools versions
-        if: steps.filter.outputs.run_molecule != 'false'
         run: ansible --version && virsh --version
 
       - name: Run molecule test
-        if: steps.filter.outputs.run_molecule != 'false'
         run: make test TEST_ARGS="-s ${{ matrix.host }}"
 
       ################
       # Artifacts
       ################
       - name: Clean up molecule resources
-        if: always() && steps.filter.outputs.run_molecule != 'false'
+        if: always()
         run: molecule destroy -s "${{ matrix.host }}"
 
       - name: Upload ansible logs
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        if: always() && steps.filter.outputs.run_molecule != 'false'
+        if: always()
         with:
           name: ansible-${{ matrix.host }}.log
           path: config/tmp/ansible.log
           retention-days: 14
           if-no-files-found: error
 
+  test-results:
+    needs: [scenarios, Test]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Gate on matrix outcome
+        env:
+          SCENARIOS_RESULT: ${{ needs.scenarios.result }}
+          TEST_RESULT: ${{ needs.Test.result }}
+        run: |
+          if [ "${SCENARIOS_RESULT}" != "success" ]; then
+            echo "::error::scenarios job result: ${SCENARIOS_RESULT}"
+            exit 1
+          fi
+          # "skipped" = empty scenario list, which is a legitimate pass.
+          if [ "${TEST_RESULT}" = "success" ] || [ "${TEST_RESULT}" = "skipped" ]; then
+            echo "Test matrix result: ${TEST_RESULT}"
+          else
+            echo "::error::Test matrix result: ${TEST_RESULT}"
+            exit 1
+          fi
