@@ -19,6 +19,8 @@ hluaces_molecule_docker_tmpfs:  # noqa: var-naming[no-role-prefix]
 # create task uses Ansible's `omit` sentinel so the module skips the param:
 #   hluaces_molecule_docker_command         (image's CMD runs)
 #   hluaces_molecule_docker_hostname        (container name is used by default)
+#   hluaces_molecule_docker_container_name  (docker container name; the
+#                                          inventory hostname is used by default)
 #   hluaces_molecule_docker_env
 #   hluaces_molecule_docker_capabilities
 #   hluaces_molecule_docker_security_opts

@@ -47,7 +47,7 @@
 
 - name: Create and start containers
   community.docker.docker_container:
-    name: "{{ item }}"
+    name: "{{ hostvars[item].hluaces_molecule_docker_container_name | default(item) }}"
     image: "{{ hostvars[item].hluaces_molecule_docker_image }}"
     state: started
     pull: never

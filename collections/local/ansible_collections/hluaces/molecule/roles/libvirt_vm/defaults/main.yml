@@ -36,10 +36,9 @@ hluaces_molecule_libvirt_vm_group: all  # noqa: var-naming[no-role-prefix]
 
 # Cross-role dependencies (set by other roles when using the playbook API,
 # but must be provided if using this role standalone)
-hluaces_molecule_libvirt_pool_name: molecule  # noqa: var-naming[no-role-prefix]
+
 hluaces_molecule_libvirt_pool_path: "/var/tmp/molecule-libvirt/{{ hluaces_molecule_libvirt_pool_name }}"  # noqa: var-naming[no-role-prefix]
-hluaces_molecule_libvirt_network_name: molecule  # noqa: var-naming[no-role-prefix]
-hluaces_molecule_libvirt_network_cidr: "192.168.123.0/24"  # noqa: var-naming[no-role-prefix]
+
 hluaces_molecule_libvirt_vm_ip_offset: 10  # noqa: var-naming[no-role-prefix]
 # These facts are normally set by libvirt_keys/libvirt_pool/libvirt_network roles.
 # Base image URL and name are owned by the libvirt_pool role.
