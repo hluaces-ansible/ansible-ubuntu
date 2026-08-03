@@ -1,0 +1,60 @@
+---
+
+# Required by ansible.builtin.deb822_repository; present on provisioned
+# hosts already, absent on a fresh minimal one
+- name: 'Install the deb822 repository dependency'
+  become: true
+  ansible.builtin.apt:
+    name: 'python3-debian'
+    state: 'present'
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: 'Add the Mozilla apt repository'
+  become: true
+  ansible.builtin.deb822_repository:
+    name: 'mozilla'
+    types: 'deb'
+    architectures: "{{ firefox_repo_architectures }}"
+    uris: "{{ firefox_repo_uri }}"
+    suites: "{{ firefox_repo_suite }}"
+    components: "{{ firefox_repo_components }}"
+    signed_by: "{{ firefox_repo_signing_key }}"
+
+- name: 'Prefer the Mozilla origin over the Ubuntu archive'
+  become: true
+  ansible.builtin.copy:
+    dest: '/etc/apt/preferences.d/mozilla'
+    content: |
+      Package: *
+      Pin: origin packages.mozilla.org
+      Pin-Priority: {{ firefox_pin_priority }}
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: 'Allow unattended-upgrades from the Mozilla origin'
+  become: true
+  ansible.builtin.copy:
+    dest: '/etc/apt/apt.conf.d/51unattended-upgrades-firefox'
+    content: |
+      Unattended-Upgrade::Allowed-Origins:: "packages.mozilla.org:${distro_codename}";
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+# Replaces Ubuntu's transitional package, hence allow_downgrade
+- name: 'Install firefox from apt'
+  become: true
+  ansible.builtin.apt:
+    name: 'firefox'
+    state: 'latest' # noqa package-latest
+    update_cache: true
+    allow_downgrade: true
+
+- name: 'Remove the firefox snap'
+  become: true
+  community.general.snap:
+    name: 'firefox'
+    state: 'absent'
+  when: 'firefox_remove_snap'

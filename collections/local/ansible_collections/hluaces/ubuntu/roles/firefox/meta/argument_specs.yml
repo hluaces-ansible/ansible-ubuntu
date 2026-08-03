@@ -1,0 +1,42 @@
+---
+argument_specs:
+  main:
+    short_description: 'Install firefox from the Mozilla apt repository'
+    description:
+      - 'Adds Mozilla''s apt repository, pins it above the Ubuntu archive so
+        apt prefers the real package over the transitional one that pulls in
+        the snap, allows unattended-upgrades from it, installs firefox and
+        removes the snap.'
+    options:
+      firefox_repo_uri:
+        type: 'str'
+        default: 'https://packages.mozilla.org/apt'
+        description: 'Mozilla apt repository URI.'
+      firefox_repo_suite:
+        type: 'str'
+        default: 'mozilla'
+        description: 'Repository suite.'
+      firefox_repo_components:
+        type: 'str'
+        default: 'main'
+        description: 'Repository components.'
+      firefox_repo_architectures:
+        type: 'str'
+        default: 'amd64'
+        description: 'Architectures the repository is enabled for.'
+      firefox_repo_signing_key:
+        type: 'str'
+        default: 'https://packages.mozilla.org/apt/repo-signing-key.gpg'
+        description: 'URL of the repository signing key.'
+      firefox_pin_priority:
+        type: 'int'
+        default: 1000
+        description:
+          - 'Pin priority for the Mozilla origin. Must exceed the Ubuntu
+            archive priority or apt keeps the transitional package.'
+      firefox_remove_snap:
+        type: 'bool'
+        default: true
+        description:
+          - 'Remove the Ubuntu firefox snap. Requires snapd, so container
+            based tests turn it off.'

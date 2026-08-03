@@ -23,6 +23,8 @@
     - role: 'hadolint'
       become: true
       tags: ['role-hadolint']
+    - role: 'hluaces.ubuntu.firefox'
+      tags: ['role-firefox']
 
     # Root dotfiles
     - role: 'hluaces.ubuntu.dotfiles'
