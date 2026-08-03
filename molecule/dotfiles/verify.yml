@@ -33,3 +33,12 @@
       check_mode: true
       register: gitconfig_name
       failed_when: gitconfig_name.changed
+
+    - name: 'Assert .bashrc sources the ~/.bashrc.d drop-in directory'
+      ansible.builtin.lineinfile:
+        path: '~/.bashrc'
+        regexp: 'for rc in "\$HOME"/\.bashrc\.d/\*\.sh; do'
+        state: 'present'
+      check_mode: true
+      register: bashrc_dropin
+      failed_when: bashrc_dropin.changed

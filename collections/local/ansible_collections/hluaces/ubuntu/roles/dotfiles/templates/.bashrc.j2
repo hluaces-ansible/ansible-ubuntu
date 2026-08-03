@@ -118,3 +118,11 @@ fi
 
 # Path
 export PATH=$PATH:$HOME/bin
+
+# Source drop-in shell config deployed by app roles
+if [ -d "$HOME/.bashrc.d" ]; then
+  for rc in "$HOME"/.bashrc.d/*.sh; do
+    [ -r "$rc" ] && . "$rc"
+  done
+  unset rc
+fi
