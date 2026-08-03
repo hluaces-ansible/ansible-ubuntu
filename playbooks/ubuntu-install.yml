@@ -58,6 +58,8 @@
       tags: ['role-dotfiles']
     - role: 'hluaces.ubuntu.fzf'
       tags: ['role-fzf']
+    - role: 'hluaces.ubuntu.zoxide'
+      tags: ['role-zoxide']
     - role: 'hluaces.iac.configuration_files'
       become: true
       become_user: "{{ configure_system_user_name }}"
