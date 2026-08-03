@@ -150,7 +150,6 @@ extra_packages_list:
   - 'eza'
   - 'gping'
   - 'httpie'
-  - 'zoxide'
 
   # Media
   - 'easyeffects'

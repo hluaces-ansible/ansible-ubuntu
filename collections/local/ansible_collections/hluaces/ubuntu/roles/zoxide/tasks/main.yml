@@ -1,0 +1,21 @@
+---
+
+- name: 'Install zoxide'
+  become: true
+  ansible.builtin.apt:
+    name: 'zoxide'
+    state: 'present'
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: 'Create the bashrc drop-in directory'
+  ansible.builtin.file:
+    path: '~/.bashrc.d'
+    state: 'directory'
+    mode: '0700'
+
+- name: 'Deploy the zoxide bashrc drop-in'
+  ansible.builtin.copy:
+    src: '50-zoxide.sh'
+    dest: '~/.bashrc.d/50-zoxide.sh'
+    mode: '0600'

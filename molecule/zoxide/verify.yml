@@ -1,0 +1,24 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: false
+  tasks:
+    - name: 'Gather package facts'
+      ansible.builtin.package_facts:
+
+    - name: 'Assert zoxide is installed'
+      ansible.builtin.assert:
+        that:
+          - "'zoxide' in ansible_facts.packages"
+        fail_msg: 'zoxide not installed'
+        success_msg: 'zoxide installed'
+
+    - name: 'Assert the bashrc drop-in initializes zoxide'
+      ansible.builtin.lineinfile:
+        path: '~/.bashrc.d/50-zoxide.sh'
+        regexp: '^eval "\$\(zoxide init bash\)"$'
+        state: 'present'
+      check_mode: true
+      register: zoxide_dropin
+      failed_when: zoxide_dropin.changed
