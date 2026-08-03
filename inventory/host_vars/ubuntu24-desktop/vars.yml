@@ -33,13 +33,6 @@ extra_packages_deb822_repositories:
     suites: 'noble'
     components: 'main'
     signed_by: 'https://apt.releases.hashicorp.com/gpg'
-  - name: 'mozilla'
-    types: 'deb'
-    architectures: 'amd64'
-    uris: 'https://packages.mozilla.org/apt'
-    suites: 'mozilla'
-    components: 'main'
-    signed_by: 'https://packages.mozilla.org/apt/repo-signing-key.gpg'
   - name: 'github-cli'
     types: 'deb'
     architectures: 'amd64'
@@ -194,10 +187,6 @@ pip_pipx_packages:
 
 # Snap packages to install
 extra_packages_snaps:
-  # Firefox is installed via apt
-  - name: 'firefox'
-    state: 'absent'
-
   # Everyday apps
   - name: 'discord'
   - name: 'spotify'

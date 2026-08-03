@@ -1,0 +1,16 @@
+---
+
+# Mozilla's own apt repository, which ships the real .deb instead of the
+# Ubuntu transitional package that pulls in the snap
+firefox_repo_uri: 'https://packages.mozilla.org/apt'
+firefox_repo_suite: 'mozilla'
+firefox_repo_components: 'main'
+firefox_repo_architectures: 'amd64'
+firefox_repo_signing_key: 'https://packages.mozilla.org/apt/repo-signing-key.gpg'
+
+# Pin priority for the Mozilla origin. Must beat the Ubuntu archive so apt
+# prefers the real package over the transitional one
+firefox_pin_priority: 1000
+
+# Remove the Ubuntu firefox snap. Needs snapd, so container tests disable it
+firefox_remove_snap: true

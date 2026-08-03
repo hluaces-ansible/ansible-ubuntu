@@ -1,0 +1,11 @@
+---
+- name: 'Converge'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: true
+  vars:
+    # No snapd in the container; the snap purge is covered by the full
+    # playbook scenarios instead
+    firefox_remove_snap: false
+  roles:
+    - 'hluaces.ubuntu.firefox'
