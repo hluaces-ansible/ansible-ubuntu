@@ -11,4 +11,4 @@
       core:
         editor: 'vim'
   roles:
-    - 'hluaces.iac.dotfiles'
+    - 'hluaces.ubuntu.dotfiles'

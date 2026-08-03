@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  role_name: 'dotfiles'
+  namespace: 'hluaces'
+  author: 'Héctor Luaces'
+  description: 'Deploys dotfiles for the invoking user'
+  license: 'GPL-2.0-or-later'
+  min_ansible_version: '2.17'
+  platforms:
+    - name: 'Ubuntu'
+      versions:
+        - 'noble'
+  galaxy_tags: []
+
+dependencies: []
+
+# The playbook lists this role in both root and user scope; without this the
+# second invocation is silently skipped.
+allow_duplicates: true

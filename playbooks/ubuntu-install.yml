@@ -26,7 +26,7 @@
       tags: ['role-hadolint']
 
     # Root dotfiles
-    - role: 'hluaces.iac.dotfiles'
+    - role: 'hluaces.ubuntu.dotfiles'
       become: true
       tags: ['role-dotfiles']
 
@@ -52,7 +52,7 @@
       become: true
       become_user: "{{ configure_system_user_name }}"
       tags: ['role-pip']
-    - role: 'hluaces.iac.dotfiles'
+    - role: 'hluaces.ubuntu.dotfiles'
       become: true
       become_user: "{{ configure_system_user_name }}"
       tags: ['role-dotfiles']
