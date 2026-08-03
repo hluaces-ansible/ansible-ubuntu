@@ -1,9 +1,11 @@
 ---
-# Single source of truth for the per-runner libvirt namespace, symlinked into
-# every scenario inventory as group_vars/all/namespace.yml. Derives all
-# libvirt resource names from the runner slot (MOLECULE_RUNNER_SLOT env var,
+# Single source of truth for the per-runner libvirt/docker namespace, symlinked
+# into every scenario inventory as group_vars/all/namespace.yml. Derives all
+# resource names from the runner slot (MOLECULE_RUNNER_SLOT env var,
 # 0 = local development, 1-4 = CI runners) and two per-scenario facts set in
 # hosts.yml: hluaces_molecule_scenario_index and hluaces_molecule_scenario_code.
+# A scenario missing this symlink fails loud: the hluaces.molecule roles have
+# no fallback defaults for these names.
 # Scheme: docs/superpowers/specs/2026-07-18-libvirt-runner-namespacing-design.md
 hluaces_molecule_runner_slot: "{{ lookup('env', 'MOLECULE_RUNNER_SLOT') | default('0', true) | int }}"
 
@@ -25,3 +27,7 @@ hluaces_molecule_libvirt_apt_proxy: >-
   {{ 'http://' ~ (hluaces_molecule_libvirt_network_cidr | ansible.utils.nthhost(1)) ~ ':3142'
      if lookup('env', 'MOLECULE_APT_PROXY') | default('', true) == '1'
      else '' }}
+
+hluaces_molecule_docker_container_name: "mol-{{ hluaces_molecule_scenario_code }}-r{{ hluaces_molecule_runner_slot }}"
+
+hluaces_molecule_docker_network_name: "mol-{{ hluaces_molecule_scenario_code }}-r{{ hluaces_molecule_runner_slot }}"

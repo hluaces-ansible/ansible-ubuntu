@@ -1,2 +1,2 @@
 ---
-- ansible.builtin.import_playbook: hluaces.molecule.libvirt_destroy  # noqa: name[play]
+- ansible.builtin.import_playbook: hluaces.molecule.docker_destroy  # noqa: name[play]

@@ -9,3 +9,6 @@ libvirt-python>=10.0
 lxml>=6.1,<6.2
 netaddr>=1.0,<2.0
 pycdlib>=1.14,<2.0
+
+# hluaces.molecule docker scenario runtime deps (community.docker vendored client)
+requests>=2.31,<3.0

@@ -22,7 +22,7 @@
 
 - name: Remove containers
   community.docker.docker_container:
-    name: "{{ item }}"
+    name: "{{ hostvars[item].hluaces_molecule_docker_container_name | default(item) }}"
     state: absent
     force_kill: "{{ hluaces_molecule_docker_force_destroy }}"
     keep_volumes: false

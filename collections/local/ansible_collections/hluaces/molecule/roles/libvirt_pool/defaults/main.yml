@@ -2,7 +2,6 @@
 hluaces_molecule_libvirt_state: present  # noqa: var-naming[no-role-prefix]
 hluaces_molecule_libvirt_uri: "qemu:///system"  # noqa: var-naming[no-role-prefix]
 
-hluaces_molecule_libvirt_pool_name: molecule  # noqa: var-naming[no-role-prefix]
 hluaces_molecule_libvirt_pool_type: dir  # noqa: var-naming[no-role-prefix]
 hluaces_molecule_libvirt_pool_path: "/var/tmp/molecule-libvirt/{{ hluaces_molecule_libvirt_pool_name }}"  # noqa: var-naming[no-role-prefix]
 hluaces_molecule_libvirt_pool_mode: "0755"  # noqa: var-naming[no-role-prefix]
