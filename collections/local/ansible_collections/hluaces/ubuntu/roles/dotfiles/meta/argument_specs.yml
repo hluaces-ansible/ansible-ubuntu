@@ -1,0 +1,14 @@
+---
+argument_specs:
+  main:
+    short_description: 'Deploy dotfiles for the invoking user'
+    description:
+      - 'Templates .gitconfig, .gitignore, .vimrc and .bashrc into the home
+        directory of the user the role runs as.'
+    options:
+      dotfiles_git_config:
+        type: 'dict'
+        default: {}
+        description:
+          - 'Git configuration rendered into .gitconfig: a dict mapping each
+            git config section to a dict of option: value pairs.'
