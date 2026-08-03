@@ -1,0 +1,17 @@
+---
+
+# Base kernel parameters applied to every host
+sysctl_default_configuration:
+  'fs.inotify.max_user_watches':
+    value: 524288
+
+# Per-host parameters merged over the base set
+sysctl_extra_configuration: {}
+
+# Role-owned drop-in the parameters are written to. Sorts after the distro's
+# 99-sysctl.conf (a symlink to /etc/sysctl.conf) so it has the last word.
+sysctl_file: '/etc/sysctl.d/99-zz-ansible.conf'
+
+# Effective parameters; override wholesale to discard the defaults
+sysctl_configuration:
+  "{{ sysctl_default_configuration | combine(sysctl_extra_configuration) }}"

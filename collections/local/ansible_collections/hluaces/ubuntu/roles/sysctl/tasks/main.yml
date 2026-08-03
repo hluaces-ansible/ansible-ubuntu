@@ -1,12 +1,15 @@
 ---
 
-- name: "Apply sysctl configuration"
+- name: 'Apply sysctl configuration'
+  become: true
   ansible.posix.sysctl:
     name: "{{ item['key'] }}"
     ignoreerrors: "{{ item['value']['ignoreerrors'] | default(omit) }}"
     reload: "{{ item['value']['reload'] | default(omit) }}"
     state: "{{ item['value']['state'] | default(omit) }}"
-    sysctl_file: "{{ item['value']['sysctl_file'] | default(omit) }}"
+    sysctl_file: "{{ item['value']['sysctl_file'] | default(sysctl_file) }}"
     sysctl_set: "{{ item['value']['sysctl_set'] | default(omit) }}"
     value: "{{ item['value']['value'] | default(omit) }}"
   loop: "{{ sysctl_configuration | dict2items }}"
+  loop_control:
+    label: "{{ item['key'] }}"
