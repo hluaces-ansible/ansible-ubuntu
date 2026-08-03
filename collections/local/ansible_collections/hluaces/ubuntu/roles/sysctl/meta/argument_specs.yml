@@ -1,0 +1,28 @@
+---
+argument_specs:
+  main:
+    short_description: 'Apply kernel parameters through sysctl'
+    description:
+      - 'Applies every entry of C(sysctl_configuration) with the
+        M(ansible.posix.sysctl) module. Each key is a kernel parameter and
+        each value a dict of module arguments for it.'
+    options:
+      sysctl_default_configuration:
+        type: 'dict'
+        description: 'Base set of kernel parameters.'
+      sysctl_extra_configuration:
+        type: 'dict'
+        default: {}
+        description: 'Per-host parameters merged over the base set.'
+      sysctl_file:
+        type: 'str'
+        default: '/etc/sysctl.d/99-zz-ansible.conf'
+        description:
+          - 'File the parameters are written to. Must sort after the distro
+            C(99-sysctl.conf) to take precedence over it. Individual entries
+            can override it with their own C(sysctl_file) key.'
+      sysctl_configuration:
+        type: 'dict'
+        description:
+          - 'Effective set of parameters to apply. Defaults to base merged
+            with extra; override wholesale to fully replace both.'

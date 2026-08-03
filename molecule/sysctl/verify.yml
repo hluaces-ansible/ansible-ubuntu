@@ -13,10 +13,17 @@
         - 'fs.inotify.max_user_watches'
         - 'net.ipv4.ip_forward'
 
+    - name: 'Read the role-owned sysctl drop-in'
+      ansible.builtin.slurp:
+        src: '/etc/sysctl.d/99-zz-ansible.conf'
+      register: sysctl_dropin
+
     - name: 'Assert sysctl values were applied'
       ansible.builtin.assert:
         that:
           - "sysctl_values.results[0].stdout | int == 524288"
           - "sysctl_values.results[1].stdout | int == 1"
+          - "'fs.inotify.max_user_watches' in sysctl_dropin.content | b64decode"
+          - "'net.ipv4.ip_forward' in sysctl_dropin.content | b64decode"
         fail_msg: 'sysctl values not applied as expected'
-        success_msg: 'sysctl default + extra configuration applied correctly'
+        success_msg: 'sysctl configuration applied through the role-owned drop-in'

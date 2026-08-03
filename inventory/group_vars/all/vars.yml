@@ -2,3 +2,8 @@
 
 # Terminal role that registers itself as the default x-terminal-emulator
 ghostty_set_default: true
+
+sysctl_extra_configuration:
+  # IDEs, Electron apps and trackers exhaust the stock 128 instances
+  'fs.inotify.max_user_instances':
+    value: 1024

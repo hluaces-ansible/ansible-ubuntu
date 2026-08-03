@@ -9,8 +9,7 @@
     - role: 'configure_system'
       become: true
       tags: ['role-configure_system']
-    - role: 'hluaces.iac.sysctl'
-      become: true
+    - role: 'hluaces.ubuntu.sysctl'
       tags: ['role-sysctl']
     - role: 'hluaces.iac.extra_packages'
       become: true
