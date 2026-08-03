@@ -1,0 +1,21 @@
+---
+
+- name: 'Install fzf'
+  become: true
+  ansible.builtin.apt:
+    name: 'fzf'
+    state: 'present'
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: 'Create the bashrc drop-in directory'
+  ansible.builtin.file:
+    path: '~/.bashrc.d'
+    state: 'directory'
+    mode: '0700'
+
+- name: 'Deploy the fzf bashrc drop-in'
+  ansible.builtin.copy:
+    src: '50-fzf.sh'
+    dest: '~/.bashrc.d/50-fzf.sh'
+    mode: '0600'
