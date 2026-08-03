@@ -4,7 +4,7 @@
 # Output: compact JSON array of scenario names ("[]" = run nothing).
 set -euo pipefail
 
-ALL=(dotfiles dropbox ghostty sysctl ubuntu24-desktop ubuntu24-laptop ulauncher)
+ALL=(dotfiles dropbox fzf ghostty sysctl ubuntu24-desktop ubuntu24-laptop ulauncher)
 FULL=(ubuntu24-desktop ubuntu24-laptop)
 
 mode="${1:?usage: map_scenarios.sh <pull_request|push|schedule|fallback>}"
@@ -61,7 +61,7 @@ for file in "${files[@]}"; do
       role="${file#*ansible_collections/hluaces/*/roles/}"
       role="${role%%/*}"
       case "${role}" in
-        sysctl|dotfiles|dropbox|ulauncher|ghostty)
+        sysctl|dotfiles|dropbox|ulauncher|ghostty|fzf)
           picked["${role}"]=1
           ;;
         *)

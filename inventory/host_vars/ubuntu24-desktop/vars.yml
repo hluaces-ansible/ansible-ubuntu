@@ -148,7 +148,6 @@ extra_packages_list:
   - 'btop'
   - 'duf'
   - 'eza'
-  - 'fzf'
   - 'gping'
   - 'httpie'
   - 'zoxide'

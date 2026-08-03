@@ -1,0 +1,24 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: false
+  tasks:
+    - name: 'Gather package facts'
+      ansible.builtin.package_facts:
+
+    - name: 'Assert fzf is installed'
+      ansible.builtin.assert:
+        that:
+          - "'fzf' in ansible_facts.packages"
+        fail_msg: 'fzf not installed'
+        success_msg: 'fzf installed'
+
+    - name: 'Assert the bashrc drop-in sources the fzf keybindings'
+      ansible.builtin.lineinfile:
+        path: '~/.bashrc.d/50-fzf.sh'
+        regexp: '^source /usr/share/doc/fzf/examples/key-bindings\.bash$'
+        state: 'present'
+      check_mode: true
+      register: fzf_dropin
+      failed_when: fzf_dropin.changed
