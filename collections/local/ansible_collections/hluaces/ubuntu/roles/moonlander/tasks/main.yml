@@ -1,0 +1,21 @@
+---
+
+# Present on any host running udev, absent on a minimal one
+- name: 'Ensure the udev rules directory exists'
+  become: true
+  ansible.builtin.file:
+    path: "{{ moonlander_udev_rules_path | dirname }}"
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+- name: 'Install the udev rules for ZSA keyboards'
+  become: true
+  ansible.builtin.copy:
+    src: '50-zsa.rules'
+    dest: "{{ moonlander_udev_rules_path }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  notify: 'Reload udev rules'

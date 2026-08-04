@@ -25,6 +25,8 @@
       tags: ['role-hadolint']
     - role: 'hluaces.ubuntu.firefox'
       tags: ['role-firefox']
+    - role: 'hluaces.ubuntu.moonlander'
+      tags: ['role-moonlander']
 
     # Root dotfiles
     - role: 'hluaces.ubuntu.dotfiles'

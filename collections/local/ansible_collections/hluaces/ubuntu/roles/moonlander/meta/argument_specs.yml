@@ -1,0 +1,19 @@
+---
+argument_specs:
+  main:
+    short_description: 'Install the udev rules for ZSA keyboards'
+    description:
+      - 'Deploys ZSA''s udev rules so Oryx web flashing, live training and
+        Wally can reach the keyboard without root, and reloads udev so the
+        rules apply without a reboot.'
+    options:
+      moonlander_udev_rules_path:
+        type: 'str'
+        default: '/etc/udev/rules.d/50-zsa.rules'
+        description: 'Destination of the udev rules file.'
+      moonlander_reload_udev:
+        type: 'bool'
+        default: true
+        description:
+          - 'Reload and re-trigger udev after changing the rules. Requires a
+            running udevd, so container based tests turn it off.'

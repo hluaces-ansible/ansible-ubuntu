@@ -1,0 +1,11 @@
+---
+
+- name: 'Reload udev rules'
+  become: true
+  ansible.builtin.command:
+    cmd: "{{ item }}"
+  loop:
+    - 'udevadm control --reload-rules'
+    - 'udevadm trigger'
+  changed_when: true
+  when: 'moonlander_reload_udev'
