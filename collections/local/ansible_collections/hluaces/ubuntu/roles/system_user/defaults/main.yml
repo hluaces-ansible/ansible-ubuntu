@@ -1,0 +1,13 @@
+---
+
+system_user_name: 'dummy'
+
+# Throwaway bootstrap password, changed after provisioning
+system_user_password: 'dummy'
+
+system_user_groups: ['sudo']
+system_user_state: 'present'
+system_user_shell: '/bin/bash'
+
+# 'always' or 'on_create'
+system_user_update_password: 'on_create'

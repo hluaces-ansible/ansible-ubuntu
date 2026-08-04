@@ -1,0 +1,40 @@
+---
+argument_specs:
+  main:
+    short_description: 'Create the user the workstation is provisioned for'
+    description:
+      - 'Creates (or removes) the account every user scoped role runs as, with
+        its shell and supplementary groups. The password is a throwaway
+        bootstrap value meant to be changed after provisioning.'
+    options:
+      system_user_name:
+        type: 'str'
+        default: 'dummy'
+        description: 'Login name of the account.'
+      system_user_password:
+        type: 'str'
+        default: 'dummy'
+        description:
+          - 'Plaintext bootstrap password, hashed with sha512 before it
+            reaches the account.'
+      system_user_groups:
+        type: 'list'
+        elements: 'str'
+        default: ['sudo']
+        description: 'Supplementary groups the account belongs to.'
+      system_user_state:
+        type: 'str'
+        default: 'present'
+        choices: ['present', 'absent']
+        description: 'Whether the account should exist.'
+      system_user_shell:
+        type: 'str'
+        default: '/bin/bash'
+        description: 'Login shell of the account.'
+      system_user_update_password:
+        type: 'str'
+        default: 'on_create'
+        choices: ['always', 'on_create']
+        description:
+          - 'Whether to reset the password on every run or only when the
+            account is created.'

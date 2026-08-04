@@ -13,7 +13,7 @@
 
 - name: 'Create ghostty configuration directory'
   become: true
-  become_user: "{{ configure_system_user_name }}"
+  become_user: "{{ ghostty_user }}"
   ansible.builtin.file:
     path: '~/.config/ghostty'
     state: 'directory'
@@ -21,7 +21,7 @@
 
 - name: 'Deploy ghostty configuration'
   become: true
-  become_user: "{{ configure_system_user_name }}"
+  become_user: "{{ ghostty_user }}"
   ansible.builtin.template:
     src: 'config.j2'
     dest: '~/.config/ghostty/config'

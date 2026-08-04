@@ -1,0 +1,29 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: false
+  tasks:
+    - name: 'Read the timezone systemd reports'
+      ansible.builtin.command: 'timedatectl show -p Timezone --value'
+      changed_when: false
+      register: timezone_current
+
+    - name: 'Resolve the localtime symlink'
+      ansible.builtin.stat:
+        path: '/etc/localtime'
+      register: timezone_localtime
+
+    - name: 'Read the legacy timezone file'
+      ansible.builtin.slurp:
+        src: '/etc/timezone'
+      register: timezone_legacy_file
+
+    - name: 'Assert the timezone was applied everywhere'
+      ansible.builtin.assert:
+        that:
+          - "timezone_current.stdout | trim == 'Europe/Madrid'"
+          - "timezone_localtime.stat.lnk_target | default('') is search('Europe/Madrid')"
+          - "timezone_legacy_file.content | b64decode | trim == 'Europe/Madrid'"
+        fail_msg: 'timezone not set to Europe/Madrid'
+        success_msg: 'timezone set to Europe/Madrid'

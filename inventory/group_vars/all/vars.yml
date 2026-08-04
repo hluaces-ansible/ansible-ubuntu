@@ -1,5 +1,10 @@
 ---
 
+# Roles never read another role's variables, so the provisioned user each
+# one works on is fed to them from here
+system_user_name: "{{ provisioned_user }}"
+ghostty_user: "{{ provisioned_user }}"
+
 # Terminal role that registers itself as the default x-terminal-emulator
 ghostty_set_default: true
 

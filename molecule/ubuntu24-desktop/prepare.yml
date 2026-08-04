@@ -52,21 +52,21 @@
 
     - name: 'Ensure converge user exists (so lingering can target it)'
       ansible.builtin.user:
-        name: "{{ configure_system_user_name }}"
+        name: "{{ provisioned_user }}"
         shell: '/bin/bash'
         create_home: true
 
     - name: 'Resolve converge user uid'
       ansible.builtin.getent:
         database: 'passwd'
-        key: "{{ configure_system_user_name }}"
+        key: "{{ provisioned_user }}"
 
     - name: 'Enable lingering (persistent user systemd instance + dbus session bus)'
       ansible.builtin.command:
-        cmd: "loginctl enable-linger {{ configure_system_user_name }}"
-        creates: "/var/lib/systemd/linger/{{ configure_system_user_name }}"
+        cmd: "loginctl enable-linger {{ provisioned_user }}"
+        creates: "/var/lib/systemd/linger/{{ provisioned_user }}"
 
     - name: 'Wait for the user runtime dir to appear'
       ansible.builtin.wait_for:
-        path: "/run/user/{{ ansible_facts.getent_passwd[configure_system_user_name][1] }}"
+        path: "/run/user/{{ ansible_facts.getent_passwd[provisioned_user][1] }}"
         timeout: 60

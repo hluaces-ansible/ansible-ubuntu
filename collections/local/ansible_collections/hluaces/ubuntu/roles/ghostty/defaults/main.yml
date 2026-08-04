@@ -1,5 +1,8 @@
 ---
 
+# User whose ghostty configuration is deployed
+ghostty_user: "{{ ansible_user_id }}"
+
 # Snap channel to track
 ghostty_snap_channel: 'latest/stable'
 
