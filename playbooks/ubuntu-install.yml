@@ -6,9 +6,10 @@
   become: false
   roles:
     # System configuration (root)
-    - role: 'configure_system'
-      become: true
-      tags: ['role-configure_system']
+    - role: 'hluaces.ubuntu.timezone'
+      tags: ['role-timezone']
+    - role: 'hluaces.ubuntu.system_user'
+      tags: ['role-system_user']
     - role: 'hluaces.ubuntu.sysctl'
       tags: ['role-sysctl']
     - role: 'hluaces.iac.extra_packages'
@@ -53,11 +54,11 @@
     # User configuration (runs as the provisioned user)
     - role: 'hluaces.iac.pip'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       tags: ['role-pip']
     - role: 'hluaces.ubuntu.dotfiles'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       tags: ['role-dotfiles']
     - role: 'hluaces.ubuntu.fzf'
       tags: ['role-fzf']
@@ -65,28 +66,28 @@
       tags: ['role-zoxide']
     - role: 'hluaces.iac.configuration_files'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       tags: ['role-configuration_files']
       vars:
         configuration_files_list: "{{ configuration_files_user }}"
     - role: 'hluaces.gnome.gsettings'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       tags: ['role-gsettings']
     - role: 'hluaces.gnome.tilix'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       tags: ['role-tilix']
     - role: 'hluaces.ubuntu.ghostty'
       tags: ['role-ghostty']
     - role: 'hluaces.gnome.joplin'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       tags: ['role-joplin']
     # The user only configures this
     - role: 'awscli'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       vars:
         awscli_default_action: false
         awscli_do_configure: true
@@ -94,7 +95,7 @@
     # The user only configures this
     - role: 'hluaces.gnome.ulauncher'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       vars:
         ulauncher_default_action: false
         ulauncher_do_configure: true
@@ -115,7 +116,7 @@
         file: "{{ item }}"
         apply:
           become: true
-          become_user: "{{ configure_system_user_name }}"
+          become_user: "{{ provisioned_user }}"
           tags: ['unprivileged-extra-tasks']
       with_fileglob: "{{ playbook_dir }}/tasks/{{ inventory_hostname }}/user/*"
       tags: ['unprivileged-extra-tasks']

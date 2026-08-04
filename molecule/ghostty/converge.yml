@@ -4,7 +4,7 @@
   become: false
   gather_facts: true
   vars:
-    configure_system_user_name: 'molecule'
+    ghostty_user: 'molecule'
     ghostty_set_default: true
   roles:
     - 'hluaces.ubuntu.ghostty'

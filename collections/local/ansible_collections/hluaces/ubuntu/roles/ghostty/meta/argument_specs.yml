@@ -4,10 +4,15 @@ argument_specs:
     short_description: 'Install and configure the ghostty terminal emulator'
     description:
       - 'Installs ghostty from snap, deploys its configuration for the
-        provisioned user (C(configure_system_user_name)) and, when
-        C(ghostty_set_default) is enabled, registers it as the default
-        x-terminal-emulator alternative.'
+        user named by C(ghostty_user) and, when C(ghostty_set_default) is
+        enabled, registers it as the default x-terminal-emulator
+        alternative.'
     options:
+      ghostty_user:
+        type: 'str'
+        description:
+          - 'User whose configuration is deployed. Defaults to the user
+            ansible connects as.'
       ghostty_snap_channel:
         type: 'str'
         default: 'latest/stable'

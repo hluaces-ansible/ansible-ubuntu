@@ -1,0 +1,11 @@
+---
+
+- name: 'Configure the provisioned user'
+  become: true
+  ansible.builtin.user:
+    name: "{{ system_user_name }}"
+    password: "{{ system_user_password | password_hash('sha512') }}"
+    state: "{{ system_user_state }}"
+    shell: "{{ system_user_shell }}"
+    groups: "{{ system_user_groups }}"
+    update_password: "{{ system_user_update_password }}"

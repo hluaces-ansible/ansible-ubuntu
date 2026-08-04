@@ -4,12 +4,12 @@
 ansible_python_interpreter: /usr/bin/python3
 
 # System's timezone
-configure_system_timezone: 'Europe/Madrid'
+timezone_name: 'Europe/Madrid'
 
-# Additional users to create
-configure_system_user_name: 'hector'
-configure_system_user_password: 'hector'
-configure_system_user_groups: ['sudo', 'input', 'plugdev']
+# The user this workstation is provisioned for
+provisioned_user: 'hector'
+system_user_password: 'hector'
+system_user_groups: ['sudo', 'input', 'plugdev']
 
 # List of extra repositories:
 extra_packages_deb822_repositories:
@@ -173,17 +173,17 @@ extra_packages_list:
 # Pipx utilities
 pip_pipx_packages:
   - name: 'ansible'
-    user: "{{ configure_system_user_name }}"
+    user: "{{ provisioned_user }}"
   - name: 'ansible-core'
-    user: "{{ configure_system_user_name }}"
+    user: "{{ provisioned_user }}"
   - name: 'ansible-builder'
-    user: "{{ configure_system_user_name }}"
+    user: "{{ provisioned_user }}"
   - name: 'ansible-navigator'
-    user: "{{ configure_system_user_name }}"
+    user: "{{ provisioned_user }}"
   - name: 'ansible-lint'
-    user: "{{ configure_system_user_name }}"
+    user: "{{ provisioned_user }}"
   - name: 'molecule'
-    user: "{{ configure_system_user_name }}"
+    user: "{{ provisioned_user }}"
 
 # Snap packages to install
 extra_packages_snaps:
@@ -223,7 +223,7 @@ extra_packages_npm:
 docker_apt_release_channel: 'stable'
 
 # Docker users
-docker_users: ["{{ configure_system_user_name }}"]
+docker_users: ["{{ provisioned_user }}"]
 
 # Git configuration for the .gitconfig file
 dotfiles_git_config:

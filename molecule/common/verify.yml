@@ -12,11 +12,11 @@
     - name: 'Verify user exists'
       ansible.builtin.getent:
         database: 'passwd'
-        key: "{{ configure_system_user_name }}"
+        key: "{{ provisioned_user }}"
       register: user_info
 
     - name: 'Get user groups'
-      ansible.builtin.command: "groups {{ configure_system_user_name }}"
+      ansible.builtin.command: "groups {{ provisioned_user }}"
       changed_when: false
       register: user_groups
 
@@ -24,16 +24,16 @@
       ansible.builtin.assert:
         that:
           - item in user_groups.stdout
-        fail_msg: "User {{ configure_system_user_name }} not in group {{ item }}"
-        success_msg: "User {{ configure_system_user_name }} in group {{ item }}"
-      loop: "{{ configure_system_user_groups }}"
+        fail_msg: "User {{ provisioned_user }} not in group {{ item }}"
+        success_msg: "User {{ provisioned_user }} in group {{ item }}"
+      loop: "{{ system_user_groups }}"
 
     - name: 'Verify user is in docker group'
       ansible.builtin.assert:
         that:
           - "'docker' in user_groups.stdout"
-        fail_msg: "User {{ configure_system_user_name }} not in docker group"
-        success_msg: "User {{ configure_system_user_name }} in docker group"
+        fail_msg: "User {{ provisioned_user }} not in docker group"
+        success_msg: "User {{ provisioned_user }} in docker group"
 
     ################################################################################
     # Package verification
@@ -53,7 +53,7 @@
     - name: 'Gather installed pipx packages'
       ansible.builtin.command: 'pipx list'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       changed_when: false
       register: pipx_check
 
@@ -137,7 +137,7 @@
       ansible.builtin.command: "npm list -g --depth=0 {{ item.name }}"
       changed_when: false
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       register: npm_check
       loop: "{{ extra_packages_npm }}"
       when: "item.global | default(false)"
@@ -172,7 +172,7 @@
     ################################################################################
     - name: 'Verify configuration files exist'
       ansible.builtin.stat:
-        path: "{{ item.dest | regex_replace('^~', '/home/' + configure_system_user_name) }}"
+        path: "{{ item.dest | regex_replace('^~', '/home/' + provisioned_user) }}"
       register: config_files_stat
       loop: "{{ configuration_files_user }}"
 
@@ -180,7 +180,7 @@
       ansible.builtin.assert:
         that:
           - item.stat.exists
-          - "item.stat.pw_name == configure_system_user_name"
+          - "item.stat.pw_name == provisioned_user"
         fail_msg: "File {{ item.item.dest }} missing or wrong owner"
         success_msg: "File {{ item.item.dest }} exists with correct owner"
       loop: "{{ config_files_stat.results }}"
@@ -203,7 +203,7 @@
     ################################################################################
     - name: 'Verify if dotfiles exist'
       ansible.builtin.stat:
-        path: "/home/{{ configure_system_user_name }}/{{ item }}"
+        path: "/home/{{ provisioned_user }}/{{ item }}"
       register: dotfiles_stat
       loop:
         - '.gitconfig'
@@ -215,7 +215,7 @@
       ansible.builtin.assert:
         that:
           - item.stat.exists
-          - "item.stat.pw_name == configure_system_user_name"
+          - "item.stat.pw_name == provisioned_user"
           - "item.stat.mode == '0600'"
         fail_msg: "Dotfile {{ item.item }} missing, wrong owner, or wrong permissions"
         success_msg: "Dotfile {{ item.item }} exists with correct ownership and permissions"
@@ -228,7 +228,7 @@
     ################################################################################
     - name: 'Assert that .gitconfig has user.name'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        path: "/home/{{ provisioned_user }}/.gitconfig"
         regexp: '^\s*name\s*=\s*{{ dotfiles_git_config.user.name | regex_escape }}\s*$'
         state: 'present'
       check_mode: true
@@ -237,7 +237,7 @@
 
     - name: 'Assert that .gitconfig has user.signingkey'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        path: "/home/{{ provisioned_user }}/.gitconfig"
         regexp: '^\s*signingkey\s*=\s*{{ dotfiles_git_config.user.signingkey }}\s*$'
         state: 'present'
       check_mode: true
@@ -246,7 +246,7 @@
 
     - name: 'Assert that .gitconfig has commit.gpgsign'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        path: "/home/{{ provisioned_user }}/.gitconfig"
         regexp: '^\s*gpgsign\s*=\s*{{ dotfiles_git_config.commit.gpgsign }}\s*$'
         state: 'present'
       check_mode: true
@@ -255,7 +255,7 @@
 
     - name: 'Assert that .gitconfig has core.editor'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        path: "/home/{{ provisioned_user }}/.gitconfig"
         regexp: '^\s*editor\s*=\s*{{ dotfiles_git_config.core.editor }}\s*$'
         state: 'present'
       check_mode: true
@@ -264,7 +264,7 @@
 
     - name: 'Assert that .gitconfig has core.pager (delta)'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.gitconfig"
+        path: "/home/{{ provisioned_user }}/.gitconfig"
         regexp: '^\s*pager\s*=\s*{{ dotfiles_git_config.core.pager }}\s*$'
         state: 'present'
       check_mode: true
@@ -276,7 +276,7 @@
     ################################################################################
     - name: 'Assert that .vimrc has syntax highlighting enabled'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.vimrc"
+        path: "/home/{{ provisioned_user }}/.vimrc"
         regexp: '^syntax on'
         state: 'present'
       check_mode: true
@@ -285,7 +285,7 @@
 
     - name: 'Assert that .vimrc has line numbers enabled'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.vimrc"
+        path: "/home/{{ provisioned_user }}/.vimrc"
         regexp: '^set number'
         state: 'present'
       check_mode: true
@@ -294,7 +294,7 @@
 
     - name: 'Assert that .vimrc has expandtab (spaces not tabs)'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.vimrc"
+        path: "/home/{{ provisioned_user }}/.vimrc"
         regexp: '^set expandtab'
         state: 'present'
       check_mode: true
@@ -303,7 +303,7 @@
 
     - name: 'Assert that .vimrc has tabstop=4'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.vimrc"
+        path: "/home/{{ provisioned_user }}/.vimrc"
         regexp: '^set tabstop=4'
         state: 'present'
       check_mode: true
@@ -315,7 +315,7 @@
     ################################################################################
     - name: 'Assert that .bashrc has HISTCONTROL set'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.bashrc"
+        path: "/home/{{ provisioned_user }}/.bashrc"
         regexp: '^HISTCONTROL=ignoreboth'
         state: 'present'
       check_mode: true
@@ -324,7 +324,7 @@
 
     - name: 'Assert that .bashrc has histappend enabled'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.bashrc"
+        path: "/home/{{ provisioned_user }}/.bashrc"
         regexp: '^shopt -s histappend'
         state: 'present'
       check_mode: true
@@ -333,7 +333,7 @@
 
     - name: 'Assert that .bashrc has ll alias'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.bashrc"
+        path: "/home/{{ provisioned_user }}/.bashrc"
         regexp: "^alias ll='ls -alF'"
         state: 'present'
       check_mode: true
@@ -342,7 +342,7 @@
 
     - name: 'Assert that .bashrc has PATH extension'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.bashrc"
+        path: "/home/{{ provisioned_user }}/.bashrc"
         regexp: '^export PATH=\$PATH:\$HOME/bin'
         state: 'present'
       check_mode: true
@@ -354,7 +354,7 @@
     ################################################################################
     - name: 'Assert that .gitignore has swp files'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.gitignore"
+        path: "/home/{{ provisioned_user }}/.gitignore"
         regexp: '^\*\.swp$'
         state: 'present'
       check_mode: true
@@ -363,7 +363,7 @@
 
     - name: 'Assert that .gitignore has log files'
       ansible.builtin.lineinfile:
-        path: "/home/{{ configure_system_user_name }}/.gitignore"
+        path: "/home/{{ provisioned_user }}/.gitignore"
         regexp: '^\*\.log$'
         state: 'present'
       check_mode: true
@@ -373,10 +373,10 @@
     ################################################################################
     # Docker user verification
     ################################################################################
-    - name: "Verify that docker is functional for user {{ configure_system_user_name }}"
+    - name: "Verify that docker is functional for user {{ provisioned_user }}"
       ansible.builtin.command: 'docker ps'
       become: true
-      become_user: "{{ configure_system_user_name }}"
+      become_user: "{{ provisioned_user }}"
       changed_when: false
       register: docker_ps_check
 
@@ -384,8 +384,8 @@
       ansible.builtin.assert:
         that:
           - "docker_ps_check.rc == 0"
-        fail_msg: "User {{ configure_system_user_name }} cannot run docker commands"
-        success_msg: "User {{ configure_system_user_name }} can run docker commands"
+        fail_msg: "User {{ provisioned_user }} cannot run docker commands"
+        success_msg: "User {{ provisioned_user }} can run docker commands"
 
     ################################################################################
     # Tilix verification
@@ -425,7 +425,7 @@
     ################################################################################
     - name: 'Check Joplin AppImage'
       ansible.builtin.stat:
-        path: "/home/{{ configure_system_user_name }}/.joplin/Joplin.AppImage"
+        path: "/home/{{ provisioned_user }}/.joplin/Joplin.AppImage"
       register: joplin_appimage
 
     - name: 'Assert that Joplin is installed'
@@ -498,14 +498,14 @@
             {% set parts = item.key.strip('/').split('/') %}
             gsettings get {{ parts[:-1] | join('.') }} {{ parts[-1] }}
           become: true
-          become_user: "{{ configure_system_user_name }}"
+          become_user: "{{ provisioned_user }}"
           changed_when: false
           failed_when: false
           register: gnome_regular_settings_check
           loop: "{{ gsettings_defaults }}"
           when: "'custom-keybindings/custom' not in item.key"
           environment:
-            DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ user_info.ansible_facts.getent_passwd[configure_system_user_name][1] }}/bus"
+            DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ user_info.ansible_facts.getent_passwd[provisioned_user][1] }}/bus"
 
         - name: 'Get relocatable GNOME settings (custom-keybindings)'
           # Transforms: /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding
@@ -518,14 +518,14 @@
             {% set path = '/' ~ '/'.join(parts[:-1]) ~ '/' %}
             gsettings get {{ schema }}:{{ path }} {{ parts[-1] }}
           become: true
-          become_user: "{{ configure_system_user_name }}"
+          become_user: "{{ provisioned_user }}"
           changed_when: false
           failed_when: false
           register: gnome_relocatable_settings_check
           loop: "{{ gsettings_defaults }}"
           when: "'custom-keybindings/custom' in item.key"
           environment:
-            DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ user_info.ansible_facts.getent_passwd[configure_system_user_name][1] }}/bus"
+            DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/{{ user_info.ansible_facts.getent_passwd[provisioned_user][1] }}/bus"
 
         - name: 'Assert that regular GNOME settings match expected values'
           # gsettings returns GVariant format (Python-like syntax with single quotes)

@@ -1,0 +1,17 @@
+---
+
+- name: 'Configure the system timezone'
+  become: true
+  community.general.timezone:
+    name: "{{ timezone_name }}"
+
+# timedatectl only touches /etc/localtime, so the legacy Debian file keeps
+# reporting whatever the installer wrote until it is rewritten here
+- name: 'Keep the legacy timezone file in sync'
+  become: true
+  ansible.builtin.copy:
+    dest: '/etc/timezone'
+    content: "{{ timezone_name }}\n"
+    owner: 'root'
+    group: 'root'
+    mode: '0644'

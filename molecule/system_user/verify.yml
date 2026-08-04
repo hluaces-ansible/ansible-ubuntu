@@ -1,0 +1,24 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: false
+  tasks:
+    - name: 'Read the account database'
+      ansible.builtin.getent:
+        database: 'passwd'
+        key: 'provisioned'
+
+    - name: 'Read the groups the account belongs to'
+      ansible.builtin.command: 'groups provisioned'
+      changed_when: false
+      register: system_user_groups_out
+
+    - name: 'Assert the account was created as declared'
+      ansible.builtin.assert:
+        that:
+          - "ansible_facts.getent_passwd['provisioned'][5] == '/bin/bash'"
+          - "'sudo' in system_user_groups_out.stdout"
+          - "'input' in system_user_groups_out.stdout"
+        fail_msg: 'provisioned user missing, wrong shell or wrong groups'
+        success_msg: 'provisioned user created with its shell and groups'
