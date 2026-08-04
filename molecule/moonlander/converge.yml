@@ -1,0 +1,11 @@
+---
+- name: 'Converge'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: true
+  vars:
+    # No running udevd in the container; the reload is covered by the full
+    # playbook scenarios instead
+    moonlander_reload_udev: false
+  roles:
+    - 'hluaces.ubuntu.moonlander'

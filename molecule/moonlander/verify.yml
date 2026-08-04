@@ -1,0 +1,27 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: true
+  gather_facts: false
+  tasks:
+    - name: 'Stat the udev rules file'
+      ansible.builtin.stat:
+        path: '/etc/udev/rules.d/50-zsa.rules'
+      register: moonlander_rules_stat
+
+    - name: 'Read the udev rules file'
+      ansible.builtin.slurp:
+        src: '/etc/udev/rules.d/50-zsa.rules'
+      register: moonlander_rules
+
+    - name: 'Assert the ZSA udev rules are in place'
+      ansible.builtin.assert:
+        that:
+          - 'moonlander_rules_stat.stat.exists'
+          - "moonlander_rules_stat.stat.mode == '0644'"
+          - "moonlander_rules_stat.stat.pw_name == 'root'"
+          - "'ATTRS{idVendor}==\"3297\"' in moonlander_rules.content | b64decode"
+          - "'SYMLINK+=\"stm32_dfu\"' in moonlander_rules.content | b64decode"
+          - "'GROUP=\"plugdev\"' in moonlander_rules.content | b64decode"
+        fail_msg: 'ZSA udev rules missing or incomplete'
+        success_msg: 'ZSA udev rules deployed'

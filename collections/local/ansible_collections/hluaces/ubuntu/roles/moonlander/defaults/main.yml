@@ -1,0 +1,7 @@
+---
+
+moonlander_udev_rules_path: '/etc/udev/rules.d/50-zsa.rules'
+
+# Reload udev after changing the rules. Needs a running udevd, so container
+# tests disable it
+moonlander_reload_udev: true
