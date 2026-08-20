@@ -1,0 +1,38 @@
+---
+
+- name: "Query the latest release of {{ obsidian_plugin.id }}"
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/{{ obsidian_plugin.repo }}/releases/latest"
+    return_content: true
+  register: 'obsidian_release'
+
+- name: "Read the installed manifest of {{ obsidian_plugin.id }}"
+  ansible.builtin.slurp:
+    src: "{{ obsidian_vault }}/.obsidian/plugins/{{ obsidian_plugin.id }}/manifest.json"
+  register: 'obsidian_installed_raw'
+  failed_when: false
+
+- name: "Deploy {{ obsidian_plugin.id }}"
+  vars:
+    obsidian_installed_version: >-
+      {{ (obsidian_installed_raw.content | b64decode | from_json).version
+         if obsidian_installed_raw.content is defined else '' }}
+    obsidian_release_version: "{{ obsidian_release.json.tag_name | regex_replace('^v', '') }}"
+  when: 'obsidian_installed_version != obsidian_release_version'
+  block:
+    - name: "Create the plugin directory of {{ obsidian_plugin.id }}"
+      ansible.builtin.file:
+        path: "{{ obsidian_vault }}/.obsidian/plugins/{{ obsidian_plugin.id }}"
+        state: 'directory'
+        mode: '0755'
+
+    - name: "Download the release files of {{ obsidian_plugin.id }}"
+      ansible.builtin.get_url:
+        url: "{{ item.browser_download_url }}"
+        dest: "{{ obsidian_vault }}/.obsidian/plugins/{{ obsidian_plugin.id }}/{{ item.name }}"
+        mode: '0644'
+      loop: "{{ obsidian_release.json.assets
+                | selectattr('name', 'in', ['manifest.json', 'main.js', 'styles.css'])
+                | list }}"
+      loop_control:
+        label: "{{ item.name }}"

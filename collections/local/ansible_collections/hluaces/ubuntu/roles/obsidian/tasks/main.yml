@@ -1,0 +1,18 @@
+---
+
+- name: 'Install Obsidian'
+  become: true
+  community.general.snap:
+    name: 'obsidian'
+    channel: "{{ obsidian_snap_channel }}"
+  register: 'obsidian_snap_result'
+  retries: 3
+  delay: 10
+  until: 'obsidian_snap_result is not failed'
+  when: 'obsidian_install_snap'
+
+- name: 'Manage the plugins of every vault'
+  ansible.builtin.include_tasks: 'vault.yml'
+  loop: "{{ obsidian_vaults }}"
+  loop_control:
+    loop_var: 'obsidian_vault'

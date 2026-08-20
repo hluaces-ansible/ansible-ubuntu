@@ -1,0 +1,29 @@
+---
+
+- name: "Create the plugin directory of {{ obsidian_vault }}"
+  ansible.builtin.file:
+    path: "{{ obsidian_vault }}/.obsidian/plugins"
+    state: 'directory'
+    mode: '0755'
+
+- name: "Deploy the plugins of {{ obsidian_vault }}"
+  ansible.builtin.include_tasks: 'plugin.yml'
+  loop: "{{ obsidian_plugins }}"
+  loop_control:
+    loop_var: 'obsidian_plugin'
+
+- name: "Read the enabled plugin list of {{ obsidian_vault }}"
+  ansible.builtin.slurp:
+    src: "{{ obsidian_vault }}/.obsidian/community-plugins.json"
+  register: 'obsidian_enabled_raw'
+  failed_when: false
+
+- name: "Enable the managed plugins of {{ obsidian_vault }}"
+  vars:
+    obsidian_enabled: >-
+      {{ (obsidian_enabled_raw.content | b64decode | from_json)
+         if obsidian_enabled_raw.content is defined else [] }}
+  ansible.builtin.copy:
+    content: "{{ (obsidian_enabled + (obsidian_plugins | map(attribute='id') | list)) | unique | to_nice_json }}\n"
+    dest: "{{ obsidian_vault }}/.obsidian/community-plugins.json"
+    mode: '0644'

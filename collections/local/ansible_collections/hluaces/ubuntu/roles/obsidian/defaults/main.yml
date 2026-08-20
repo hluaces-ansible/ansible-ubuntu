@@ -1,0 +1,21 @@
+---
+
+# Install the Obsidian snap. Disable where snapd is unavailable, such as a
+# container, to exercise the plugin handling on its own.
+obsidian_install_snap: true
+
+# Snap channel to track
+obsidian_snap_channel: 'latest/stable'
+
+# Absolute paths of the vaults whose plugins are managed. Plugins live inside
+# a vault, not in the user's home, so an empty list installs Obsidian and
+# touches nothing else.
+obsidian_vaults: []
+
+# Community plugins deployed into every managed vault. 'id' is the plugin
+# directory name Obsidian expects, 'repo' the GitHub repository releasing it.
+obsidian_plugins:
+  - id: 'obsidian-kanban'
+    repo: 'mgmeyers/obsidian-kanban'
+  - id: 'dataview'
+    repo: 'blacksmithgu/obsidian-dataview'
