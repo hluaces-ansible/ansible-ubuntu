@@ -1,0 +1,31 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: true
+  tasks:
+    - name: 'Stat the omp launcher'
+      ansible.builtin.stat:
+        path: "{{ ansible_user_dir }}/.local/bin/omp"
+      register: 'oh_my_pi_launcher'
+
+    - name: 'Assert the omp launcher is installed and executable'
+      ansible.builtin.assert:
+        that:
+          - 'oh_my_pi_launcher.stat.exists'
+          - 'oh_my_pi_launcher.stat.executable'
+        fail_msg: 'omp launcher missing from ~/.local/bin/omp'
+        success_msg: 'omp launcher installed'
+
+    - name: 'Run omp'
+      ansible.builtin.command:
+        cmd: "{{ ansible_user_dir }}/.local/bin/omp --version"
+      changed_when: false
+      register: 'oh_my_pi_version'
+
+    - name: 'Assert omp reports a version'
+      ansible.builtin.assert:
+        that:
+          - 'oh_my_pi_version.stdout | length > 0'
+        fail_msg: 'omp did not report a version'
+        success_msg: "omp reports {{ oh_my_pi_version.stdout }}"

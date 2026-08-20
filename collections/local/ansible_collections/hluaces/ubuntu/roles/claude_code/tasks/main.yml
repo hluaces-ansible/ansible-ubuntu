@@ -1,0 +1,36 @@
+---
+
+- name: 'Install the Claude Code installer prerequisites'
+  become: true
+  ansible.builtin.apt:
+    name:
+      - 'ca-certificates'
+      - 'curl'
+    state: 'present'
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: 'Check whether Claude Code is already installed'
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.local/bin/claude"
+  register: 'claude_code_launcher'
+
+- name: 'Install Claude Code'
+  when: 'not claude_code_launcher.stat.exists'
+  block:
+    - name: 'Download the Claude Code installer'
+      ansible.builtin.get_url:
+        url: 'https://claude.ai/install.sh'
+        dest: '/tmp/claude-code-install.sh'
+        mode: '0700'
+
+    - name: 'Run the Claude Code installer'
+      ansible.builtin.command:
+        cmd: '/tmp/claude-code-install.sh {{ claude_code_channel }}'
+        creates: "{{ ansible_user_dir }}/.local/bin/claude"
+
+  always:
+    - name: 'Remove the Claude Code installer'
+      ansible.builtin.file:
+        path: '/tmp/claude-code-install.sh'
+        state: 'absent'

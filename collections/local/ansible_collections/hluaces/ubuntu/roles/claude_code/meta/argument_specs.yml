@@ -1,0 +1,16 @@
+---
+argument_specs:
+  main:
+    short_description: 'Install the Claude Code CLI'
+    description:
+      - 'Runs the official installer as the invoking user, which places the
+        launcher in ~/.local/bin/claude. The installer refuses to run under
+        sudo, and Claude Code updates itself once installed, so the role only
+        installs when the launcher is missing.'
+    options:
+      claude_code_channel:
+        type: 'str'
+        default: 'stable'
+        description:
+          - 'Release channel handed to the installer. Accepts C(stable),
+            C(latest) or an exact version number.'
