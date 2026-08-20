@@ -64,6 +64,8 @@
       tags: ['role-fzf']
     - role: 'hluaces.ubuntu.zoxide'
       tags: ['role-zoxide']
+    - role: 'hluaces.ubuntu.obsidian'
+      tags: ['role-obsidian']
     - role: 'hluaces.iac.configuration_files'
       become: true
       become_user: "{{ provisioned_user }}"
