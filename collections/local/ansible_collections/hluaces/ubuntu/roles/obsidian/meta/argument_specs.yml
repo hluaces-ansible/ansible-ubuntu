@@ -1,0 +1,41 @@
+---
+argument_specs:
+  main:
+    short_description: 'Install Obsidian and manage its community plugins'
+    description:
+      - 'Installs the Obsidian snap and deploys community plugins into each
+        vault listed in C(obsidian_vaults). Plugins are tracked against their
+        latest GitHub release: a plugin is downloaded only when the installed
+        manifest reports a different version, so re-runs report no change
+        while still following upstream.'
+    options:
+      obsidian_install_snap:
+        type: 'bool'
+        default: true
+        description:
+          - 'Install the Obsidian snap. Disable where snapd is unavailable.'
+      obsidian_snap_channel:
+        type: 'str'
+        default: 'latest/stable'
+        description: 'Snap channel to track.'
+      obsidian_vaults:
+        type: 'list'
+        elements: 'str'
+        default: []
+        description:
+          - 'Absolute paths of the vaults whose plugins are managed. An empty
+            list installs Obsidian and manages no plugins.'
+      obsidian_plugins:
+        type: 'list'
+        elements: 'dict'
+        description:
+          - 'Community plugins deployed into every managed vault.'
+        options:
+          id:
+            type: 'str'
+            required: true
+            description: 'Plugin directory name, as Obsidian expects it.'
+          repo:
+            type: 'str'
+            required: true
+            description: 'GitHub repository releasing the plugin.'
