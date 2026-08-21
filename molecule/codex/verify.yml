@@ -1,0 +1,31 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: false
+  tasks:
+    - name: 'List the globally installed Codex package'
+      ansible.builtin.command:
+        cmd: 'npm list -g --depth=0 @openai/codex'
+      changed_when: false
+      register: 'codex_npm'
+
+    - name: 'Assert Codex is installed globally'
+      ansible.builtin.assert:
+        that:
+          - "'@openai/codex' in codex_npm.stdout"
+        fail_msg: '@openai/codex not installed globally'
+        success_msg: '@openai/codex installed globally'
+
+    - name: 'Run Codex'
+      ansible.builtin.command:
+        cmd: 'codex --version'
+      changed_when: false
+      register: 'codex_version'
+
+    - name: 'Assert Codex reports a version'
+      ansible.builtin.assert:
+        that:
+          - 'codex_version.stdout | length > 0'
+        fail_msg: 'codex did not report a version'
+        success_msg: "codex reports {{ codex_version.stdout }}"

@@ -1,0 +1,4 @@
+---
+
+# Release channel handed to the installer: stable, latest or an exact version
+claude_code_channel: 'stable'

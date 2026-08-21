@@ -1,0 +1,7 @@
+---
+- name: 'Converge'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: true
+  roles:
+    - 'hluaces.ubuntu.oh_my_pi'

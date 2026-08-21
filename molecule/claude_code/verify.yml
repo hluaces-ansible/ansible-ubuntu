@@ -1,0 +1,31 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: true
+  tasks:
+    - name: 'Stat the Claude Code launcher'
+      ansible.builtin.stat:
+        path: "{{ ansible_user_dir }}/.local/bin/claude"
+      register: 'claude_code_launcher'
+
+    - name: 'Assert the Claude Code launcher is installed and executable'
+      ansible.builtin.assert:
+        that:
+          - 'claude_code_launcher.stat.exists'
+          - 'claude_code_launcher.stat.executable'
+        fail_msg: 'Claude Code launcher missing from ~/.local/bin/claude'
+        success_msg: 'Claude Code launcher installed'
+
+    - name: 'Run Claude Code'
+      ansible.builtin.command:
+        cmd: "{{ ansible_user_dir }}/.local/bin/claude --version"
+      changed_when: false
+      register: 'claude_code_version'
+
+    - name: 'Assert Claude Code reports a version'
+      ansible.builtin.assert:
+        that:
+          - 'claude_code_version.stdout | length > 0'
+        fail_msg: 'Claude Code did not report a version'
+        success_msg: "Claude Code reports {{ claude_code_version.stdout }}"

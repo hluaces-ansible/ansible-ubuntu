@@ -13,7 +13,7 @@ check() {
   fi
 }
 
-ALL='["dotfiles","dropbox","firefox","fzf","ghostty","moonlander","sysctl","system_user","timezone","ubuntu24-desktop","ubuntu24-laptop","ulauncher","zoxide"]'
+ALL='["claude_code","codex","dotfiles","dropbox","firefox","fzf","ghostty","moonlander","oh_my_pi","sysctl","system_user","timezone","ubuntu24-desktop","ubuntu24-laptop","ulauncher","zoxide"]'
 FULL='["ubuntu24-desktop","ubuntu24-laptop"]'
 
 check "schedule runs all" "${ALL}" "$(./map_scenarios.sh schedule < /dev/null)"

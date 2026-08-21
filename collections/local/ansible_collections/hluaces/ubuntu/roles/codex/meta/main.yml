@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  role_name: 'codex'
+  namespace: 'hluaces'
+  author: 'Héctor Luaces'
+  description: 'Installs the OpenAI Codex CLI globally through npm'
+  license: 'GPL-2.0-or-later'
+  min_ansible_version: '2.17'
+  platforms:
+    - name: 'Ubuntu'
+      versions:
+        - 'noble'
+  galaxy_tags: []
+
+dependencies: []

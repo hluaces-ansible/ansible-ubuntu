@@ -1,0 +1,36 @@
+---
+
+- name: 'Install the omp installer prerequisites'
+  become: true
+  ansible.builtin.apt:
+    name:
+      - 'ca-certificates'
+      - 'curl'
+    state: 'present'
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: 'Check whether omp is already installed'
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.local/bin/omp"
+  register: 'oh_my_pi_launcher'
+
+- name: 'Install omp'
+  when: 'not oh_my_pi_launcher.stat.exists'
+  block:
+    - name: 'Download the omp installer'
+      ansible.builtin.get_url:
+        url: 'https://omp.sh/install'
+        dest: '/tmp/oh-my-pi-install.sh'
+        mode: '0700'
+
+    - name: 'Run the omp installer'
+      ansible.builtin.command:
+        cmd: '/tmp/oh-my-pi-install.sh'
+        creates: "{{ ansible_user_dir }}/.local/bin/omp"
+
+  always:
+    - name: 'Remove the omp installer'
+      ansible.builtin.file:
+        path: '/tmp/oh-my-pi-install.sh'
+        state: 'absent'
