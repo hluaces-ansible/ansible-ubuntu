@@ -1,0 +1,39 @@
+---
+- name: 'Verify'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: true
+  vars:
+    obsidian_verify_plugins:
+      - 'obsidian-kanban'
+      - 'dataview'
+    obsidian_verify_vault: "{{ ansible_user_dir }}/molecule-vault"
+
+  tasks:
+    - name: 'Stat the deployed plugin files'
+      ansible.builtin.stat:
+        path: "{{ obsidian_verify_vault }}/.obsidian/plugins/{{ item.0 }}/{{ item.1 }}"
+      loop: "{{ obsidian_verify_plugins | product(['manifest.json', 'main.js']) | list }}"
+      register: 'obsidian_plugin_files'
+
+    - name: 'Assert every plugin shipped its manifest and entry point'
+      ansible.builtin.assert:
+        that:
+          - 'item.stat.exists'
+        fail_msg: "missing {{ item.item.0 }}/{{ item.item.1 }}"
+        success_msg: "{{ item.item.0 }}/{{ item.item.1 }} deployed"
+      loop: "{{ obsidian_plugin_files.results }}"
+      loop_control:
+        label: "{{ item.item.0 }}/{{ item.item.1 }}"
+
+    - name: 'Read the enabled plugin list'
+      ansible.builtin.slurp:
+        src: "{{ obsidian_verify_vault }}/.obsidian/community-plugins.json"
+      register: 'obsidian_enabled_raw'
+
+    - name: 'Assert the managed plugins are enabled'
+      ansible.builtin.assert:
+        that:
+          - "obsidian_verify_plugins | difference(obsidian_enabled_raw.content | b64decode | from_json) | length == 0"
+        fail_msg: 'community-plugins.json does not enable every managed plugin'
+        success_msg: 'every managed plugin is enabled'

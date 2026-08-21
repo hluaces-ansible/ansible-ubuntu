@@ -1,0 +1,19 @@
+---
+- name: 'Converge'
+  hosts: 'ubuntu_group'
+  become: false
+  gather_facts: true
+  vars:
+    obsidian_install_snap: false
+    obsidian_vaults:
+      - "{{ ansible_user_dir }}/molecule-vault"
+
+  pre_tasks:
+    - name: 'Create the throwaway vault'
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/molecule-vault"
+        state: 'directory'
+        mode: '0755'
+
+  roles:
+    - 'hluaces.ubuntu.obsidian'
